@@ -1,0 +1,21 @@
+services:
+  postgres:
+    image: postgres:16.2
+    container_name: easyqa-postgres
+    restart: always
+    ports:
+      - '5432:5432'
+    environment:
+      POSTGRES_USER: easyqa
+      POSTGRES_PASSWORD: easyqa_password
+      POSTGRES_DB: easyqa
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U easyqa"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  postgres_data:
