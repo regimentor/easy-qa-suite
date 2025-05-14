@@ -1,16 +1,24 @@
-import { createYoga, maskError } from "graphql-yoga";
+import { createYoga } from "graphql-yoga";
 import { buildSchema } from "type-graphql";
 import { UserResolver } from "./resolvers/user.resolver";
-import { BaseError } from "../errors/base.errors";
-import { GraphQLError } from "graphql";
+import { createLogger, type Logger } from "../logger/logger";
+
+export type TGraphqlContext = {
+  logger: Logger;
+};
 
 export async function graphqlInit() {
   const schema = await buildSchema({
     resolvers: [UserResolver],
   });
 
+  const logger = createLogger({ meta: "graphql" });
+
   const yoga = createYoga({
     schema,
+    context: () => ({
+      logger,
+    }),
   });
 
   return { schema, yoga };

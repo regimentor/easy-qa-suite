@@ -1,8 +1,9 @@
-import { Arg, Args, Mutation, Query, Resolver } from "type-graphql";
+import { Arg, Args, Ctx, Mutation, Query, Resolver } from "type-graphql";
 import { UserModel } from "../models/user.model";
 import { userService } from "../../services/user.service";
 import { CreateUserInput } from "../inputs/create-user.input";
 import { ErrorHandler } from "../../decorators/error-handler";
+import type { TGraphqlContext } from "../graphql";
 
 @Resolver(() => UserModel)
 @ErrorHandler()
@@ -10,7 +11,8 @@ export class UserResolver {
   @Query(() => [UserModel], {
     name: "users",
   })
-  async getUsers(): Promise<UserModel[]> {
+  async getUsers(@Ctx() ctx: TGraphqlContext): Promise<UserModel[]> {
+    ctx.logger.debug("Fetching all users");
     const users = await userService.findUsers();
     return UserModel.fromPrismaArray(users);
   }
@@ -20,7 +22,9 @@ export class UserResolver {
   })
   async createUser(
     @Arg("data", () => CreateUserInput) data: CreateUserInput,
+    @Ctx() ctx: TGraphqlContext,
   ): Promise<UserModel> {
+    ctx.logger.debug("Creating user", { data });
     const user = await userService.createUser(data);
     return UserModel.fromPrisma(user);
   }
