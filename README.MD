@@ -6,7 +6,9 @@ EasyQASuite is a comprehensive QA management system designed to help teams organ
 
 ## Documentation
 
-For detailed information about the system, including functional requirements and database schema, please see the [complete documentation](./DOC.MD).
+Documentation is available in multiple languages:
+- [English Documentation](./DOC.EN.MD)
+- [Russian Documentation (Документация на русском)](./DOC.RU.MD)
 
 ## Features
 
