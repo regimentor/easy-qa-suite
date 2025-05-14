@@ -26,7 +26,6 @@ async function createUser(user: TCreateUser) {
 
 async function findUsers() {
   const users = await usersRepository.findBy({});
-  console.log(users)
   return users;
 }
 

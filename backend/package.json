@@ -8,7 +8,10 @@
   },
   "scripts": {
     "start": "bun ./index.ts",
-    "dev": "bun --watch ./index.ts"
+    "dev": "bun --watch ./index.ts",
+    "test": "bun test",
+    "test:watch": "bun test --watch",
+    "test:coverage": "bun test --coverage"
   },
   "devDependencies": {
     "@types/bun": "latest",
