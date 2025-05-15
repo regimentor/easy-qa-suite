@@ -58,3 +58,5 @@ export function createLogger(args: { meta: string }): Logger {
   logger.info(`Logger initialized with meta: ${args.meta}`);
   return logger;
 }
+
+export const logger = createLogger({ meta: "default" });

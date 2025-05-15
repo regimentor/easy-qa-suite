@@ -2,9 +2,10 @@ import { createYoga } from "graphql-yoga";
 import { buildSchema } from "type-graphql";
 import { UserResolver } from "./resolvers/user.resolver";
 import { createLogger, type Logger } from "../logger/logger";
+import type { BunRequest } from "bun";
 
 export type TGraphqlContext = {
-  logger: Logger;
+  request: BunRequest;
 };
 
 export async function graphqlInit() {
@@ -12,14 +13,14 @@ export async function graphqlInit() {
     resolvers: [UserResolver],
   });
 
-  const logger = createLogger({ meta: "graphql" });
-
-  const yoga = createYoga({
+  const gqlYoga = createYoga({
     schema,
-    context: () => ({
-      logger,
-    }),
+    context: ({ request }) => {
+      return {
+        request,
+      };
+    },
   });
 
-  return { schema, yoga };
+  return { schema, gqlYoga };
 }

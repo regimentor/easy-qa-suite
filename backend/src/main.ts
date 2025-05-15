@@ -1,15 +1,23 @@
-import express from "express";
 import { config } from "./config";
-
 import { graphqlInit } from "./graphql/graphql";
 
 export async function main() {
-  const { yoga } = await graphqlInit();
+  const { gqlYoga } = await graphqlInit();
 
-  const app = express();
-  app.use("/graphql", yoga);
-
-  app.listen(config.webPort, () => {
-    console.log(`Server is running on port ${config.webPort} 🚀`);
+  Bun.serve({
+    port: config.webPort,
+    routes: {
+      "/": (req) => {
+        return new Response("Hello World");
+      },
+      "/graphql": {
+        GET: (req) => {
+          return gqlYoga.fetch(req);
+        },
+        POST: (req) => {
+          return gqlYoga.fetch(req);
+        },
+      },
+    },
   });
 }

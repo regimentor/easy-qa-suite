@@ -4,6 +4,7 @@ import { userService } from "../../services/user.service";
 import { CreateUserInput } from "../inputs/create-user.input";
 import { ErrorHandler } from "../../decorators/error-handler";
 import type { TGraphqlContext } from "../graphql";
+import { logger } from "../../logger/logger";
 
 @Resolver(() => UserModel)
 @ErrorHandler()
@@ -12,7 +13,7 @@ export class UserResolver {
     name: "users",
   })
   async getUsers(@Ctx() ctx: TGraphqlContext): Promise<UserModel[]> {
-    ctx.logger.debug("Fetching all users");
+    logger.debug("Fetching all users");
     const users = await userService.findUsers();
     return UserModel.fromPrismaArray(users);
   }
@@ -24,7 +25,7 @@ export class UserResolver {
     @Arg("data", () => CreateUserInput) data: CreateUserInput,
     @Ctx() ctx: TGraphqlContext,
   ): Promise<UserModel> {
-    ctx.logger.debug("Creating user", { data });
+    logger.debug("Creating user", { data });
     const user = await userService.createUser(data);
     return UserModel.fromPrisma(user);
   }
