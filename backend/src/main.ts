@@ -20,12 +20,27 @@ export async function main() {
       logger.error(error);
       return new Response("Internal Server Error", { status: 500 });
     },
+    fetch(req) {
+      if (req.method === "OPTIONS") {
+        return new Response(null, {
+          headers: {
+            "Access-Control-Allow-Origin": "*",
+            "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
+            "Access-Control-Allow-Headers": "Content-Type",
+          },
+        });
+      }
+
+      return new Response("Not Found", {
+        status: 404,
+      });
+    },
     routes: {
-      "/sign-in": {
-        POST: handler(signInPost),
+      "/login": {
+        POST: handler(signInPost, { cors: true }),
       },
       "/refresh-token": {
-        POST: handler(refreshTokenPost),
+        POST: handler(refreshTokenPost, { cors: true }),
       },
       "/graphql": {
         GET: (req) => {

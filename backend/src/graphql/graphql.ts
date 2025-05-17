@@ -21,6 +21,8 @@ export async function graphqlInit() {
   const gqlYoga = createYoga({
     schema,
     context: async ({ request }) => {
+      console.log((request as BunRequest).cookies, "cookies");
+      console.log(request.headers, "headers");
       let user = null;
       const token = request.headers.get("Authorization")?.split(" ")[1];
       if (token) {
