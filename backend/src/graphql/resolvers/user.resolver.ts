@@ -9,7 +9,7 @@ import { AuthGuard } from "../decorators/auth-guard.decorator";
 
 @Resolver(() => UserModel)
 @ErrorHandler()
-@Authorized()
+// @Authorized()
 export class UserResolver {
   @Query(() => [UserModel], {
     name: "users",
