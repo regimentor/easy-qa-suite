@@ -4,8 +4,8 @@ import {
   mockUsersRepository,
   usersRepositoryMock,
   mockPasswordHashing,
-} from "../mocks/users.repository.mock";
-import { createMockUser, createUserInput, mockUsers } from "../mocks/user.mock";
+} from "../mocks/users.repository.test";
+import { createMockUser, createUserInput, mockUsers } from "../mocks/user.test";
 
 // Setup mocks before importing the service
 mockUsersRepository();

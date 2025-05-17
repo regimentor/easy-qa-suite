@@ -28,6 +28,7 @@
     "prisma": "^6.7.0",
     "reflect-metadata": "^0.2.2",
     "type-graphql": "^2.0.0-rc.2",
-    "winston": "^3.17.0"
+    "winston": "^3.17.0",
+    "zod": "^3.24.4"
   }
 }

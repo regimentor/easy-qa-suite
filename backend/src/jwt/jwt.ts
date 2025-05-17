@@ -19,6 +19,21 @@ async function createToken(params: TUserClaim, expiresIn: string = "2h") {
   return tokenString;
 }
 
+async function createRefreshToken(
+  params: TUserClaim,
+  expiresIn: string = "7d",
+) {
+  const token = new SignJWT({ ...params });
+  token
+    .setProtectedHeader({ alg: "HS256" })
+    .setIssuedAt()
+    .setExpirationTime(expiresIn);
+
+  const tokenString = await token.sign(secret);
+
+  return tokenString;
+}
+
 async function verifyToken(token: string) {
   try {
     const { payload } = await jwtVerify<TUserClaim>(token, secret);
@@ -44,4 +59,5 @@ export const jwt = {
   createToken,
   verifyToken,
   refreshToken,
+  createRefreshToken,
 };

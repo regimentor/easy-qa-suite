@@ -29,7 +29,30 @@ async function findUsers() {
   return users;
 }
 
+async function userExists(username: string) {
+  const user = await usersRepository.firstFindBy({ username });
+  return !!user;
+}
+
+async function verifyUserPassword(
+  username: string,
+  password: string,
+): Promise<boolean> {
+  const user = await usersRepository.firstFindBy({ username });
+  if (!user) {
+    return false;
+  }
+  const isValid = await Bun.password.verify(
+    password,
+    user.password_hash,
+    "bcrypt",
+  );
+  return isValid;
+}
+
 export const userService = {
   createUser,
   findUsers,
+  userExists,
+  verifyUserPassword,
 };
