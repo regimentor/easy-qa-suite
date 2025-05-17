@@ -1,5 +1,7 @@
 # EasyQASuite - QA Management System
 
+![Backend Tests](https://github.com/mstephen19/EasyQASuite/actions/workflows/backend-tests.yml/badge.svg)
+
 ## Overview
 
 EasyQASuite is a comprehensive QA management system designed to help teams organize, manage, and run their quality assurance processes efficiently.

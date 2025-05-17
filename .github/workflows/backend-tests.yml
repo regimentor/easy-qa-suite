@@ -1,0 +1,48 @@
+name: Backend Tests
+
+on:
+  push:
+    branches: [ main, master ]
+    paths:
+      - 'backend/**'
+  pull_request:
+    branches: [ main, master ]
+    paths:
+      - 'backend/**'
+  workflow_dispatch:
+
+jobs:
+  test:
+    name: Run Tests with Coverage
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v1
+        with:
+          bun-version: latest
+
+      - name: Install dependencies
+        working-directory: backend
+        run: bun install
+
+      - name: Generate Prisma client
+        working-directory: backend
+        run: bunx prisma generate
+
+      - name: Run tests with coverage
+        working-directory: backend
+        run: bun test
+        env:
+          JWT_SECRET: EasyQASuite
+          NODE_ENV: test
+
+      - name: Upload coverage reports to Codecov
+        uses: codecov/codecov-action@v3
+        with:
+          directory: ./backend/coverage
+          flags: backend
+          fail_ci_if_error: false
