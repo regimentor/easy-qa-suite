@@ -21,26 +21,6 @@ export async function main() {
       return new Response("Internal Server Error", { status: 500 });
     },
     routes: {
-      "/": handler(
-        async () => {
-          return { data: "Hello", status: 200 };
-        },
-        {
-          beforeHandler: [
-            async ({ req, ctx }) => {
-              return {
-                heello: "world",
-              };
-            },
-            async ({ req, ctx }) => {
-              return {
-                gun: "drive +" + ctx.heello,
-              };
-            },
-            async ({ req, ctx }) => console.log(req, ctx),
-          ],
-        },
-      ),
       "/sign-in": {
         POST: handler(signInPost),
       },
