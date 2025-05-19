@@ -12,9 +12,12 @@ export class TestCaseResolver {
   @Query(() => [TestCaseModel], {
     name: "testCases",
   })
-  async getTestCases(@Ctx() ctx: TGraphqlContext): Promise<TestCaseModel[]> {
-    logger.debug("Fetching all test cases");
-    const testCases = await testCaseService.findTestCases();
+  async getTestCases(
+    @Arg("projectId", () => String) projectId: string,
+    @Ctx() ctx: TGraphqlContext
+  ): Promise<TestCaseModel[]> {
+    logger.debug("Fetching test cases for project", { projectId });
+    const testCases = await testCaseService.findTestCasesByProjectId(projectId);
     return TestCaseModel.fromPrismaArray(testCases);
   }
 

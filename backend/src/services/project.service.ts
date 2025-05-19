@@ -1,13 +1,21 @@
-import { PrismaClient } from "@prisma/client";
 import { CreateProjectInput } from "../graphql/inputs/create-project.input";
-const prisma = new PrismaClient();
+import { projectsRepository } from "../repositories/projects.repository";
+import { ProjectNotFound } from "../errors/project.errors";
 
 export const projectService = {
   async findProjects() {
-    return prisma.project.findMany();
+    return projectsRepository.findBy({});
+  },
+
+  async findProjectById(id: string) {
+    const project = await projectsRepository.firstFindBy({ id: BigInt(id) });
+    if (!project) {
+      throw new ProjectNotFound(id);
+    }
+    return project;
   },
 
   async createProject(data: CreateProjectInput) {
-    return prisma.project.create({ data });
+    return projectsRepository.create(data);
   },
 };

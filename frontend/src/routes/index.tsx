@@ -5,5 +5,5 @@ export const Route = createFileRoute("/")({
 });
 
 function Index() {
-  return <div className="flex items-center justify-center h-full">Index</div>;
+  return <div className="flex items-center justify-center">empty</div>;
 }

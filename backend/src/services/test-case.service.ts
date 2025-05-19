@@ -6,6 +6,12 @@ export const testCaseService = {
     return testCasesRepository.findBy({});
   },
 
+  async findTestCasesByProjectId(projectId: string) {
+    return testCasesRepository.findBy({
+      project_id: BigInt(projectId)
+    });
+  },
+
   async createTestCase(data: CreateTestCaseInput) {
     // Формируем данные для Prisma с учетом реляции project
     return testCasesRepository.create({

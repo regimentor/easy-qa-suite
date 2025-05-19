@@ -10,8 +10,14 @@ import {
 } from "../errors/test-suite.errors";
 
 export const testSuiteService = {
-  async findTestSuites() {
-    return testSuitesRepository.findBy({});
+  async findTestSuites(projectId?: string | null) {
+    const where: Record<string, any> = {};
+    
+    if (projectId) {
+      where.project_id = BigInt(projectId);
+    }
+    
+    return testSuitesRepository.findBy(where);
   },
 
   async findTestCasesBySuiteId(suiteId: string) {

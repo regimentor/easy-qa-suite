@@ -1,3 +1,4 @@
+import { ModeToggle } from "@/components/mode-toggle";
 import { LoginForm } from "@/units/auth/login-form";
 import {
   $userIsAuthenticeted,
@@ -30,15 +31,15 @@ const Index = () => {
 
   if (!userIsAuthenticeted) {
     return (
-      <div className="flex items-center justify-center h-screen text-white bg-zinc-900">
+      <div className="flex items-center justify-center h-screen">
         <LoginForm />
       </div>
     );
   }
 
   return (
-    <div className="flex flex-col bg-zinc-900 text-white h-screen w-full">
-      <header className="border-b border-zinc-700 bg-zinc-900">
+    <div className="flex flex-col h-screen w-full">
+      <header className="flex flex-row border-b sticky top-0 z-50">
         <nav className="container mx-auto px-4 py-3">
           <div className="flex items-center gap-6">
             <Link
@@ -48,24 +49,19 @@ const Index = () => {
               Home
             </Link>
             <Link
-              to="/about"
+              to="/projects"
               className="text-lg font-semibold [&.active]:text-blue-400 hover:text-blue-300 transition-colors"
             >
-              About
+              Projects
             </Link>
           </div>
         </nav>
+        <ModeToggle />
       </header>
 
       <main className="flex-1 container mx-auto px-4">
         <Outlet />
       </main>
-
-      <footer className="bg-zinc-900 border-t border-zinc-700 py-3">
-        <div className="container mx-auto px-4 text-center text-zinc-400 text-sm">
-          &copy; {new Date().getFullYear()} EasyQASuite - All rights reserved
-        </div>
-      </footer>
 
       <TanStackRouterDevtools />
     </div>

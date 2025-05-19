@@ -14,9 +14,12 @@ export class TestSuiteResolver {
   @Query(() => [TestSuiteModel], {
     name: "testSuites",
   })
-  async getTestSuites(@Ctx() ctx: TGraphqlContext): Promise<TestSuiteModel[]> {
-    logger.debug("Fetching all test suites");
-    const testSuites = await testSuiteService.findTestSuites();
+  async getTestSuites(
+    @Arg("projectId", () => String, { nullable: true }) projectId: string | null,
+    @Ctx() ctx: TGraphqlContext
+  ): Promise<TestSuiteModel[]> {
+    logger.debug("Fetching test suites", projectId ? { projectId } : {});
+    const testSuites = await testSuiteService.findTestSuites(projectId);
     return TestSuiteModel.fromPrismaArray(testSuites);
   }
 

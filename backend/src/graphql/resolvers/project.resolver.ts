@@ -18,6 +18,19 @@ export class ProjectResolver {
     return ProjectModel.fromPrismaArray(projects);
   }
 
+  @Query(() => ProjectModel, {
+    name: "project",
+    nullable: false,
+  })
+  async getProject(
+    @Arg("id") id: string,
+    @Ctx() ctx: TGraphqlContext
+  ): Promise<ProjectModel> {
+    logger.debug("Fetching project by id", { id });
+    const project = await projectService.findProjectById(id);
+    return ProjectModel.fromPrisma(project);
+  }
+
   @Mutation(() => ProjectModel, {
     name: "createProject",
   })
