@@ -94,7 +94,7 @@ export const testSuiteService = {
     return testSuitesRepository.create({
       name: data.name,
       description: data.description ?? null,
-      type: data.type,
+      type: { connect: { id: BigInt(data.typeId) } },
       project: { connect: { id: BigInt(data.projectId) } },
     });
   },

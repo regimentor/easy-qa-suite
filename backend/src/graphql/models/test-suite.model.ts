@@ -1,6 +1,7 @@
 import Prisma from ".prisma/client";
 import { Field, ID, ObjectType } from "type-graphql";
 import { TestCaseModel } from "./test-case.model";
+import { TestSuiteTypeModel } from "./test-suite-type.model";
 
 @ObjectType()
 export class TestSuiteModel {
@@ -13,8 +14,8 @@ export class TestSuiteModel {
   @Field((_) => String, { nullable: true })
   description!: string | null;
 
-  @Field((_) => String)
-  type!: string;
+  @Field((_) => ID)
+  typeId!: string;
 
   @Field((_) => Date)
   createdAt!: Date;
@@ -28,18 +29,26 @@ export class TestSuiteModel {
   @Field((_) => [TestCaseModel], { nullable: true })
   testCases?: TestCaseModel[];
 
+  @Field((_) => TestSuiteTypeModel, { nullable: true })
+  type?: TestSuiteTypeModel;
+
   static fromPrisma(data: Prisma.TestSuite & { 
-    suite_test_cases?: { test_case: Prisma.TestCase; order: number }[] 
+    suite_test_cases?: { test_case: Prisma.TestCase; order: number }[],
+    type?: Prisma.TestSuiteType
   }): TestSuiteModel {
-    const model = {
+    const model: TestSuiteModel = {
       id: data.id.toString(),
       name: data.name,
       description: data.description,
-      type: data.type,
+      typeId: data.type_id.toString(),
       createdAt: data.created_at,
       updatedAt: data.updated_at,
       projectId: data.project_id.toString(),
     };
+
+    if (data.type) {
+      model.type = TestSuiteTypeModel.fromPrisma(data.type);
+    }
 
     // Если в данных есть связанные тест-кейсы, добавляем их в модель
     if (data.suite_test_cases && data.suite_test_cases.length > 0) {

@@ -1,7 +1,17 @@
-import { Arg, Ctx, FieldResolver, Mutation, Query, Resolver, Root } from "type-graphql";
+import {
+  Arg,
+  Ctx,
+  FieldResolver,
+  Mutation,
+  Query,
+  Resolver,
+  Root,
+} from "type-graphql";
 import { TestSuiteModel } from "../models/test-suite.model";
 import { TestCaseModel } from "../models/test-case.model";
+import { TestSuiteTypeModel } from "../models/test-suite-type.model";
 import { testSuiteService } from "../../services/test-suite.service";
+import { testSuiteTypeService } from "../../services/test-suite-type.service";
 import { CreateTestSuiteInput } from "../inputs/create-test-suite.input";
 import { AddTestCasesToSuiteInput } from "../inputs/add-test-cases-to-suite.input";
 import { ErrorHandler } from "../../decorators/error-handler";
@@ -15,7 +25,8 @@ export class TestSuiteResolver {
     name: "testSuites",
   })
   async getTestSuites(
-    @Arg("projectId", () => String, { nullable: true }) projectId: string | null,
+    @Arg("projectId", () => String, { nullable: true })
+    projectId: string | null,
     @Ctx() ctx: TGraphqlContext
   ): Promise<TestSuiteModel[]> {
     logger.debug("Fetching test suites", projectId ? { projectId } : {});
@@ -61,15 +72,39 @@ export class TestSuiteResolver {
 
   @FieldResolver(() => [TestCaseModel])
   async testCases(@Root() testSuite: TestSuiteModel): Promise<TestCaseModel[]> {
-    logger.debug("Resolving test cases for test suite", { testSuiteId: testSuite.id });
-    
+    logger.debug("Resolving test cases for test suite", {
+      testSuiteId: testSuite.id,
+    });
+
     // Если тест-кейсы уже загружены при получении тест-сьюта, используем их
     if (testSuite.testCases) {
       return testSuite.testCases;
     }
 
     // В противном случае загружаем тест-кейсы через сервис
-    const testCases = await testSuiteService.findTestCasesBySuiteId(testSuite.id);
+    const testCases = await testSuiteService.findTestCasesBySuiteId(
+      testSuite.id
+    );
     return TestCaseModel.fromPrismaArray(testCases);
+  }
+
+  @FieldResolver(() => TestSuiteTypeModel, { nullable: true })
+  async typeModel(
+    @Root() testSuite: TestSuiteModel
+  ): Promise<TestSuiteTypeModel | null> {
+    if (testSuite.type) {
+      return testSuite.type;
+    }
+
+    try {
+      const type = await testSuiteTypeService.findById(testSuite.typeId);
+      return type ? TestSuiteTypeModel.fromPrisma(type) : null;
+    } catch (error) {
+      logger.error("Error resolving test suite type", {
+        testSuiteId: testSuite.id,
+        error,
+      });
+      return null;
+    }
   }
 }

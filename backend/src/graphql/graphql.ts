@@ -7,6 +7,9 @@ import { ProjectResolver } from "./resolvers/project.resolver";
 import { TestCaseResolver } from "./resolvers/test-case.resolver";
 import { TestResultResolver } from "./resolvers/test-result.resolver";
 import { TestSuiteResolver } from "./resolvers/test-suite.resolver";
+import { TestSuiteTypeResolver } from "./resolvers/test-suite-type.resolver";
+import { TestCaseStatusResolver } from "./resolvers/test-case-status.resolver";
+import { TestCasePriorityResolver } from "./resolvers/test-case-priority.resolver";
 
 export type TGraphqlContext = {
   request: BunRequest<"/graphql">;
@@ -21,6 +24,9 @@ export async function graphqlInit() {
       TestCaseResolver,
       TestResultResolver,
       TestSuiteResolver,
+      TestSuiteTypeResolver,
+      TestCaseStatusResolver,
+      TestCasePriorityResolver,
     ],
     authChecker: async ({ context }) => {
       const { user } = context as TGraphqlContext;

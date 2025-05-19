@@ -15,10 +15,10 @@ export class CreateTestCaseInput {
   postconditions?: string;
 
   @Field(() => String)
-  priority!: string;
+  priorityId!: string;
 
   @Field(() => String)
-  status!: string;
+  statusId!: string;
 
   @Field(() => String)
   projectId!: string;

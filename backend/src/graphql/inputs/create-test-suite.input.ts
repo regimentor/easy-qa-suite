@@ -9,7 +9,7 @@ export class CreateTestSuiteInput {
   description?: string;
 
   @Field(() => String)
-  type!: string;
+  typeId!: string;
 
   @Field(() => String)
   projectId!: string;

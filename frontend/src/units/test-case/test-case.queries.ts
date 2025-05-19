@@ -13,6 +13,16 @@ export const testCasesQuery = gql`
       status
       title
       updatedAt
+      statusModel {
+        id
+        value
+        description
+      }
+      priorityModel {
+        id
+        value
+        description
+      }
     }
   }
 `;
@@ -30,6 +40,16 @@ export const createTestCaseMutation = gql`
       status
       title
       updatedAt
+      statusModel {
+        id
+        value
+        description
+      }
+      priorityModel {
+        id
+        value
+        description
+      }
     }
   }
 `;

@@ -2,11 +2,21 @@ import { Prisma } from ".prisma/client";
 import { prismaClient } from "../prisma.client";
 
 function findBy(where: Prisma.TestSuiteWhereInput) {
-  return prismaClient.testSuite.findMany({ where });
+  return prismaClient.testSuite.findMany({ 
+    where,
+    include: {
+      type: true
+    }
+  });
 }
 
 function firstFindBy(where: Prisma.TestSuiteWhereInput) {
-  return prismaClient.testSuite.findFirst({ where });
+  return prismaClient.testSuite.findFirst({ 
+    where,
+    include: {
+      type: true
+    }
+  });
 }
 
 function create(data: Prisma.TestSuiteCreateInput) {
