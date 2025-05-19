@@ -5,14 +5,16 @@ model TestCase {
   description    String     @db.Text
   preconditions  String?    @db.Text
   postconditions String?    @db.Text
-  priority       String     @db.VarChar(50)
-  status         String     @db.VarChar(50)
+  priority_id    BigInt
+  status_id      BigInt
   created_at     DateTime   @default(now()) @db.Timestamp()
   updated_at     DateTime   @updatedAt @db.Timestamp()
 
   project         Project         @relation(fields: [project_id], references: [id])
   test_results    TestResult[]
   suite_test_cases SuiteTestCase[]
+  priority        TestCasePriority @relation(fields: [priority_id], references: [id])
+  status          TestCaseStatus   @relation(fields: [status_id], references: [id])
 
   @@map("test_cases")
 }

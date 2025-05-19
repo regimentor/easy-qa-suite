@@ -1,0 +1,12 @@
+model TestSuiteType {
+  id          BigInt   @id @default(autoincrement())
+  value       String   @unique
+  description String
+  archived    Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  test_suites TestSuite[]
+
+  @@map("test_suite_types")
+}

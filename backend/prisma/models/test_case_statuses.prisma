@@ -1,0 +1,12 @@
+model TestCaseStatus {
+  id          BigInt   @id @default(autoincrement())
+  value       String   @unique
+  description String
+  archived    Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  test_cases  TestCase[]
+
+  @@map("test_case_statuses")
+}

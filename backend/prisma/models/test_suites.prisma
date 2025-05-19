@@ -3,12 +3,13 @@ model TestSuite {
   project_id  BigInt
   name        String     @db.VarChar(255)
   description String?    @db.Text
-  type        String     @db.VarChar(50)
+  type_id     BigInt
   created_at  DateTime   @default(now()) @db.Timestamp()
   updated_at  DateTime   @updatedAt @db.Timestamp()
 
   project         Project         @relation(fields: [project_id], references: [id])
   suite_test_cases SuiteTestCase[]
+  type       TestSuiteType   @relation(fields: [type_id], references: [id])
 
   @@map("test_suites")
 }
