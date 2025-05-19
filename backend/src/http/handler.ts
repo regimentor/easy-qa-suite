@@ -7,6 +7,14 @@ const corsHeaders = {
   "Access-Control-Allow-Headers": "Content-Type",
 };
 
+const jsonFallback = (_: any, val: any) => {
+  console.log(val);
+  if (typeof val === "bigint") {
+    return val.toString();
+  }
+  return val;
+};
+
 interface IHandlerResponse {
   data: any;
   status: number;
@@ -28,7 +36,7 @@ interface IHandlerOptions {
 
 export function handler(
   fn: IHandler,
-  { beforeHandler = [], cors = false }: IHandlerOptions
+  { beforeHandler = [], cors = false }: IHandlerOptions,
 ) {
   logger.info(`Handler initialized ${fn.name}`);
   return async (req: BunRequest): Promise<Response> => {
@@ -48,7 +56,7 @@ export function handler(
     const h = JSON.stringify(req.headers);
     const c = JSON.stringify(req.cookies);
     logger.debug(
-      `[Request (${fn.name})]: \n ${req.method} ${req.url} \n headers: ${h} \n cookies: ${c}`
+      `[Request (${fn.name})]: \n ${req.method} ${req.url} \n headers: ${h} \n cookies: ${c}`,
     );
     // Call the main function and return its result
     try {
@@ -64,9 +72,9 @@ export function handler(
       }
 
       logger.debug(
-        `[Response (${fn.name})]: ${JSON.stringify(res.data)} ${res.status}`
+        `[Response (${fn.name})]: ${JSON.stringify(res.data, jsonFallback)} ${res.status}`,
       );
-      return new Response(JSON.stringify(res.data), {
+      return new Response(JSON.stringify(res.data, jsonFallback), {
         status: res.status,
         headers: {
           "Content-Type": "application/json",

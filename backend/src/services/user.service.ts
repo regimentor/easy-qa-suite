@@ -31,7 +31,7 @@ async function findUsers() {
 
 async function userExists(username: string) {
   const user = await usersRepository.firstFindBy({ username });
-  return !!user;
+  return user;
 }
 
 async function verifyUserPassword(

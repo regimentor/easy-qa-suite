@@ -34,7 +34,7 @@ export const signInPost: IHandler = async ({ req, ctx }) => {
 
   const passVerified = await userService.verifyUserPassword(
     parsedBody.data.username,
-    parsedBody.data.password
+    parsedBody.data.password,
   );
   if (!passVerified) {
     logger.error("Invalid password");
@@ -46,7 +46,7 @@ export const signInPost: IHandler = async ({ req, ctx }) => {
     };
   }
 
-  const token = await jwt.createToken({
+  const accessToken = await jwt.createToken({
     id: parsedBody.data.username,
     username: parsedBody.data.username,
   });
@@ -58,9 +58,10 @@ export const signInPost: IHandler = async ({ req, ctx }) => {
 
   return {
     data: {
-      token,
+      accessToken,
       refreshToken,
+      userData: { ...userExists, password_hash: undefined },
     },
-    status: 200,
+    status: 201,
   };
 };

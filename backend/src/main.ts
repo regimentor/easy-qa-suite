@@ -31,6 +31,9 @@ export async function main() {
         });
       }
 
+      logger.debug(`[Request] ${req.method} ${req.url}`);
+      console.log(req);
+
       return new Response("Not Found", {
         status: 404,
       });
