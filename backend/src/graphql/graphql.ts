@@ -3,6 +3,10 @@ import { buildSchema } from "type-graphql";
 import { UserResolver } from "./resolvers/user.resolver";
 import type { BunRequest } from "bun";
 import { jwt } from "../jwt/jwt";
+import { ProjectResolver } from "./resolvers/project.resolver";
+import { TestCaseResolver } from "./resolvers/test-case.resolver";
+import { TestResultResolver } from "./resolvers/test-result.resolver";
+import { TestSuiteResolver } from "./resolvers/test-suite.resolver";
 
 export type TGraphqlContext = {
   request: BunRequest<"/graphql">;
@@ -11,7 +15,13 @@ export type TGraphqlContext = {
 
 export async function graphqlInit() {
   const schema = await buildSchema({
-    resolvers: [UserResolver],
+    resolvers: [
+      UserResolver,
+      ProjectResolver,
+      TestCaseResolver,
+      TestResultResolver,
+      TestSuiteResolver,
+    ],
     authChecker: async ({ context }) => {
       const { user } = context as TGraphqlContext;
       return !!user;
@@ -21,8 +31,6 @@ export async function graphqlInit() {
   const gqlYoga = createYoga({
     schema,
     context: async ({ request }) => {
-      console.log((request as BunRequest).cookies, "cookies");
-      console.log(request.headers, "headers");
       let user = null;
       const token = request.headers.get("Authorization")?.split(" ")[1];
       if (token) {
