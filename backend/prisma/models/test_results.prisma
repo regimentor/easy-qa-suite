@@ -1,0 +1,14 @@
+model TestResult {
+  id            BigInt    @id @default(autoincrement())
+  test_case_id  BigInt
+  status        String    @db.VarChar(50)
+  started_at    DateTime  @db.Timestamp()
+  finished_at   DateTime  @db.Timestamp()
+  log           String    @db.Text
+  screenshot_url String?  @db.Text
+  defect_link   String?   @db.VarChar(255)
+
+  test_case  TestCase    @relation(fields: [test_case_id], references: [id])
+
+  @@map("test_results")
+}

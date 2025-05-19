@@ -6,3 +6,11 @@ datasource db {
 generator client {
   provider = "prisma-client-js"
 }
+
+// Import all models
+import "./models/users.prisma"
+import "./models/projects.prisma"
+import "./models/test_cases.prisma"
+import "./models/test_suites.prisma"
+import "./models/suite_test_cases.prisma"
+import "./models/test_results.prisma"

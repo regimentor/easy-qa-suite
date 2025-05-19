@@ -1,0 +1,11 @@
+model SuiteTestCase {
+  suite_id    BigInt
+  test_case_id BigInt
+  order       Int
+
+  suite    TestSuite @relation(fields: [suite_id], references: [id])
+  test_case TestCase  @relation(fields: [test_case_id], references: [id])
+
+  @@id([suite_id, test_case_id])
+  @@map("suite_test_cases")
+}

@@ -1,0 +1,18 @@
+model TestCase {
+  id             BigInt     @id @default(autoincrement())
+  project_id     BigInt
+  title          String     @db.VarChar(255)
+  description    String     @db.Text
+  preconditions  String?    @db.Text
+  postconditions String?    @db.Text
+  priority       String     @db.VarChar(50)
+  status         String     @db.VarChar(50)
+  created_at     DateTime   @default(now()) @db.Timestamp()
+  updated_at     DateTime   @updatedAt @db.Timestamp()
+
+  project         Project         @relation(fields: [project_id], references: [id])
+  test_results    TestResult[]
+  suite_test_cases SuiteTestCase[]
+
+  @@map("test_cases")
+}

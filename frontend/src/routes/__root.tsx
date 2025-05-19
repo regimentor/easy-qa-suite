@@ -1,4 +1,4 @@
-import { LoginForm } from "@/units/user/login-form";
+import { LoginForm } from "@/units/auth/login-form";
 import {
   $userIsAuthenticeted,
   isAuthenticatedFx,
@@ -18,7 +18,7 @@ const Index = () => {
 
   useEffect(() => {
     isAuthenticated();
-  }, []);
+  }, [isAuthenticated]);
 
   if (isAuthenticatedPending) {
     return (
