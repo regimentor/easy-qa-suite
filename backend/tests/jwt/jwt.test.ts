@@ -5,6 +5,9 @@ mock.module("../../src/logger/logger", () => {
   return {
     logger: {
       error: mock(() => {}),
+      info: mock(() => {}),
+      warn: mock(() => {}),
+      debug: mock(() => {}),
     },
   };
 });
