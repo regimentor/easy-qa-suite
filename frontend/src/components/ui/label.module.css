@@ -1,0 +1,19 @@
+.label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+  line-height: 1;
+  font-weight: 500;
+  user-select: none;
+}
+
+.label:has(+ *:disabled),
+.label[data-disabled] {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+.label[data-error="true"] {
+  color: #ef4444;
+}

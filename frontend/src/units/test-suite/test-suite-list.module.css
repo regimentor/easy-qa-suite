@@ -1,0 +1,145 @@
+.wrap {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.5rem;
+}
+
+.headerTitle {
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.headerSub {
+  margin-top: 0.25rem;
+}
+
+.filters {
+  padding: 1rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.searchWrap {
+  position: relative;
+}
+
+.searchIconWrap {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  padding-left: 0.75rem;
+  display: flex;
+  align-items: center;
+  pointer-events: none;
+}
+
+.searchIcon {
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
+.content {
+  flex: 1;
+  overflow-y: auto;
+}
+
+.loadingWrap {
+  padding: 3rem 0;
+  display: flex;
+  justify-content: center;
+}
+
+.spinner {
+  width: 2.5rem;
+  height: 2.5rem;
+  border: 2px solid transparent;
+  border-top-color: currentColor;
+  border-bottom-color: currentColor;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.errorWrap {
+  border-left: 4px solid #ef4444;
+  padding: 1rem;
+  margin: 1.5rem;
+  display: flex;
+  align-items: center;
+}
+
+.errorIcon {
+  flex-shrink: 0;
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
+.errorText {
+  margin-left: 0.75rem;
+  font-size: 0.875rem;
+}
+
+.emptyWrap {
+  border-radius: 0.5rem;
+  padding: 3rem 1.5rem;
+  text-align: center;
+  margin: 1.5rem;
+}
+
+.emptyIcon {
+  margin: 0 auto;
+  width: 3rem;
+  height: 3rem;
+}
+
+.emptyTitle {
+  margin-top: 0.5rem;
+  font-size: 1.125rem;
+  font-weight: 500;
+}
+
+.emptySub {
+  margin-top: 0.25rem;
+  font-size: 0.875rem;
+}
+
+.emptyBtnWrap {
+  margin-top: 1.5rem;
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+}
+
+.listItem {
+  padding: 0.5rem 0;
+  border-bottom: 1px solid var(--border, #e5e7eb);
+}
+
+.listItem:last-child {
+  border-bottom: none;
+}
+
+.iconMr {
+  margin-right: 0.5rem;
+}
+
+.iconSize {
+  width: 1.25rem;
+  height: 1.25rem;
+}

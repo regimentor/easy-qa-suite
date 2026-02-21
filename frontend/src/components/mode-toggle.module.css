@@ -1,0 +1,52 @@
+.triggerBtn {
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.iconWrap {
+  position: relative;
+  width: 1.2rem;
+  height: 1.2rem;
+}
+
+.sunIcon {
+  position: absolute;
+  inset: 0;
+  opacity: 1;
+  transform: rotate(0deg) scale(1);
+  transition: opacity, transform 0.2s;
+}
+
+.dark .sunIcon {
+  opacity: 0;
+  transform: rotate(-90deg) scale(0);
+}
+
+.moonIcon {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transform: rotate(90deg) scale(0);
+  transition: opacity, transform 0.2s;
+}
+
+.dark .moonIcon {
+  opacity: 1;
+  transform: rotate(0deg) scale(1);
+}
+
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}

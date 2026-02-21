@@ -2,8 +2,9 @@ import { createFileRoute } from "@tanstack/react-router";
 import { ProjectDetails } from "@/units/project/project-details";
 import { TestSuiteList } from "@/units/test-suite/test-suite-list";
 import { TestCases } from "@/units/test-case/test-cases";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Tabs } from "antd";
 import { useEffect, useState } from "react";
+import styles from "./project-id.module.css";
 
 export const Route = createFileRoute("/projects/$project-id")({
   component: RouteComponent,
@@ -13,51 +14,49 @@ function RouteComponent() {
   const { "project-id": projectId } = Route.useParams();
   const [activeTab, setActiveTab] = useState<string>("test-suites");
 
-  // Set active tab based on URL hash when component mounts
   useEffect(() => {
     const handleHashChange = () => {
-      const hash = window.location.hash.slice(1); // Remove the # symbol
+      const hash = window.location.hash.slice(1);
       if (hash === "test-suites" || hash === "test-cases") {
         setActiveTab(hash);
       }
     };
 
-    // Check hash on initial load
     handleHashChange();
-
-    // Add event listener for hash changes
     window.addEventListener("hashchange", handleHashChange);
-
-    // Cleanup
     return () => {
       window.removeEventListener("hashchange", handleHashChange);
     };
   }, []);
 
-  // Update URL hash when tab changes
-  const handleTabChange = (value: string) => {
-    setActiveTab(value);
-    window.location.hash = value;
+  const handleTabChange = (key: string) => {
+    setActiveTab(key);
+    window.location.hash = key;
   };
 
+  const tabItems = [
+    {
+      key: "test-suites",
+      label: "Test Suites",
+      children: <TestSuiteList projectId={projectId} />,
+    },
+    {
+      key: "test-cases",
+      label: "Test Cases",
+      children: <TestCases projectId={projectId} />,
+    },
+  ];
+
   return (
-    <div className="py-6 flex flex-col items-left justify-start w-full">
+    <div className={styles.wrap}>
       <ProjectDetails id={projectId} />
 
-      <Tabs value={activeTab} onValueChange={handleTabChange}>
-        <TabsList className="mt-3 ml-6">
-          <TabsTrigger value="test-suites">Test Suites</TabsTrigger>
-          <TabsTrigger value="test-cases">Test Cases</TabsTrigger>
-        </TabsList>
-
-        <TabsContent value="test-suites">
-          <TestSuiteList projectId={projectId} />
-        </TabsContent>
-
-        <TabsContent value="test-cases">
-          <TestCases projectId={projectId} />
-        </TabsContent>
-      </Tabs>
+      <Tabs
+        className={styles.tabsWrap}
+        activeKey={activeTab}
+        onChange={handleTabChange}
+        items={tabItems}
+      />
     </div>
   );
 }

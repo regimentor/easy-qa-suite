@@ -38,7 +38,7 @@ const logInFx = userDomain.createEffect<
       ...userData,
     });
 
-    if (response.status !== 201) {
+    if (response.status !== 200 && response.status !== 201) {
       throw new Error("Login failed");
     }
 

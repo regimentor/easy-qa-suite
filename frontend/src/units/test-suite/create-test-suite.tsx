@@ -1,15 +1,15 @@
-import { Button } from "@/components/ui/button";
 import { Form, FormField, FormItem, FormLabel } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { Button, Segmented } from "antd";
 import { useMutation } from "@apollo/client";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { createTestSuiteMutation } from "./test-suite.queries";
 import { useNavigate } from "@tanstack/react-router";
-import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { TEST_SUITE_TYPES } from "./const";
+import styles from "./create-test-suite.module.css";
 
 const formSchema = z.object({
   name: z.string().min(1, "Name is required"),
@@ -23,18 +23,21 @@ type CreateTestSuiteProps = {
   projectId: string;
 };
 
+const typeOptions = TEST_SUITE_TYPES.filter((t) => t !== "All").map((type) => ({
+  label: type,
+  value: type.toUpperCase(),
+}));
+
 export function CreateTestSuite({ projectId }: CreateTestSuiteProps) {
   const navigate = useNavigate();
 
   const [mutate, { loading, error }] = useMutation(createTestSuiteMutation, {
-    onCompleted: (data) => {
-      console.log("Test suite successfully created:", data);
+    onCompleted: () => {
       form.reset();
-      // Redirect to project page
       navigate({
         to: "/projects/$project-id",
         params: { "project-id": projectId },
-        hash: `test-suites`
+        hash: "test-suites",
       });
     },
   });
@@ -44,7 +47,7 @@ export function CreateTestSuite({ projectId }: CreateTestSuiteProps) {
     defaultValues: {
       name: "",
       description: "",
-      type: "FUNCTIONAL", // Default type
+      type: "FUNCTIONAL",
     },
   });
 
@@ -60,32 +63,31 @@ export function CreateTestSuite({ projectId }: CreateTestSuiteProps) {
           },
         },
       });
-
-      // onCompleted handler in useMutation already processes successful execution
     } catch (err) {
       console.error("Error creating test suite:", err);
-      // Error will be available through `error` from useMutation
     }
   };
 
   return (
-    <div className="flex flex-col w-full items-center justify-center">
-      <div className="space-y-1 text-center">
-        <h3 className="text-2xl font-bold">Create Test Suite</h3>
-        <h4 className="text-sm">Fill in the details for the new test suite</h4>
+    <div className={styles.wrap}>
+      <div className={styles.header}>
+        <h3 className={styles.title}>Create Test Suite</h3>
+        <h4 className={styles.subtitle}>
+          Fill in the details for the new test suite
+        </h4>
       </div>
-      <div className="w-full max-w-md mt-7 p-6 space-y-4 rounded-lg shadow-lg">
+      <div className={styles.formWrap}>
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(handleSubmit)}
-            className="space-y-3"
+            className={styles.form}
           >
             <FormField
               control={form.control}
               name="name"
               render={({ field }) => (
-                <FormItem>
-                  <FormLabel htmlFor="name" className="text-sm">
+                <FormItem className={styles.formItem}>
+                  <FormLabel htmlFor="name" className={styles.label}>
                     Test Suite Name
                   </FormLabel>
                   <Input
@@ -100,8 +102,8 @@ export function CreateTestSuite({ projectId }: CreateTestSuiteProps) {
               control={form.control}
               name="description"
               render={({ field }) => (
-                <FormItem>
-                  <FormLabel htmlFor="description" className="text-sm">
+                <FormItem className={styles.formItem}>
+                  <FormLabel htmlFor="description" className={styles.label}>
                     Description
                   </FormLabel>
                   <Textarea
@@ -116,37 +118,34 @@ export function CreateTestSuite({ projectId }: CreateTestSuiteProps) {
               control={form.control}
               name="type"
               render={({ field }) => (
-                <FormItem>
-                  <FormLabel htmlFor="type" className="text-sm">
+                <FormItem className={styles.formItem}>
+                  <FormLabel htmlFor="type" className={styles.label}>
                     Type
                   </FormLabel>
-                  <ToggleGroup
-                    type="single"
-                    value={field.value}
-                    onValueChange={(value) => value && field.onChange(value)}
-                    variant="outline"
-                    className="w-full flex-wrap"
-                  >
-                    {/* Filter out "All" and map types to ToggleGroupItems */}
-                    {TEST_SUITE_TYPES.filter(type => type !== "All").map(type => (
-                      <ToggleGroupItem
-                        key={type.toUpperCase()}
-                        value={type.toUpperCase()}
-                        className="text-xs flex-grow cursor-pointer"
-                      >
-                        {type}
-                      </ToggleGroupItem>
-                    ))}
-                  </ToggleGroup>
+                  <div className={styles.segmentedWrap}>
+                    <Segmented
+                      value={field.value}
+                      onChange={(value) =>
+                        value && field.onChange(value as string)
+                      }
+                      options={typeOptions}
+                      block
+                    />
+                  </div>
                 </FormItem>
               )}
             />
             {error && (
-              <div className="text-sm mt-2 text-red-500">
+              <div className={styles.error}>
                 {error.message || "An error occurred while creating the test suite"}
               </div>
             )}
-            <Button type="submit" className="w-full mt-3" disabled={loading}>
+            <Button
+              type="primary"
+              htmlType="submit"
+              className={styles.submitBtn}
+              disabled={loading}
+            >
               {loading ? "Creating..." : "Create Test Suite"}
             </Button>
           </form>

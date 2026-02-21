@@ -2,6 +2,7 @@ import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { RouterProvider, createRouter } from "@tanstack/react-router";
 import { ThemeProvider } from "@/components/theme-provider";
+import { AntdConfigProvider } from "@/components/antd-config-provider";
 import { ApolloClient, ApolloProvider, InMemoryCache } from "@apollo/client";
 import "./index.css";
 
@@ -27,7 +28,9 @@ createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <ApolloProvider client={apolliClient}>
       <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
-        <RouterProvider router={router} />
+        <AntdConfigProvider>
+          <RouterProvider router={router} />
+        </AntdConfigProvider>
       </ThemeProvider>
     </ApolloProvider>
   </StrictMode>

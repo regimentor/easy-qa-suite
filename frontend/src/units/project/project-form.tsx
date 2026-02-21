@@ -8,8 +8,8 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { createProjectMutation } from "./projects.queries";
 import { useNavigate } from "@tanstack/react-router";
+import styles from "./project-form.module.css";
 
-// Project fields: name, key, description (description optional)
 const formSchema = z.object({
   name: z.string().min(1, "Name is required"),
   key: z.string().min(1, "Project code is required"),
@@ -20,20 +20,16 @@ export type TProjectFormValues = z.infer<typeof formSchema>;
 
 export function ProjectForm() {
   const navigate = useNavigate();
-  
+
   const [mutate, { loading, error }] = useMutation(createProjectMutation, {
     onCompleted: (data) => {
-      console.log("Project successfully created:", data);
       form.reset();
-      // Redirect to project page
-      navigate({ 
-        to: '/projects/$project-id',
-        params: { 'project-id': data.createProject.id }
+      navigate({
+        to: "/projects/$project-id",
+        params: { "project-id": data.createProject.id },
       });
-    }
+    },
   });
-
-
 
   const form = useForm<TProjectFormValues>({
     resolver: zodResolver(formSchema),
@@ -52,38 +48,34 @@ export function ProjectForm() {
             name: formData.name,
             key: formData.key,
             description: formData.description || "",
-          }
+          },
         },
       });
-      
-      // onCompleted обработчик в useMutation уже обрабатывает успешное выполнение
-      
     } catch (err) {
       console.error("Error creating project:", err);
-      // Error will be available through `error` from useMutation
     }
   };
 
   return (
-    <div className="flex flex-col w-full items-center justify-center">
-      <div className="space-y-1 text-center">
-        <h3 className="text-2xl font-bold">Create Project</h3>
-        <h4 className="text-sm">
+    <div className={styles.wrap}>
+      <div className={styles.header}>
+        <h3 className={styles.title}>Create Project</h3>
+        <h4 className={styles.subtitle}>
           Fill in the details for the new project
         </h4>
       </div>
-      <div className="w-full max-w-md mt-7 p-6 space-y-4 rounded-lg shadow-lg">
+      <div className={styles.formWrap}>
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(handleSubmit)}
-            className="space-y-3"
+            className={styles.form}
           >
             <FormField
               control={form.control}
               name="name"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel htmlFor="name" className="text-sm">
+                  <FormLabel htmlFor="name" className={styles.label}>
                     Project Name
                   </FormLabel>
                   <Input
@@ -99,7 +91,7 @@ export function ProjectForm() {
               name="key"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel htmlFor="key" className="text-sm">
+                  <FormLabel htmlFor="key" className={styles.label}>
                     Project Code
                   </FormLabel>
                   <Input
@@ -115,7 +107,7 @@ export function ProjectForm() {
               name="description"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel htmlFor="description" className="text-sm">
+                  <FormLabel htmlFor="description" className={styles.label}>
                     Description
                   </FormLabel>
                   <Textarea
@@ -127,11 +119,12 @@ export function ProjectForm() {
               )}
             />
             {error && (
-              <div className="text-sm mt-2 text-red-500">
-                {error.message || "An error occurred while creating the project"}
+              <div className={styles.error}>
+                {error.message ||
+                  "An error occurred while creating the project"}
               </div>
             )}
-            <Button type="submit" className="w-full mt-3" disabled={loading}>
+            <Button type="submit" className={styles.submitBtn} disabled={loading}>
               {loading ? "Creating..." : "Create Project"}
             </Button>
           </form>

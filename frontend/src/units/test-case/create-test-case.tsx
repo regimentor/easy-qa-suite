@@ -1,15 +1,15 @@
-import { Button } from "@/components/ui/button";
 import { Form, FormField, FormItem, FormLabel } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { Button, Segmented } from "antd";
 import { useMutation } from "@apollo/client";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { createTestCaseMutation } from "./test-case.queries";
 import { useNavigate } from "@tanstack/react-router";
-import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { TEST_CASE_PRIORITIES, TEST_CASE_STATUSES } from "./consts";
+import styles from "./create-test-case.module.css";
 
 const formSchema = z.object({
   title: z.string().min(1, "Title is required"),
@@ -26,18 +26,23 @@ type CreateTestCaseProps = {
   projectId: string;
 };
 
+const priorityOptions = TEST_CASE_PRIORITIES.filter((p) => p !== "All").map(
+  (p) => ({ label: p, value: p.toUpperCase() })
+);
+const statusOptions = TEST_CASE_STATUSES.filter((s) => s !== "All").map(
+  (s) => ({ label: s, value: s.toUpperCase() })
+);
+
 export function CreateTestCase({ projectId }: CreateTestCaseProps) {
   const navigate = useNavigate();
 
   const [mutate, { loading, error }] = useMutation(createTestCaseMutation, {
-    onCompleted: (data) => {
-      console.log("Test case successfully created:", data);
+    onCompleted: () => {
       form.reset();
-      // Redirect to project page
       navigate({
         to: "/projects/$project-id",
         params: { "project-id": projectId },
-        hash: `test-cases`
+        hash: "test-cases",
       });
     },
   });
@@ -49,8 +54,8 @@ export function CreateTestCase({ projectId }: CreateTestCaseProps) {
       description: "",
       preconditions: "",
       postconditions: "",
-      priority: "MEDIUM", // Соответствует Medium из TEST_CASE_PRIORITIES
-      status: "DRAFT",    // Соответствует Draft из TEST_CASE_STATUSES
+      priority: "MEDIUM",
+      status: "DRAFT",
     },
   });
 
@@ -69,32 +74,31 @@ export function CreateTestCase({ projectId }: CreateTestCaseProps) {
           },
         },
       });
-
-      // onCompleted handler in useMutation already processes successful execution
     } catch (err) {
       console.error("Error creating test case:", err);
-      // Error will be available through `error` from useMutation
     }
   };
 
   return (
-    <div className="flex flex-col w-full items-center justify-center">
-      <div className="space-y-1 text-center">
-        <h3 className="text-2xl font-bold">Create Test Case</h3>
-        <h4 className="text-sm">Fill in the details for the new test case</h4>
+    <div className={styles.wrap}>
+      <div className={styles.header}>
+        <h3 className={styles.title}>Create Test Case</h3>
+        <h4 className={styles.subtitle}>
+          Fill in the details for the new test case
+        </h4>
       </div>
-      <div className="w-full max-w-md mt-7 p-6 space-y-4 rounded-lg shadow-lg">
+      <div className={styles.formWrap}>
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(handleSubmit)}
-            className="space-y-3"
+            className={styles.form}
           >
             <FormField
               control={form.control}
               name="title"
               render={({ field }) => (
-                <FormItem>
-                  <FormLabel htmlFor="title" className="text-sm">
+                <FormItem className={styles.formItem}>
+                  <FormLabel htmlFor="title" className={styles.label}>
                     Test Case Title
                   </FormLabel>
                   <Input
@@ -109,8 +113,8 @@ export function CreateTestCase({ projectId }: CreateTestCaseProps) {
               control={form.control}
               name="description"
               render={({ field }) => (
-                <FormItem>
-                  <FormLabel htmlFor="description" className="text-sm">
+                <FormItem className={styles.formItem}>
+                  <FormLabel htmlFor="description" className={styles.label}>
                     Description
                   </FormLabel>
                   <Textarea
@@ -125,8 +129,8 @@ export function CreateTestCase({ projectId }: CreateTestCaseProps) {
               control={form.control}
               name="preconditions"
               render={({ field }) => (
-                <FormItem>
-                  <FormLabel htmlFor="preconditions" className="text-sm">
+                <FormItem className={styles.formItem}>
+                  <FormLabel htmlFor="preconditions" className={styles.label}>
                     Preconditions
                   </FormLabel>
                   <Textarea
@@ -141,8 +145,8 @@ export function CreateTestCase({ projectId }: CreateTestCaseProps) {
               control={form.control}
               name="postconditions"
               render={({ field }) => (
-                <FormItem>
-                  <FormLabel htmlFor="postconditions" className="text-sm">
+                <FormItem className={styles.formItem}>
+                  <FormLabel htmlFor="postconditions" className={styles.label}>
                     Postconditions
                   </FormLabel>
                   <Textarea
@@ -157,28 +161,20 @@ export function CreateTestCase({ projectId }: CreateTestCaseProps) {
               control={form.control}
               name="priority"
               render={({ field }) => (
-                <FormItem>
-                  <FormLabel htmlFor="priority" className="text-sm">
+                <FormItem className={styles.formItem}>
+                  <FormLabel htmlFor="priority" className={styles.label}>
                     Priority
                   </FormLabel>
-                  <ToggleGroup
-                    type="single"
-                    value={field.value}
-                    onValueChange={(value) => value && field.onChange(value)}
-                    variant="outline"
-                    className="w-full flex-wrap"
-                  >
-                    {/* Filter out "All" and map priorities to ToggleGroupItems */}
-                    {TEST_CASE_PRIORITIES.filter(priority => priority !== "All").map(priority => (
-                      <ToggleGroupItem
-                        key={priority.toUpperCase()}
-                        value={priority.toUpperCase()}
-                        className="text-xs flex-grow cursor-pointer"
-                      >
-                        {priority}
-                      </ToggleGroupItem>
-                    ))}
-                  </ToggleGroup>
+                  <div className={styles.segmentedWrap}>
+                    <Segmented
+                      value={field.value}
+                      onChange={(value) =>
+                        value && field.onChange(value as string)
+                      }
+                      options={priorityOptions}
+                      block
+                    />
+                  </div>
                 </FormItem>
               )}
             />
@@ -186,37 +182,35 @@ export function CreateTestCase({ projectId }: CreateTestCaseProps) {
               control={form.control}
               name="status"
               render={({ field }) => (
-                <FormItem>
-                  <FormLabel htmlFor="status" className="text-sm">
+                <FormItem className={styles.formItem}>
+                  <FormLabel htmlFor="status" className={styles.label}>
                     Status
                   </FormLabel>
-                  <ToggleGroup
-                    type="single"
-                    value={field.value}
-                    onValueChange={(value) => value && field.onChange(value)}
-                    variant="outline"
-                    className="w-full flex-wrap"
-                  >
-                    {/* Filter out "All" and map statuses to ToggleGroupItems */}
-                    {TEST_CASE_STATUSES.filter(status => status !== "All").map(status => (
-                      <ToggleGroupItem
-                        key={status.toUpperCase()}
-                        value={status.toUpperCase()}
-                        className="text-xs flex-grow cursor-pointer"
-                      >
-                        {status}
-                      </ToggleGroupItem>
-                    ))}
-                  </ToggleGroup>
+                  <div className={styles.segmentedWrap}>
+                    <Segmented
+                      value={field.value}
+                      onChange={(value) =>
+                        value && field.onChange(value as string)
+                      }
+                      options={statusOptions}
+                      block
+                    />
+                  </div>
                 </FormItem>
               )}
             />
             {error && (
-              <div className="text-sm mt-2 text-red-500">
-                {error.message || "An error occurred while creating the test case"}
+              <div className={styles.error}>
+                {error.message ||
+                  "An error occurred while creating the test case"}
               </div>
             )}
-            <Button type="submit" className="w-full mt-3" disabled={loading}>
+            <Button
+              type="primary"
+              htmlType="submit"
+              className={styles.submitBtn}
+              disabled={loading}
+            >
               {loading ? "Creating..." : "Create Test Case"}
             </Button>
           </form>

@@ -6,7 +6,7 @@ export const api = axios.create({
 
 api.interceptors.response.use(
   (res) => {
-    if (res.config.url === '/login' && res.status === 201) {
+    if (res.config.url === '/login' && (res.status === 200 || res.status === 201)) {
       localStorage.setItem('accessToken', res.data.accessToken);
       localStorage.setItem('refreshToken', res.data.refreshToken);
     }
@@ -44,7 +44,7 @@ api.interceptors.response.use(
       return api
         .post('/refresh-token', {refreshToken})
         .then((res) => {
-          if (res.status === 201) {
+          if (res.status === 200 || res.status === 201) {
             localStorage.setItem('accessToken', res.data.accessToken);
             localStorage.setItem('refreshToken', res.data.refreshToken);
 

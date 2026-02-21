@@ -1,0 +1,70 @@
+.wrap {
+  border-radius: 0.5rem;
+  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+}
+
+.inner {
+  padding: 1.5rem;
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.keyWrap {
+  border-radius: 0.5rem;
+  padding: 1rem;
+  margin-right: 1.25rem;
+}
+
+.key {
+  font-weight: 700;
+  font-size: 1.5rem;
+}
+
+.body {
+  flex: 1;
+}
+
+.title {
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.desc {
+  margin-top: 0.5rem;
+}
+
+.meta {
+  display: flex;
+  margin-top: 1.5rem;
+  font-size: 0.875rem;
+  border-top: 1px solid var(--border, #e5e7eb);
+  padding-top: 1rem;
+}
+
+.metaItem {
+  display: flex;
+  align-items: center;
+  margin-right: 1.5rem;
+}
+
+.metaItem svg {
+  width: 1.25rem;
+  height: 1.25rem;
+  margin-right: 0.5rem;
+}
+
+.loading {
+  padding: 1.5rem;
+}
+
+.error {
+  padding: 1.5rem;
+}
+
+.notFound {
+  padding: 1.5rem;
+}

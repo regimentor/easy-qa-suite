@@ -5,6 +5,7 @@ import { logInFx } from "@/units/user/user.store";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+import styles from "./login-form.module.css";
 
 const formSchema = z.object({
   username: z.string().min(1, "Username is required"),
@@ -31,26 +32,24 @@ export function LoginForm() {
   };
 
   return (
-    <div className="flex flex-col w-full items-center justify-center">
-      <div className="space-y-1 text-center">
-        <h3 className="text-2xl font-bold">EasyQASuite</h3>
-        <h3 className="text-xl font-bold">Log in to your account</h3>
-        <h4 className="text-zinc-400 text-sm">
-          Welcome back! Please enter your details
-        </h4>
+    <div className={styles.wrap}>
+      <div className={styles.header}>
+        <h3 className={styles.title}>EasyQASuite</h3>
+        <h3 className={styles.subtitle}>Log in to your account</h3>
+        <h4 className={styles.hint}>Welcome back! Please enter your details</h4>
       </div>
-      <div className="w-full max-w-md mt-7 p-6 space-y-4 bg-zinc-950 rounded-lg shadow-lg">
+      <div className={styles.formWrap}>
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(handleSubmit)}
-            className="space-y-3"
+            className={styles.form}
           >
             <FormField
               control={form.control}
               name="username"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel htmlFor="username" className="text-sm">
+                  <FormLabel htmlFor="username" className={styles.label}>
                     Username
                   </FormLabel>
                   <Input
@@ -67,7 +66,7 @@ export function LoginForm() {
               name="password"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel htmlFor="password" className="text-sm">
+                  <FormLabel htmlFor="password" className={styles.label}>
                     Password
                   </FormLabel>
                   <Input
@@ -80,7 +79,7 @@ export function LoginForm() {
               )}
             />
 
-            <Button type="submit" className="w-full mt-3">
+            <Button type="submit" className={styles.submitBtn}>
               {form.formState.isSubmitting ? "Signing in..." : "Sign in"}
             </Button>
           </form>

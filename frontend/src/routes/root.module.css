@@ -1,0 +1,83 @@
+.loadingWrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  color: white;
+  background: #18181b;
+}
+
+.loader {
+  width: 2rem;
+  height: 2rem;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-top-color: white;
+  border-radius: 50%;
+  animation: rootSpin 0.8s linear infinite;
+}
+
+@keyframes rootSpin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.loginWrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+}
+
+.appWrap {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  width: 100%;
+}
+
+.header {
+  display: flex;
+  flex-direction: row;
+  border-bottom: 1px solid var(--border, #e5e7eb);
+  position: sticky;
+  top: 0;
+  z-index: 50;
+}
+
+.nav {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0.75rem 1rem;
+  width: 100%;
+}
+
+.navLinks {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.navLink {
+  font-size: 1.125rem;
+  font-weight: 600;
+  transition: color 0.15s;
+  text-decoration: none;
+  color: inherit;
+}
+
+.navLink:hover {
+  color: #93c5fd;
+}
+
+.navLink.active {
+  color: #60a5fa;
+}
+
+.main {
+  flex: 1;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 1rem;
+  width: 100%;
+}

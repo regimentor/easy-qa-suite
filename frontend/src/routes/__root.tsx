@@ -8,6 +8,7 @@ import { createRootRoute, Link, Outlet } from "@tanstack/react-router";
 import { TanStackRouterDevtools } from "@tanstack/react-router-devtools";
 import { useUnit } from "effector-react";
 import { useEffect } from "react";
+import styles from "./root.module.css";
 
 const Index = () => {
   const [isAuthenticated, isAuthenticatedPending, userIsAuthenticeted] =
@@ -23,35 +24,29 @@ const Index = () => {
 
   if (isAuthenticatedPending) {
     return (
-      <div className="flex items-center justify-center h-screen text-white bg-zinc-900">
-        <div className="loader"></div>
+      <div className={styles.loadingWrap}>
+        <div className={styles.loader} />
       </div>
     );
   }
 
   if (!userIsAuthenticeted) {
     return (
-      <div className="flex items-center justify-center h-screen">
+      <div className={styles.loginWrap}>
         <LoginForm />
       </div>
     );
   }
 
   return (
-    <div className="flex flex-col h-screen w-full">
-      <header className="flex flex-row border-b sticky top-0 z-50">
-        <nav className="container mx-auto px-4 py-3">
-          <div className="flex items-center gap-6">
-            <Link
-              to="/"
-              className="text-lg font-semibold [&.active]:text-blue-400 hover:text-blue-300 transition-colors"
-            >
+    <div className={styles.appWrap}>
+      <header className={styles.header}>
+        <nav className={styles.nav}>
+          <div className={styles.navLinks}>
+            <Link to="/" className={styles.navLink} activeProps={{ className: styles.navLink + " " + styles.active }}>
               Home
             </Link>
-            <Link
-              to="/projects"
-              className="text-lg font-semibold [&.active]:text-blue-400 hover:text-blue-300 transition-colors"
-            >
+            <Link to="/projects" className={styles.navLink} activeProps={{ className: styles.navLink + " " + styles.active }}>
               Projects
             </Link>
           </div>
@@ -59,7 +54,7 @@ const Index = () => {
         <ModeToggle />
       </header>
 
-      <main className="flex-1 container mx-auto px-4">
+      <main className={styles.main}>
         <Outlet />
       </main>
 

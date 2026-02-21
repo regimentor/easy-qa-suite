@@ -1,5 +1,6 @@
 import { ProjectForm } from "@/units/project/project-form";
 import { createFileRoute } from "@tanstack/react-router";
+import styles from "./create.module.css";
 
 export const Route = createFileRoute("/projects/create")({
   component: RouteComponent,
@@ -7,7 +8,7 @@ export const Route = createFileRoute("/projects/create")({
 
 function RouteComponent() {
   return (
-    <div className="flex items-center justify-center mt-10">
+    <div className={styles.wrap}>
       <ProjectForm />
     </div>
   );
