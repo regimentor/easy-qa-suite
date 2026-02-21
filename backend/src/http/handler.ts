@@ -82,7 +82,8 @@ export function handler(
         },
       });
     } catch (error) {
-      logger.error("Error in handler", error);
+      logger.error("Error in http.handler", error);
+      console.error(error);
       return new Response("Internal Server Error", { status: 500, ...headers });
     }
   };

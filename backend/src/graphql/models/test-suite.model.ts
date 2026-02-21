@@ -1,4 +1,4 @@
-import Prisma from ".prisma/client";
+import type { Prisma } from "../../generated/prisma/client";
 import { Field, ID, ObjectType } from "type-graphql";
 import { TestCaseModel } from "./test-case.model";
 import { TestSuiteTypeModel } from "./test-suite-type.model";

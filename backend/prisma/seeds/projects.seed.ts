@@ -1,4 +1,4 @@
-import type { PrismaClient } from "@prisma/client";
+import type { PrismaClient } from "../../src/generated/prisma/client";
 
 export async function projectsSeed(client: PrismaClient) {
   // Пример данных для проектов

@@ -1,5 +1,5 @@
 import { mock } from "bun:test";
-import type { User } from "@prisma/client";
+import type { Prisma } from "../../src/generated/prisma/client";
 import { createMockUser } from "./user.test";
 
 export type UserServiceMock = {
@@ -25,7 +25,7 @@ export function mockUserService() {
 }
 
 // Helper function to mock successful user creation
-export function mockUserCreationSuccess(userData: Partial<User> = {}) {
+export function mockUserCreationSuccess(userData: Partial<Prisma.User> = {}) {
   const mockUser = createMockUser(userData);
   userServiceMock.createUser.mockImplementation(() => Promise.resolve(mockUser));
   return mockUser;
@@ -52,6 +52,6 @@ export function mockPasswordVerificationFailure() {
 }
 
 // Helper function to mock finding multiple users
-export function mockFindUsers(users: User[] = []) {
+export function mockFindUsers(users: Prisma.User[] = []) {
   userServiceMock.findUsers.mockImplementation(() => Promise.resolve(users));
 }

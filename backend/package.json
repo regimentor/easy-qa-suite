@@ -7,6 +7,7 @@
     "seed": "bun prisma/seed.ts"
   },
   "scripts": {
+    "seed": "bunx --bun prisma db seed",
     "start": "bun ./index.ts",
     "dev": "bun --watch ./index.ts",
     "test": "bun test",
@@ -17,18 +18,20 @@
     "@types/bun": "latest"
   },
   "peerDependencies": {
-    "typescript": "^5"
+    "typescript": "^5.8.3"
   },
   "dependencies": {
-    "@prisma/client": "^6.7.0",
-    "dotenv": "^16.5.0",
-    "graphql": "^16.11.0",
-    "graphql-yoga": "^5.13.4",
-    "jose": "^6.0.11",
-    "prisma": "^6.7.0",
+    "@prisma/adapter-pg": "^7.4.1",
+    "@prisma/client": "^7.4.1",
+    "dotenv": "^16.6.1",
+    "graphql": "^16.12.0",
+    "graphql-yoga": "^5.18.0",
+    "jose": "^6.1.3",
+    "prettier": "^3.8.1",
+    "prisma": "^7.4.1",
     "reflect-metadata": "^0.2.2",
-    "type-graphql": "^2.0.0-rc.2",
-    "winston": "^3.17.0",
-    "zod": "^3.24.4"
+    "type-graphql": "^2.0.0-rc.3",
+    "winston": "^3.19.0",
+    "zod": "^3.25.76"
   }
 }

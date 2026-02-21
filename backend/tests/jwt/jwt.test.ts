@@ -1,13 +1,5 @@
 import { sleep } from "bun";
-import { describe, expect, mock, test } from "bun:test";
-
-mock.module("../../src/logger/logger", () => {
-  return {
-    logger: {
-      error: mock(() => {}),
-    },
-  };
-});
+import { describe, expect, test } from "bun:test";
 const { jwt } = await import("../../src/jwt/jwt");
 
 describe("JWT", () => {

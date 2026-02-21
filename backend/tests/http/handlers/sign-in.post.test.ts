@@ -101,14 +101,20 @@ describe("signInPost handler", () => {
       json: mock(() => Promise.resolve({ username, password })),
     };
 
+    userServiceMock.userExists.mockImplementation(() => Promise.resolve({
+      username,
+      password
+    }));
+
     // Act
     const response = await signInPost({ req: mockReq as any, ctx: {} });
 
     // Assert
     expect(response.status).toBe(200);
     expect(response.data).toEqual({
-      token: "mocked-access-token",
-      refreshToken: "mocked-refresh-token"
+      accessToken: "mocked-access-token",
+      refreshToken: "mocked-refresh-token",
+      userData: { username, password }
     });
     expect(userServiceMock.userExists).toHaveBeenCalledWith(username);
     expect(userServiceMock.verifyUserPassword).toHaveBeenCalledWith(username, password);

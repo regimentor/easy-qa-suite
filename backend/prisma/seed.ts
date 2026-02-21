@@ -1,4 +1,3 @@
-import { PrismaClient } from "@prisma/client";
 import { usersSeed } from "./seeds/users.seed";
 import { projectsSeed } from "./seeds/projects.seed";
 import { testCasesSeed } from "./seeds/test_cases.seed";
@@ -8,17 +7,18 @@ import { suiteTestCasesSeed } from "./seeds/suite_test_cases.seed";
 import { testCasePrioritiesSeed } from "./seeds/test_case_priorities.seed";
 import { testCaseStatusesSeed } from "./seeds/test_case_statuses.seed";
 import { testSuiteTypesSeed } from "./seeds/test_suite_types.seed";
-const client = new PrismaClient();
+import { prismaClient } from "../src/prisma.client";
+
 async function main() {
-  await testCasePrioritiesSeed(client);
-  await testCaseStatusesSeed(client);
-  await testSuiteTypesSeed(client);
-  await usersSeed(client);
-  await projectsSeed(client);
-  await testCasesSeed(client);
-  await testResultsSeed(client);
-  await testSuitesSeed(client);
-  await suiteTestCasesSeed(client);
+  await testCasePrioritiesSeed(prismaClient);
+  await testCaseStatusesSeed(prismaClient);
+  await testSuiteTypesSeed(prismaClient);
+  await usersSeed(prismaClient);
+  await projectsSeed(prismaClient);
+  await testCasesSeed(prismaClient);
+  await testResultsSeed(prismaClient);
+  await testSuitesSeed(prismaClient);
+  await suiteTestCasesSeed(prismaClient);
 }
 
 main()
@@ -29,5 +29,5 @@ main()
     console.error("Error seeding the database: ☹️", error);
   })
   .finally(async () => {
-    await client.$disconnect();
+    await prismaClient.$disconnect();
   });

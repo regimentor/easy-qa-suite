@@ -17,6 +17,7 @@ export async function main() {
      * @returns
      */
     error(error) {
+      console.error("Global error handler:", error);
       logger.error(error);
       return new Response("Internal Server Error", { status: 500 });
     },

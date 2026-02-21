@@ -1,6 +1,6 @@
-import type { User } from "@prisma/client";
+import type { Prisma } from "../../src/generated/prisma/client";
 
-export type IUser = {} & User;
+export type IUser = {} & Prisma.User;
 
 // Определяем тип для создания пользователя
 export type TCreateUserMock = {

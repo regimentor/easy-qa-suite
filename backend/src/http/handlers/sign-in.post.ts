@@ -62,6 +62,6 @@ export const signInPost: IHandler = async ({ req, ctx }) => {
       refreshToken,
       userData: { ...userExists, password_hash: undefined },
     },
-    status: 201,
+    status: 200,
   };
 };
