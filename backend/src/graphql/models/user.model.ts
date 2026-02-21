@@ -21,7 +21,7 @@ export class UserModel {
   @Field((_) => Date)
   updatedAt?: Date;
 
-  static fromPrisma(data: Prisma.User): UserModel {
+  static fromPrisma(data: Prisma.UserModel): UserModel {
     return {
       id: data.id.toString(),
       username: data.username,
@@ -32,7 +32,7 @@ export class UserModel {
     };
   }
 
-  static fromPrismaArray(data: Prisma.User[]): UserModel[] {
+  static fromPrismaArray(data: Prisma.UserModel[]): UserModel[] {
     return data.map((user) => UserModel.fromPrisma(user));
   }
 }

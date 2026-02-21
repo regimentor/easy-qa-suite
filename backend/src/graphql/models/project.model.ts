@@ -21,7 +21,7 @@ export class ProjectModel {
   @Field((_) => Date)
   updatedAt?: Date;
 
-  static fromPrisma(data: Prisma.Project): ProjectModel {
+  static fromPrisma(data: Prisma.ProjectModel): ProjectModel {
     return {
       id: data.id.toString(),
       name: data.name,
@@ -32,7 +32,7 @@ export class ProjectModel {
     };
   }
 
-  static fromPrismaArray(data: Prisma.Project[]): ProjectModel[] {
+  static fromPrismaArray(data: Prisma.ProjectModel[]): ProjectModel[] {
     return data.map((item) => ProjectModel.fromPrisma(item));
   }
 }

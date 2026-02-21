@@ -32,9 +32,9 @@ export class TestSuiteModel {
   @Field((_) => TestSuiteTypeModel, { nullable: true })
   type?: TestSuiteTypeModel;
 
-  static fromPrisma(data: Prisma.TestSuite & { 
-    suite_test_cases?: { test_case: Prisma.TestCase; order: number }[],
-    type?: Prisma.TestSuiteType
+  static fromPrisma(data: Prisma.TestSuiteModel & { 
+    suite_test_cases?: { test_case: Prisma.TestCaseModel; order: number }[],
+    type?: Prisma.TestSuiteTypeModel
   }): TestSuiteModel {
     const model: TestSuiteModel = {
       id: data.id.toString(),
@@ -62,7 +62,7 @@ export class TestSuiteModel {
     return model;
   }
 
-  static fromPrismaArray(data: Prisma.TestSuite[]): TestSuiteModel[] {
+  static fromPrismaArray(data: Prisma.TestSuiteModel[]): TestSuiteModel[] {
     return data.map((item) => TestSuiteModel.fromPrisma(item));
   }
 }

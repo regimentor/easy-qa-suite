@@ -42,9 +42,9 @@ export class TestCaseModel {
   priority?: TestCasePriorityModel;
 
   static fromPrisma(
-    data: Prisma.TestCase & {
-      status?: Prisma.TestCaseStatus;
-      priority?: Prisma.TestCasePriority;
+    data: Prisma.TestCaseModel & {
+      status?: Prisma.TestCaseStatusModel;
+      priority?: Prisma.TestCasePriorityModel;
     }
   ): TestCaseModel {
     const model: TestCaseModel = {
@@ -71,7 +71,7 @@ export class TestCaseModel {
     return model;
   }
 
-  static fromPrismaArray(data: Prisma.TestCase[]): TestCaseModel[] {
+  static fromPrismaArray(data: Prisma.TestCaseModel[]): TestCaseModel[] {
     return data.map((item) => TestCaseModel.fromPrisma(item));
   }
 }

@@ -21,7 +21,7 @@ export class TestSuiteTypeModel {
   @Field((_) => Date)
   updatedAt!: Date;
 
-  static fromPrisma(data: Prisma.TestSuiteType): TestSuiteTypeModel {
+  static fromPrisma(data: Prisma.TestSuiteTypeModel): TestSuiteTypeModel {
     return {
       id: data.id.toString(),
       value: data.value,
@@ -32,7 +32,7 @@ export class TestSuiteTypeModel {
     };
   }
 
-  static fromPrismaArray(data: Prisma.TestSuiteType[]): TestSuiteTypeModel[] {
+  static fromPrismaArray(data: Prisma.TestSuiteTypeModel[]): TestSuiteTypeModel[] {
     return data.map((item) => TestSuiteTypeModel.fromPrisma(item));
   }
 }

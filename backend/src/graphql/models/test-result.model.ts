@@ -27,7 +27,7 @@ export class TestResultModel {
   @Field((_) => String)
   testCaseId!: string;
 
-  static fromPrisma(data: Prisma.TestResult): TestResultModel {
+  static fromPrisma(data: Prisma.TestResultModel): TestResultModel {
     return {
       id: data.id.toString(),
       status: data.status,
@@ -40,7 +40,7 @@ export class TestResultModel {
     };
   }
 
-  static fromPrismaArray(data: Prisma.TestResult[]): TestResultModel[] {
+  static fromPrismaArray(data: Prisma.TestResultModel[]): TestResultModel[] {
     return data.map((item) => TestResultModel.fromPrisma(item));
   }
 }

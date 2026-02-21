@@ -21,7 +21,7 @@ export class TestCaseStatusModel {
   @Field((_) => Date)
   updatedAt!: Date;
 
-  static fromPrisma(data: Prisma.TestCaseStatus): TestCaseStatusModel {
+  static fromPrisma(data: Prisma.TestCaseStatusModel): TestCaseStatusModel {
     return {
       id: data.id.toString(),
       value: data.value,
@@ -32,7 +32,7 @@ export class TestCaseStatusModel {
     };
   }
 
-  static fromPrismaArray(data: Prisma.TestCaseStatus[]): TestCaseStatusModel[] {
+  static fromPrismaArray(data: Prisma.TestCaseStatusModel[]): TestCaseStatusModel[] {
     return data.map((item) => TestCaseStatusModel.fromPrisma(item));
   }
 }

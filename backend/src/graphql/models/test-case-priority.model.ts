@@ -21,7 +21,7 @@ export class TestCasePriorityModel {
   @Field((_) => Date)
   updatedAt!: Date;
 
-  static fromPrisma(data: Prisma.TestCasePriority): TestCasePriorityModel {
+  static fromPrisma(data: Prisma.TestCasePriorityModel): TestCasePriorityModel {
     return {
       id: data.id.toString(),
       value: data.value,
@@ -32,7 +32,7 @@ export class TestCasePriorityModel {
     };
   }
 
-  static fromPrismaArray(data: Prisma.TestCasePriority[]): TestCasePriorityModel[] {
+  static fromPrismaArray(data: Prisma.TestCasePriorityModel[]): TestCasePriorityModel[] {
     return data.map((item) => TestCasePriorityModel.fromPrisma(item));
   }
 }
