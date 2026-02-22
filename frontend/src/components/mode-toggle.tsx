@@ -1,10 +1,13 @@
 import { Moon, Sun } from "lucide-react";
-import { Button, Dropdown } from "antd";
+import { Button, Dropdown, theme } from "antd";
 import type { MenuProps } from "antd";
 import { useTheme } from "@/components/theme-provider";
 
 export function ModeToggle() {
-  const { theme, setTheme } = useTheme();
+  const { theme: appTheme, setTheme } = useTheme();
+  const {
+    token: { colorText },
+  } = theme.useToken();
 
   const menuItems: MenuProps["items"] = [
     { key: "light", label: "Light", onClick: () => setTheme("light") },
@@ -13,8 +16,8 @@ export function ModeToggle() {
   ];
 
   const isDark =
-    theme === "dark" ||
-    (theme === "system" &&
+    appTheme === "dark" ||
+    (appTheme === "system" &&
       typeof window !== "undefined" &&
       window.matchMedia("(prefers-color-scheme: dark)").matches);
 
@@ -24,6 +27,7 @@ export function ModeToggle() {
         type="text"
         icon={isDark ? <Moon size={18} /> : <Sun size={18} />}
         aria-label="Toggle theme"
+        style={{ color: colorText }}
       />
     </Dropdown>
   );

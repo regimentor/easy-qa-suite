@@ -7,7 +7,7 @@ export const Route = createFileRoute("/projects/")({
 
 function RouteComponent() {
   return (
-    <div>
+    <div style={{ width: "100%", display: "flex", flexDirection: "column", minHeight: 0 }}>
       <ProjectsList />
     </div>
   );
