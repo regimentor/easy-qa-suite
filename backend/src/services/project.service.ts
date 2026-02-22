@@ -15,6 +15,14 @@ export const projectService = {
     return project;
   },
 
+  async findProjectByKey(key: string) {
+    const project = await projectsRepository.firstFindBy({ key });
+    if (!project) {
+      throw new ProjectNotFound(key);
+    }
+    return project;
+  },
+
   async createProject(data: CreateProjectInput) {
     return projectsRepository.create(data);
   },

@@ -24,9 +24,10 @@ type TTestCaseFormValues = {
 
 type CreateTestCaseProps = {
   projectId: string;
+  projectKey: string;
 };
 
-export function CreateTestCase({ projectId }: CreateTestCaseProps) {
+export function CreateTestCase({ projectId, projectKey }: CreateTestCaseProps) {
   const navigate = useNavigate();
   const [form] = Form.useForm<TTestCaseFormValues>();
 
@@ -48,8 +49,8 @@ export function CreateTestCase({ projectId }: CreateTestCaseProps) {
     onCompleted: () => {
       form.resetFields();
       navigate({
-        to: "/projects/$project-id",
-        params: { "project-id": projectId },
+        to: "/projects/$project-key",
+        params: { "project-key": projectKey },
         hash: "test-cases",
       });
     },

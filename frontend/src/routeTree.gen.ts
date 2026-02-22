@@ -15,11 +15,11 @@ import { Route as AboutImport } from './routes/about'
 import { Route as IndexImport } from './routes/index'
 import { Route as ProjectsIndexImport } from './routes/projects/index'
 import { Route as ProjectsCreateImport } from './routes/projects/create'
-import { Route as ProjectsProjectIdImport } from './routes/projects/$project-id'
-import { Route as ProjectsProjectIdTestSuitesEditImport } from './routes/projects_/$project-id/test-suites/edit'
-import { Route as ProjectsProjectIdTestSuitesCreateImport } from './routes/projects_/$project-id/test-suites/create'
-import { Route as ProjectsProjectIdTestSuitesSuiteIdImport } from './routes/projects_/$project-id/test-suites/$suite-id'
-import { Route as ProjectsProjectIdTestCasesCreateImport } from './routes/projects_/$project-id/test-cases/create'
+import { Route as ProjectsProjectKeyImport } from './routes/projects/$project-key'
+import { Route as ProjectsProjectKeyTestSuitesEditImport } from './routes/projects_/$project-key/test-suites/edit'
+import { Route as ProjectsProjectKeyTestSuitesCreateImport } from './routes/projects_/$project-key/test-suites/create'
+import { Route as ProjectsProjectKeyTestSuitesSuiteIdImport } from './routes/projects_/$project-key/test-suites/$suite-id'
+import { Route as ProjectsProjectKeyTestCasesCreateImport } from './routes/projects_/$project-key/test-cases/create'
 
 // Create/Update Routes
 
@@ -47,37 +47,37 @@ const ProjectsCreateRoute = ProjectsCreateImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
-const ProjectsProjectIdRoute = ProjectsProjectIdImport.update({
-  id: '/projects/$project-id',
-  path: '/projects/$project-id',
+const ProjectsProjectKeyRoute = ProjectsProjectKeyImport.update({
+  id: '/projects/$project-key',
+  path: '/projects/$project-key',
   getParentRoute: () => rootRoute,
 } as any)
 
-const ProjectsProjectIdTestSuitesEditRoute =
-  ProjectsProjectIdTestSuitesEditImport.update({
-    id: '/projects_/$project-id/test-suites/edit',
-    path: '/projects/$project-id/test-suites/edit',
+const ProjectsProjectKeyTestSuitesEditRoute =
+  ProjectsProjectKeyTestSuitesEditImport.update({
+    id: '/projects_/$project-key/test-suites/edit',
+    path: '/projects/$project-key/test-suites/edit',
     getParentRoute: () => rootRoute,
   } as any)
 
-const ProjectsProjectIdTestSuitesCreateRoute =
-  ProjectsProjectIdTestSuitesCreateImport.update({
-    id: '/projects_/$project-id/test-suites/create',
-    path: '/projects/$project-id/test-suites/create',
+const ProjectsProjectKeyTestSuitesCreateRoute =
+  ProjectsProjectKeyTestSuitesCreateImport.update({
+    id: '/projects_/$project-key/test-suites/create',
+    path: '/projects/$project-key/test-suites/create',
     getParentRoute: () => rootRoute,
   } as any)
 
-const ProjectsProjectIdTestSuitesSuiteIdRoute =
-  ProjectsProjectIdTestSuitesSuiteIdImport.update({
-    id: '/projects_/$project-id/test-suites/$suite-id',
-    path: '/projects/$project-id/test-suites/$suite-id',
+const ProjectsProjectKeyTestSuitesSuiteIdRoute =
+  ProjectsProjectKeyTestSuitesSuiteIdImport.update({
+    id: '/projects_/$project-key/test-suites/$suite-id',
+    path: '/projects/$project-key/test-suites/$suite-id',
     getParentRoute: () => rootRoute,
   } as any)
 
-const ProjectsProjectIdTestCasesCreateRoute =
-  ProjectsProjectIdTestCasesCreateImport.update({
-    id: '/projects_/$project-id/test-cases/create',
-    path: '/projects/$project-id/test-cases/create',
+const ProjectsProjectKeyTestCasesCreateRoute =
+  ProjectsProjectKeyTestCasesCreateImport.update({
+    id: '/projects_/$project-key/test-cases/create',
+    path: '/projects/$project-key/test-cases/create',
     getParentRoute: () => rootRoute,
   } as any)
 
@@ -99,11 +99,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AboutImport
       parentRoute: typeof rootRoute
     }
-    '/projects/$project-id': {
-      id: '/projects/$project-id'
-      path: '/projects/$project-id'
-      fullPath: '/projects/$project-id'
-      preLoaderRoute: typeof ProjectsProjectIdImport
+    '/projects/$project-key': {
+      id: '/projects/$project-key'
+      path: '/projects/$project-key'
+      fullPath: '/projects/$project-key'
+      preLoaderRoute: typeof ProjectsProjectKeyImport
       parentRoute: typeof rootRoute
     }
     '/projects/create': {
@@ -120,32 +120,32 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProjectsIndexImport
       parentRoute: typeof rootRoute
     }
-    '/projects_/$project-id/test-cases/create': {
-      id: '/projects_/$project-id/test-cases/create'
-      path: '/projects/$project-id/test-cases/create'
-      fullPath: '/projects/$project-id/test-cases/create'
-      preLoaderRoute: typeof ProjectsProjectIdTestCasesCreateImport
+    '/projects_/$project-key/test-cases/create': {
+      id: '/projects_/$project-key/test-cases/create'
+      path: '/projects/$project-key/test-cases/create'
+      fullPath: '/projects/$project-key/test-cases/create'
+      preLoaderRoute: typeof ProjectsProjectKeyTestCasesCreateImport
       parentRoute: typeof rootRoute
     }
-    '/projects_/$project-id/test-suites/$suite-id': {
-      id: '/projects_/$project-id/test-suites/$suite-id'
-      path: '/projects/$project-id/test-suites/$suite-id'
-      fullPath: '/projects/$project-id/test-suites/$suite-id'
-      preLoaderRoute: typeof ProjectsProjectIdTestSuitesSuiteIdImport
+    '/projects_/$project-key/test-suites/$suite-id': {
+      id: '/projects_/$project-key/test-suites/$suite-id'
+      path: '/projects/$project-key/test-suites/$suite-id'
+      fullPath: '/projects/$project-key/test-suites/$suite-id'
+      preLoaderRoute: typeof ProjectsProjectKeyTestSuitesSuiteIdImport
       parentRoute: typeof rootRoute
     }
-    '/projects_/$project-id/test-suites/create': {
-      id: '/projects_/$project-id/test-suites/create'
-      path: '/projects/$project-id/test-suites/create'
-      fullPath: '/projects/$project-id/test-suites/create'
-      preLoaderRoute: typeof ProjectsProjectIdTestSuitesCreateImport
+    '/projects_/$project-key/test-suites/create': {
+      id: '/projects_/$project-key/test-suites/create'
+      path: '/projects/$project-key/test-suites/create'
+      fullPath: '/projects/$project-key/test-suites/create'
+      preLoaderRoute: typeof ProjectsProjectKeyTestSuitesCreateImport
       parentRoute: typeof rootRoute
     }
-    '/projects_/$project-id/test-suites/edit': {
-      id: '/projects_/$project-id/test-suites/edit'
-      path: '/projects/$project-id/test-suites/edit'
-      fullPath: '/projects/$project-id/test-suites/edit'
-      preLoaderRoute: typeof ProjectsProjectIdTestSuitesEditImport
+    '/projects_/$project-key/test-suites/edit': {
+      id: '/projects_/$project-key/test-suites/edit'
+      path: '/projects/$project-key/test-suites/edit'
+      fullPath: '/projects/$project-key/test-suites/edit'
+      preLoaderRoute: typeof ProjectsProjectKeyTestSuitesEditImport
       parentRoute: typeof rootRoute
     }
   }
@@ -156,38 +156,38 @@ declare module '@tanstack/react-router' {
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
-  '/projects/$project-id': typeof ProjectsProjectIdRoute
+  '/projects/$project-key': typeof ProjectsProjectKeyRoute
   '/projects/create': typeof ProjectsCreateRoute
   '/projects': typeof ProjectsIndexRoute
-  '/projects/$project-id/test-cases/create': typeof ProjectsProjectIdTestCasesCreateRoute
-  '/projects/$project-id/test-suites/$suite-id': typeof ProjectsProjectIdTestSuitesSuiteIdRoute
-  '/projects/$project-id/test-suites/create': typeof ProjectsProjectIdTestSuitesCreateRoute
-  '/projects/$project-id/test-suites/edit': typeof ProjectsProjectIdTestSuitesEditRoute
+  '/projects/$project-key/test-cases/create': typeof ProjectsProjectKeyTestCasesCreateRoute
+  '/projects/$project-key/test-suites/$suite-id': typeof ProjectsProjectKeyTestSuitesSuiteIdRoute
+  '/projects/$project-key/test-suites/create': typeof ProjectsProjectKeyTestSuitesCreateRoute
+  '/projects/$project-key/test-suites/edit': typeof ProjectsProjectKeyTestSuitesEditRoute
 }
 
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
-  '/projects/$project-id': typeof ProjectsProjectIdRoute
+  '/projects/$project-key': typeof ProjectsProjectKeyRoute
   '/projects/create': typeof ProjectsCreateRoute
   '/projects': typeof ProjectsIndexRoute
-  '/projects/$project-id/test-cases/create': typeof ProjectsProjectIdTestCasesCreateRoute
-  '/projects/$project-id/test-suites/$suite-id': typeof ProjectsProjectIdTestSuitesSuiteIdRoute
-  '/projects/$project-id/test-suites/create': typeof ProjectsProjectIdTestSuitesCreateRoute
-  '/projects/$project-id/test-suites/edit': typeof ProjectsProjectIdTestSuitesEditRoute
+  '/projects/$project-key/test-cases/create': typeof ProjectsProjectKeyTestCasesCreateRoute
+  '/projects/$project-key/test-suites/$suite-id': typeof ProjectsProjectKeyTestSuitesSuiteIdRoute
+  '/projects/$project-key/test-suites/create': typeof ProjectsProjectKeyTestSuitesCreateRoute
+  '/projects/$project-key/test-suites/edit': typeof ProjectsProjectKeyTestSuitesEditRoute
 }
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
-  '/projects/$project-id': typeof ProjectsProjectIdRoute
+  '/projects/$project-key': typeof ProjectsProjectKeyRoute
   '/projects/create': typeof ProjectsCreateRoute
   '/projects/': typeof ProjectsIndexRoute
-  '/projects_/$project-id/test-cases/create': typeof ProjectsProjectIdTestCasesCreateRoute
-  '/projects_/$project-id/test-suites/$suite-id': typeof ProjectsProjectIdTestSuitesSuiteIdRoute
-  '/projects_/$project-id/test-suites/create': typeof ProjectsProjectIdTestSuitesCreateRoute
-  '/projects_/$project-id/test-suites/edit': typeof ProjectsProjectIdTestSuitesEditRoute
+  '/projects_/$project-key/test-cases/create': typeof ProjectsProjectKeyTestCasesCreateRoute
+  '/projects_/$project-key/test-suites/$suite-id': typeof ProjectsProjectKeyTestSuitesSuiteIdRoute
+  '/projects_/$project-key/test-suites/create': typeof ProjectsProjectKeyTestSuitesCreateRoute
+  '/projects_/$project-key/test-suites/edit': typeof ProjectsProjectKeyTestSuitesEditRoute
 }
 
 export interface FileRouteTypes {
@@ -195,62 +195,63 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/about'
-    | '/projects/$project-id'
+    | '/projects/$project-key'
     | '/projects/create'
     | '/projects'
-    | '/projects/$project-id/test-cases/create'
-    | '/projects/$project-id/test-suites/$suite-id'
-    | '/projects/$project-id/test-suites/create'
-    | '/projects/$project-id/test-suites/edit'
+    | '/projects/$project-key/test-cases/create'
+    | '/projects/$project-key/test-suites/$suite-id'
+    | '/projects/$project-key/test-suites/create'
+    | '/projects/$project-key/test-suites/edit'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/about'
-    | '/projects/$project-id'
+    | '/projects/$project-key'
     | '/projects/create'
     | '/projects'
-    | '/projects/$project-id/test-cases/create'
-    | '/projects/$project-id/test-suites/$suite-id'
-    | '/projects/$project-id/test-suites/create'
-    | '/projects/$project-id/test-suites/edit'
+    | '/projects/$project-key/test-cases/create'
+    | '/projects/$project-key/test-suites/$suite-id'
+    | '/projects/$project-key/test-suites/create'
+    | '/projects/$project-key/test-suites/edit'
   id:
     | '__root__'
     | '/'
     | '/about'
-    | '/projects/$project-id'
+    | '/projects/$project-key'
     | '/projects/create'
     | '/projects/'
-    | '/projects_/$project-id/test-cases/create'
-    | '/projects_/$project-id/test-suites/$suite-id'
-    | '/projects_/$project-id/test-suites/create'
-    | '/projects_/$project-id/test-suites/edit'
+    | '/projects_/$project-key/test-cases/create'
+    | '/projects_/$project-key/test-suites/$suite-id'
+    | '/projects_/$project-key/test-suites/create'
+    | '/projects_/$project-key/test-suites/edit'
   fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
-  ProjectsProjectIdRoute: typeof ProjectsProjectIdRoute
+  ProjectsProjectKeyRoute: typeof ProjectsProjectKeyRoute
   ProjectsCreateRoute: typeof ProjectsCreateRoute
   ProjectsIndexRoute: typeof ProjectsIndexRoute
-  ProjectsProjectIdTestCasesCreateRoute: typeof ProjectsProjectIdTestCasesCreateRoute
-  ProjectsProjectIdTestSuitesSuiteIdRoute: typeof ProjectsProjectIdTestSuitesSuiteIdRoute
-  ProjectsProjectIdTestSuitesCreateRoute: typeof ProjectsProjectIdTestSuitesCreateRoute
-  ProjectsProjectIdTestSuitesEditRoute: typeof ProjectsProjectIdTestSuitesEditRoute
+  ProjectsProjectKeyTestCasesCreateRoute: typeof ProjectsProjectKeyTestCasesCreateRoute
+  ProjectsProjectKeyTestSuitesSuiteIdRoute: typeof ProjectsProjectKeyTestSuitesSuiteIdRoute
+  ProjectsProjectKeyTestSuitesCreateRoute: typeof ProjectsProjectKeyTestSuitesCreateRoute
+  ProjectsProjectKeyTestSuitesEditRoute: typeof ProjectsProjectKeyTestSuitesEditRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
-  ProjectsProjectIdRoute: ProjectsProjectIdRoute,
+  ProjectsProjectKeyRoute: ProjectsProjectKeyRoute,
   ProjectsCreateRoute: ProjectsCreateRoute,
   ProjectsIndexRoute: ProjectsIndexRoute,
-  ProjectsProjectIdTestCasesCreateRoute: ProjectsProjectIdTestCasesCreateRoute,
-  ProjectsProjectIdTestSuitesSuiteIdRoute:
-    ProjectsProjectIdTestSuitesSuiteIdRoute,
-  ProjectsProjectIdTestSuitesCreateRoute:
-    ProjectsProjectIdTestSuitesCreateRoute,
-  ProjectsProjectIdTestSuitesEditRoute: ProjectsProjectIdTestSuitesEditRoute,
+  ProjectsProjectKeyTestCasesCreateRoute:
+    ProjectsProjectKeyTestCasesCreateRoute,
+  ProjectsProjectKeyTestSuitesSuiteIdRoute:
+    ProjectsProjectKeyTestSuitesSuiteIdRoute,
+  ProjectsProjectKeyTestSuitesCreateRoute:
+    ProjectsProjectKeyTestSuitesCreateRoute,
+  ProjectsProjectKeyTestSuitesEditRoute: ProjectsProjectKeyTestSuitesEditRoute,
 }
 
 export const routeTree = rootRoute
@@ -265,13 +266,13 @@ export const routeTree = rootRoute
       "children": [
         "/",
         "/about",
-        "/projects/$project-id",
+        "/projects/$project-key",
         "/projects/create",
         "/projects/",
-        "/projects_/$project-id/test-cases/create",
-        "/projects_/$project-id/test-suites/$suite-id",
-        "/projects_/$project-id/test-suites/create",
-        "/projects_/$project-id/test-suites/edit"
+        "/projects_/$project-key/test-cases/create",
+        "/projects_/$project-key/test-suites/$suite-id",
+        "/projects_/$project-key/test-suites/create",
+        "/projects_/$project-key/test-suites/edit"
       ]
     },
     "/": {
@@ -280,8 +281,8 @@ export const routeTree = rootRoute
     "/about": {
       "filePath": "about.tsx"
     },
-    "/projects/$project-id": {
-      "filePath": "projects/$project-id.tsx"
+    "/projects/$project-key": {
+      "filePath": "projects/$project-key.tsx"
     },
     "/projects/create": {
       "filePath": "projects/create.tsx"
@@ -289,17 +290,17 @@ export const routeTree = rootRoute
     "/projects/": {
       "filePath": "projects/index.tsx"
     },
-    "/projects_/$project-id/test-cases/create": {
-      "filePath": "projects_/$project-id/test-cases/create.tsx"
+    "/projects_/$project-key/test-cases/create": {
+      "filePath": "projects_/$project-key/test-cases/create.tsx"
     },
-    "/projects_/$project-id/test-suites/$suite-id": {
-      "filePath": "projects_/$project-id/test-suites/$suite-id.tsx"
+    "/projects_/$project-key/test-suites/$suite-id": {
+      "filePath": "projects_/$project-key/test-suites/$suite-id.tsx"
     },
-    "/projects_/$project-id/test-suites/create": {
-      "filePath": "projects_/$project-id/test-suites/create.tsx"
+    "/projects_/$project-key/test-suites/create": {
+      "filePath": "projects_/$project-key/test-suites/create.tsx"
     },
-    "/projects_/$project-id/test-suites/edit": {
-      "filePath": "projects_/$project-id/test-suites/edit.tsx"
+    "/projects_/$project-key/test-suites/edit": {
+      "filePath": "projects_/$project-key/test-suites/edit.tsx"
     }
   }
 }

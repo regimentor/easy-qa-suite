@@ -14,9 +14,10 @@ type TTestSuiteFormValues = {
 
 type CreateTestSuiteProps = {
   projectId: string;
+  projectKey: string;
 };
 
-export function CreateTestSuite({ projectId }: CreateTestSuiteProps) {
+export function CreateTestSuite({ projectId, projectKey }: CreateTestSuiteProps) {
   const navigate = useNavigate();
   const [form] = Form.useForm<TTestSuiteFormValues>();
 
@@ -32,8 +33,8 @@ export function CreateTestSuite({ projectId }: CreateTestSuiteProps) {
     onCompleted: () => {
       form.resetFields();
       navigate({
-        to: "/projects/$project-id",
-        params: { "project-id": projectId },
+        to: "/projects/$project-key",
+        params: { "project-key": projectKey },
         hash: "test-suites",
       });
     },

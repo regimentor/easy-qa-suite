@@ -31,6 +31,19 @@ export class ProjectResolver {
     return ProjectModel.fromPrisma(project);
   }
 
+  @Query(() => ProjectModel, {
+    name: "projectByKey",
+    nullable: false,
+  })
+  async getProjectByKey(
+    @Arg("key") key: string,
+    @Ctx() ctx: TGraphqlContext
+  ): Promise<ProjectModel> {
+    logger.debug("Fetching project by key", { key });
+    const project = await projectService.findProjectByKey(key);
+    return ProjectModel.fromPrisma(project);
+  }
+
   @Mutation(() => ProjectModel, {
     name: "createProject",
   })

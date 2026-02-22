@@ -22,8 +22,8 @@ const ProjectSmallCard: React.FC<TProjectSmallCardProps> = ({ project }) => {
 
   const handleCardClick = () => {
     navigate({
-      to: "/projects/$project-id",
-      params: { "project-id": project.id },
+      to: "/projects/$project-key",
+      params: { "project-key": project.key },
     });
   };
 

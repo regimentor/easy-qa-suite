@@ -8,15 +8,19 @@ import styles from "./test-case-card.module.css";
 
 export type TTestCaseCardProps = {
   testCase: TestCaseFields;
+  projectKey: string;
 };
 
-export const TestCaseCard: React.FC<TTestCaseCardProps> = ({ testCase }) => {
+export const TestCaseCard: React.FC<TTestCaseCardProps> = ({
+  testCase,
+  projectKey,
+}) => {
   const navigate = useNavigate();
 
   const handleCardClick = () => {
     navigate({
-      to: "/projects/$project-id",
-      params: { "project-id": testCase.projectId },
+      to: "/projects/$project-key",
+      params: { "project-key": projectKey },
     });
   };
 

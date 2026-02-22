@@ -14,6 +14,7 @@ import styles from "./test-suite-list.module.css";
 
 type TTestSuiteListProps = {
   projectId: string;
+  projectKey: string;
 };
 
 const typeOptions = TEST_SUITE_TYPES.map((type) => ({
@@ -21,7 +22,10 @@ const typeOptions = TEST_SUITE_TYPES.map((type) => ({
   value: type,
 }));
 
-export const TestSuiteList: React.FC<TTestSuiteListProps> = ({ projectId }) => {
+export const TestSuiteList: React.FC<TTestSuiteListProps> = ({
+  projectId,
+  projectKey,
+}) => {
   const { data, loading, error } = useQuery(testSuitesQuery, {
     variables: { projectId },
   });
@@ -58,8 +62,8 @@ export const TestSuiteList: React.FC<TTestSuiteListProps> = ({ projectId }) => {
           type="primary"
           onClick={() =>
             navigate({
-              to: "/projects/$project-id/test-suites/create",
-              params: { "project-id": projectId },
+              to: "/projects/$project-key/test-suites/create",
+              params: { "project-key": projectKey },
             })
           }
         >
@@ -110,8 +114,8 @@ export const TestSuiteList: React.FC<TTestSuiteListProps> = ({ projectId }) => {
                 type="primary"
                 onClick={() =>
                   navigate({
-                    to: "/projects/$project-id/test-suites/create",
-                    params: { "project-id": projectId },
+                    to: "/projects/$project-key/test-suites/create",
+                    params: { "project-key": projectKey },
                   })
                 }
               >
@@ -140,7 +144,7 @@ export const TestSuiteList: React.FC<TTestSuiteListProps> = ({ projectId }) => {
             <div className={styles.list}>
               {filteredTestSuites.map((testSuite) => (
                 <div key={testSuite.id} className={styles.listItem}>
-                  <TestSuiteCard testSuite={testSuite} />
+                  <TestSuiteCard testSuite={testSuite} projectKey={projectKey} />
                 </div>
               ))}
             </div>

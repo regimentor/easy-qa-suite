@@ -13,6 +13,7 @@ import styles from "./test-cases.module.css";
 
 type TTestCasesProps = {
   projectId: string;
+  projectKey: string;
 };
 
 const priorityOptions = TEST_CASE_PRIORITIES.map((p) => ({
@@ -24,7 +25,10 @@ const statusOptions = TEST_CASE_STATUSES.map((s) => ({
   value: s,
 }));
 
-export const TestCases: React.FC<TTestCasesProps> = ({ projectId }) => {
+export const TestCases: React.FC<TTestCasesProps> = ({
+  projectId,
+  projectKey,
+}) => {
   const { data, loading, error } = useQuery(testCasesQuery, {
     variables: { projectId },
   });
@@ -53,8 +57,8 @@ export const TestCases: React.FC<TTestCasesProps> = ({ projectId }) => {
 
   const handleCreateTestCase = () => {
     navigate({
-      to: "/projects/$project-id/test-cases/create",
-      params: { "project-id": projectId },
+      to: "/projects/$project-key/test-cases/create",
+      params: { "project-key": projectKey },
     });
   };
 
@@ -150,7 +154,7 @@ export const TestCases: React.FC<TTestCasesProps> = ({ projectId }) => {
             <div className={styles.list}>
               {filteredTestCases.map((testCase) => (
                 <div key={testCase.id} className={styles.listItem}>
-                  <TestCaseCard testCase={testCase} />
+                  <TestCaseCard testCase={testCase} projectKey={projectKey} />
                 </div>
               ))}
             </div>

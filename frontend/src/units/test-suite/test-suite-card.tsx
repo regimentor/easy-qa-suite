@@ -8,16 +8,20 @@ import styles from "./test-suite-card.module.css";
 
 export type TTestSuiteCardProps = {
   testSuite: TestSuiteFields;
+  projectKey: string;
 };
 
-export const TestSuiteCard: React.FC<TTestSuiteCardProps> = ({ testSuite }) => {
+export const TestSuiteCard: React.FC<TTestSuiteCardProps> = ({
+  testSuite,
+  projectKey,
+}) => {
   const navigate = useNavigate();
 
   const handleCardClick = () => {
     navigate({
-      to: "/projects/$project-id/test-suites/$suite-id",
+      to: "/projects/$project-key/test-suites/$suite-id",
       params: {
-        "project-id": testSuite.projectId,
+        "project-key": projectKey,
         "suite-id": testSuite.id,
       },
     });

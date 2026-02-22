@@ -18,8 +18,8 @@ export function ProjectForm() {
     onCompleted: (data) => {
       form.resetFields();
       navigate({
-        to: "/projects/$project-id",
-        params: { "project-id": data.createProject.id },
+        to: "/projects/$project-key",
+        params: { "project-key": data.createProject.key },
       });
     },
   });

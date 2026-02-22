@@ -66,4 +66,15 @@ const $userIsAuthenticeted = userDomain.createStore<boolean>(false);
 $userIsAuthenticeted.on(isAuthenticatedFx.doneData, (_, result) => result);
 $userIsAuthenticeted.on(logInFx.doneData, () => true);
 
-export { userDomain, $user, logInFx, isAuthenticatedFx, $userIsAuthenticeted };
+const logOutFx = userDomain.createEffect({
+  name: "logOut",
+  handler: async () => {
+    localStorage.removeItem("accessToken");
+    localStorage.removeItem("refreshToken");
+  },
+});
+
+$user.on(logOutFx.done, () => null);
+$userIsAuthenticeted.on(logOutFx.done, () => false);
+
+export { userDomain, $user, logInFx, logOutFx, isAuthenticatedFx, $userIsAuthenticeted };

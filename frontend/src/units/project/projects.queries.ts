@@ -13,6 +13,9 @@ type ProjectsQueryVariables = Record<string, never>;
 type ProjectQueryData = { project: ProjectFields };
 type ProjectQueryVariables = { id: string };
 
+type ProjectByKeyQueryData = { projectByKey: ProjectFields };
+type ProjectByKeyQueryVariables = { key: string };
+
 type CreateProjectMutationData = { createProject: ProjectFields };
 type CreateProjectMutationVariables = { input: CreateProjectInput };
 
@@ -54,6 +57,22 @@ export const projectQuery: TypedDocumentNode<
 > = gql`
   query Project($id: String!) {
     project(id: $id) {
+      id
+      key
+      name
+      description
+      createdAt
+      updatedAt
+    }
+  }
+`;
+
+export const projectByKeyQuery: TypedDocumentNode<
+  ProjectByKeyQueryData,
+  ProjectByKeyQueryVariables
+> = gql`
+  query ProjectByKey($key: String!) {
+    projectByKey(key: $key) {
       id
       key
       name

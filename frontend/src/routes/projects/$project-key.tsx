@@ -1,4 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { useQuery } from "@apollo/client";
+import { projectByKeyQuery } from "@/units/project/projects.queries";
 import { ProjectDetails } from "@/units/project/project-details";
 import { TestSuiteList } from "@/units/test-suite/test-suite-list";
 import { TestCases } from "@/units/test-case/test-cases";
@@ -6,13 +8,18 @@ import { Tabs } from "antd";
 import { useEffect, useState } from "react";
 import styles from "./project-id.module.css";
 
-export const Route = createFileRoute("/projects/$project-id")({
+export const Route = createFileRoute("/projects/$project-key")({
   component: RouteComponent,
 });
 
 function RouteComponent() {
-  const { "project-id": projectId } = Route.useParams();
+  const { "project-key": projectKey } = Route.useParams();
   const [activeTab, setActiveTab] = useState<string>("test-suites");
+
+  const { data, loading, error } = useQuery(projectByKeyQuery, {
+    variables: { key: projectKey },
+    skip: !projectKey,
+  });
 
   useEffect(() => {
     const handleHashChange = () => {
@@ -34,16 +41,33 @@ function RouteComponent() {
     window.location.hash = key;
   };
 
+  if (loading || !data?.projectByKey) {
+    return (
+      <div className={styles.wrap}>
+        <div style={{ padding: "1.5rem 0" }}>
+          {loading ? "Loading project..." : error ? `Error: ${error.message}` : "Project not found"}
+        </div>
+      </div>
+    );
+  }
+
+  const project = data.projectByKey;
+  const projectId = project.id;
+
   const tabItems = [
     {
       key: "test-suites",
       label: "Test Suites",
-      children: <TestSuiteList projectId={projectId} />,
+      children: (
+        <TestSuiteList projectId={projectId} projectKey={project.key} />
+      ),
     },
     {
       key: "test-cases",
       label: "Test Cases",
-      children: <TestCases projectId={projectId} />,
+      children: (
+        <TestCases projectId={projectId} projectKey={project.key} />
+      ),
     },
   ];
 
