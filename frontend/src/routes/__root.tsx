@@ -1,5 +1,6 @@
 import { AppBreadcrumbs } from "@/components/app-breadcrumbs";
 import { AppLogo } from "@/components/app-logo";
+import { LanguageToggle } from "@/components/language-toggle";
 import { ModeToggle } from "@/components/mode-toggle";
 import { LoginForm } from "@/units/auth/login-form";
 import {
@@ -14,6 +15,7 @@ import type { MenuProps } from "antd";
 import { useUnit } from "effector-react";
 import { FolderKanban, Home, Info, LogOut, PanelLeftClose, PanelLeftOpen } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
 import styles from "./root.module.css";
 
 function getInitials(fullName: string, username: string): string {
@@ -64,13 +66,14 @@ const Index = () => {
     }
   };
 
+  const { t } = useTranslation();
   const menuItems: MenuProps["items"] = useMemo(
     () => [
-      { key: "/", icon: <Home size={18} />, label: "Home" },
-      { key: "/projects", icon: <FolderKanban size={18} />, label: "Projects" },
-      { key: "/about", icon: <Info size={18} />, label: "About" },
+      { key: "/", icon: <Home size={18} />, label: t("common.home") },
+      { key: "/projects", icon: <FolderKanban size={18} />, label: t("common.projects") },
+      { key: "/about", icon: <Info size={18} />, label: t("common.about") },
     ],
-    []
+    [t]
   );
 
   const selectedKey = useMemo(() => {
@@ -93,6 +96,7 @@ const Index = () => {
     return (
       <div className={styles.loginWrap}>
         <div className={styles.loginToggle}>
+          <LanguageToggle />
           <ModeToggle />
         </div>
         <LoginForm />
@@ -150,11 +154,12 @@ const Index = () => {
               type="text"
               icon={collapsed ? <PanelLeftOpen size={18} /> : <PanelLeftClose size={18} />}
               onClick={() => handleCollapse(!collapsed)}
-              aria-label={collapsed ? "Expand sidebar" : "Collapse sidebar"}
+              aria-label={collapsed ? t("common.expandSidebar") : t("common.collapseSidebar")}
             />
             <AppBreadcrumbs />
           </div>
           <div style={{ display: "flex", alignItems: "center", gap: 12, flexShrink: 0 }}>
+            <LanguageToggle />
             <ModeToggle />
             {user && (
               <Dropdown
@@ -173,7 +178,7 @@ const Index = () => {
                     { type: "divider" },
                     {
                       key: "logout",
-                      label: "Выйти",
+                      label: t("common.logout"),
                       icon: <LogOut size={14} />,
                       onClick: () => logOutFx(),
                     },
@@ -194,7 +199,7 @@ const Index = () => {
                     color: colorText,
                     cursor: "pointer",
                   }}
-                  aria-label="User menu"
+                  aria-label={t("common.userMenu")}
                 >
                   <Avatar style={{ flexShrink: 0 }}>
                     {getInitials(user.full_name, user.username)}

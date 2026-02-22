@@ -2,6 +2,7 @@ import { Button, Form, Input, Segmented } from "antd";
 import { useMutation, useQuery } from "@apollo/client";
 import { useNavigate } from "@tanstack/react-router";
 import { useEffect } from "react";
+import { useTranslation } from "react-i18next";
 import { createTestCaseMutation } from "./test-case.queries";
 import {
   testCasePrioritiesQuery,
@@ -29,6 +30,7 @@ type CreateTestCaseProps = {
 
 export function CreateTestCase({ projectId, projectKey }: CreateTestCaseProps) {
   const navigate = useNavigate();
+  const { t } = useTranslation();
   const [form] = Form.useForm<TTestCaseFormValues>();
 
   const { data: prioritiesData } = useQuery(testCasePrioritiesQuery);
@@ -93,9 +95,9 @@ export function CreateTestCase({ projectId, projectKey }: CreateTestCaseProps) {
   return (
     <div className={styles.wrap}>
       <div className={styles.header}>
-        <h3 className={styles.title}>Create Test Case</h3>
+        <h3 className={styles.title}>{t("testCase.createTitle")}</h3>
         <h4 className={styles.subtitle}>
-          Fill in the details for the new test case
+          {t("testCase.createSubtitle")}
         </h4>
       </div>
       <div className={styles.formWrap}>
@@ -108,39 +110,38 @@ export function CreateTestCase({ projectId, projectKey }: CreateTestCaseProps) {
         >
           <Form.Item
             name="title"
-            label="Test Case Title"
-            rules={[{ required: true, message: "Title is required" }]}
+            label={t("testCase.title")}
+            rules={[{ required: true, message: t("testCase.titleRequired") }]}
           >
-            <Input placeholder="Enter test case title" />
+            <Input placeholder={t("testCase.titlePlaceholder")} />
           </Form.Item>
-          <Form.Item name="description" label="Description">
+          <Form.Item name="description" label={t("project.description")}>
             <Input.TextArea
-              placeholder="Detailed description of the test case"
+              placeholder={t("testCase.descriptionPlaceholder")}
               rows={3}
             />
           </Form.Item>
-          <Form.Item name="preconditions" label="Preconditions">
+          <Form.Item name="preconditions" label={t("testCase.preconditions")}>
             <Input.TextArea
-              placeholder="Conditions that must be met before running the test"
+              placeholder={t("testCase.preconditionsPlaceholder")}
               rows={2}
             />
           </Form.Item>
-          <Form.Item name="postconditions" label="Postconditions">
+          <Form.Item name="postconditions" label={t("testCase.postconditions")}>
             <Input.TextArea
-              placeholder="Results that should be achieved after successful test execution"
+              placeholder={t("testCase.postconditionsPlaceholder")}
               rows={2}
             />
           </Form.Item>
-          <Form.Item name="priorityId" label="Priority">
+          <Form.Item name="priorityId" label={t("testCase.priority")}>
             <Segmented options={priorityOptions} block />
           </Form.Item>
-          <Form.Item name="statusId" label="Status">
+          <Form.Item name="statusId" label={t("testCase.status")}>
             <Segmented options={statusOptions} block />
           </Form.Item>
           {error && (
             <div className={styles.error}>
-              {error.message ||
-                "An error occurred while creating the test case"}
+              {error.message || t("testCase.createError")}
             </div>
           )}
           <Form.Item>
@@ -151,7 +152,7 @@ export function CreateTestCase({ projectId, projectKey }: CreateTestCaseProps) {
               block
               loading={loading}
             >
-              Create Test Case
+              {t("testCase.createButton")}
             </Button>
           </Form.Item>
         </Form>

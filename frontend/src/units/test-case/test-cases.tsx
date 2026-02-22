@@ -2,6 +2,7 @@ import { useQuery } from "@apollo/client";
 import { testCasesQuery } from "./test-case.queries";
 import type React from "react";
 import { useState, useMemo } from "react";
+import { useTranslation } from "react-i18next";
 import { Button, Input, Segmented } from "antd";
 import { PlusIcon } from "@/components/icons/PlusIcon";
 import { ErrorIcon } from "@/components/icons/ErrorIcon";
@@ -16,14 +17,16 @@ type TTestCasesProps = {
   projectKey: string;
 };
 
-const priorityOptions = TEST_CASE_PRIORITIES.map((p) => ({
-  label: p,
-  value: p,
-}));
-const statusOptions = TEST_CASE_STATUSES.map((s) => ({
-  label: s,
-  value: s,
-}));
+const getPriorityOptions = (t: (key: string) => string) =>
+  TEST_CASE_PRIORITIES.map((p) => ({
+    label: p === "All" ? t("common.all") : p,
+    value: p,
+  }));
+const getStatusOptions = (t: (key: string) => string) =>
+  TEST_CASE_STATUSES.map((s) => ({
+    label: s === "All" ? t("common.all") : s,
+    value: s,
+  }));
 
 export const TestCases: React.FC<TTestCasesProps> = ({
   projectId,
@@ -33,9 +36,12 @@ export const TestCases: React.FC<TTestCasesProps> = ({
     variables: { projectId },
   });
   const navigate = useNavigate();
+  const { t } = useTranslation();
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedPriority, setSelectedPriority] = useState("All");
   const [selectedStatus, setSelectedStatus] = useState("All");
+  const priorityOptions = getPriorityOptions(t);
+  const statusOptions = getStatusOptions(t);
 
   const filteredTestCases = useMemo(() => {
     if (!data?.testCases) return [];
@@ -66,25 +72,25 @@ export const TestCases: React.FC<TTestCasesProps> = ({
     <div className={styles.wrap}>
       <div className={styles.header}>
         <div>
-          <h1 className={styles.headerTitle}>Test Cases</h1>
-          <p className={styles.headerSub}>Manage test cases for this project</p>
+          <h1 className={styles.headerTitle}>{t("testCase.listTitle")}</h1>
+          <p className={styles.headerSub}>{t("testCase.listSubtitle")}</p>
         </div>
         <Button type="primary" onClick={handleCreateTestCase}>
           <PlusIcon className={styles.iconMr + " " + styles.iconSize} />
-          New Test Case
+          {t("testCase.newTestCase")}
         </Button>
       </div>
 
       <div className={styles.filters}>
         <Input
-          placeholder="Search test cases..."
+          placeholder={t("testCase.searchPlaceholder")}
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
         />
 
         <div className={styles.filterGrid}>
           <div className={styles.filterBlock}>
-            <label>Priority Filter</label>
+            <label>{t("testCase.priorityFilter")}</label>
             <Segmented
               value={selectedPriority}
               onChange={(value) => value && setSelectedPriority(value as string)}
@@ -93,7 +99,7 @@ export const TestCases: React.FC<TTestCasesProps> = ({
             />
           </div>
           <div className={styles.filterBlock}>
-            <label>Status Filter</label>
+            <label>{t("testCase.statusFilter")}</label>
             <Segmented
               value={selectedStatus}
               onChange={(value) => value && setSelectedStatus(value as string)}
@@ -114,21 +120,21 @@ export const TestCases: React.FC<TTestCasesProps> = ({
         {error && (
           <div className={styles.errorWrap}>
             <ErrorIcon className={styles.errorIcon} />
-            <p className={styles.errorText}>Error: {error.message}</p>
+            <p className={styles.errorText}>{t("common.error")}: {error.message}</p>
           </div>
         )}
 
         {data && data.testCases.length === 0 && (
           <div className={styles.emptyWrap}>
             <EmptyStateIcon className={styles.emptyIcon} />
-            <h3 className={styles.emptyTitle}>No test cases found</h3>
+            <h3 className={styles.emptyTitle}>{t("testCase.noCases")}</h3>
             <p className={styles.emptySub}>
-              Get started by creating a new test case.
+              {t("testCase.noCasesHint")}
             </p>
             <div className={styles.emptyBtnWrap}>
               <Button type="primary" onClick={handleCreateTestCase}>
                 <PlusIcon className={styles.iconMr + " " + styles.iconSize} />
-                New Test Case
+                {t("testCase.newTestCase")}
               </Button>
             </div>
           </div>
@@ -140,10 +146,10 @@ export const TestCases: React.FC<TTestCasesProps> = ({
             <div className={styles.emptyWrap}>
               <EmptyStateIcon className={styles.emptyIcon} />
               <h3 className={styles.emptyTitle}>
-                No matching test cases found
+                {t("testCase.noMatching")}
               </h3>
               <p className={styles.emptySub}>
-                Try adjusting your search or filter criteria.
+                {t("testCase.noMatchingHint")}
               </p>
             </div>
           )}

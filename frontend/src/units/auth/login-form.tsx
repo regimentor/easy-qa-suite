@@ -1,9 +1,11 @@
 import { Button, Form, Input } from "antd";
 import { logInFx } from "@/units/user/user.store";
+import { useTranslation } from "react-i18next";
 import styles from "./login-form.module.css";
 
 export function LoginForm() {
   const [form] = Form.useForm();
+  const { t } = useTranslation();
 
   const handleSubmit = async (values: { username: string; password: string }) => {
     try {
@@ -16,9 +18,9 @@ export function LoginForm() {
   return (
     <div className={styles.wrap}>
       <div className={styles.header}>
-        <h3 className={styles.title}>EasyQASuite</h3>
-        <h3 className={styles.subtitle}>Log in to your account</h3>
-        <h4 className={styles.hint}>Welcome back! Please enter your details</h4>
+        <h3 className={styles.title}>{t("auth.title")}</h3>
+        <h3 className={styles.subtitle}>{t("auth.subtitle")}</h3>
+        <h4 className={styles.hint}>{t("auth.hint")}</h4>
       </div>
       <div className={styles.formWrap}>
         <Form
@@ -29,23 +31,23 @@ export function LoginForm() {
         >
           <Form.Item
             name="username"
-            label="Username"
-            rules={[{ required: true, message: "Username is required" }]}
+            label={t("auth.username")}
+            rules={[{ required: true, message: t("auth.usernameRequired") }]}
           >
-            <Input placeholder="Enter your username" />
+            <Input placeholder={t("auth.usernamePlaceholder")} />
           </Form.Item>
 
           <Form.Item
             name="password"
-            label="Password"
-            rules={[{ required: true, message: "Password is required" }]}
+            label={t("auth.password")}
+            rules={[{ required: true, message: t("auth.passwordRequired") }]}
           >
-            <Input.Password placeholder="Enter your password" />
+            <Input.Password placeholder={t("auth.passwordPlaceholder")} />
           </Form.Item>
 
           <Form.Item>
             <Button type="primary" htmlType="submit" block>
-              Sign in
+              {t("auth.signIn")}
             </Button>
           </Form.Item>
         </Form>

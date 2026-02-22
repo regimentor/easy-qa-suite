@@ -1,6 +1,7 @@
 import { Button, Form, Input } from "antd";
 import { useMutation } from "@apollo/client";
 import { useNavigate } from "@tanstack/react-router";
+import { useTranslation } from "react-i18next";
 import { createProjectMutation } from "./projects.queries";
 import styles from "./project-form.module.css";
 
@@ -12,6 +13,7 @@ type TProjectFormValues = {
 
 export function ProjectForm() {
   const navigate = useNavigate();
+  const { t } = useTranslation();
   const [form] = Form.useForm<TProjectFormValues>();
 
   const [mutate, { loading, error }] = useMutation(createProjectMutation, {
@@ -39,9 +41,9 @@ export function ProjectForm() {
   return (
     <div className={styles.wrap}>
       <div className={styles.header}>
-        <h3 className={styles.title}>Create Project</h3>
+        <h3 className={styles.title}>{t("project.createTitle")}</h3>
         <h4 className={styles.subtitle}>
-          Fill in the details for the new project
+          {t("project.createSubtitle")}
         </h4>
       </div>
       <div className={styles.formWrap}>
@@ -53,27 +55,27 @@ export function ProjectForm() {
         >
           <Form.Item
             name="name"
-            label="Project Name"
-            rules={[{ required: true, message: "Name is required" }]}
+            label={t("project.name")}
+            rules={[{ required: true, message: t("project.nameRequired") }]}
           >
-            <Input placeholder="Enter project name" />
+            <Input placeholder={t("project.namePlaceholder")} />
           </Form.Item>
           <Form.Item
             name="key"
-            label="Project Code"
-            rules={[{ required: true, message: "Project code is required" }]}
+            label={t("project.code")}
+            rules={[{ required: true, message: t("project.codeRequired") }]}
           >
-            <Input placeholder="Unique code (e.g., EQA)" />
+            <Input placeholder={t("project.codePlaceholder")} />
           </Form.Item>
-          <Form.Item name="description" label="Description">
+          <Form.Item name="description" label={t("project.description")}>
             <Input.TextArea
-              placeholder="Brief project description"
+              placeholder={t("project.descriptionPlaceholder")}
               rows={3}
             />
           </Form.Item>
           {error && (
             <div className={styles.error}>
-              {error.message || "An error occurred while creating the project"}
+              {error.message || t("project.createError")}
             </div>
           )}
           <Form.Item>
@@ -84,7 +86,7 @@ export function ProjectForm() {
               block
               loading={loading}
             >
-              Create Project
+              {t("project.createButton")}
             </Button>
           </Form.Item>
         </Form>

@@ -2,6 +2,7 @@ import { Button, Form, Input, Segmented } from "antd";
 import { useMutation, useQuery } from "@apollo/client";
 import { useNavigate } from "@tanstack/react-router";
 import { useEffect } from "react";
+import { useTranslation } from "react-i18next";
 import { createTestSuiteMutation } from "./test-suite.queries";
 import { testSuiteTypesQuery } from "@/units/test-suite-type/test-suite-type.queries";
 import styles from "./create-test-suite.module.css";
@@ -19,6 +20,7 @@ type CreateTestSuiteProps = {
 
 export function CreateTestSuite({ projectId, projectKey }: CreateTestSuiteProps) {
   const navigate = useNavigate();
+  const { t } = useTranslation();
   const [form] = Form.useForm<TTestSuiteFormValues>();
 
   const { data: typesData } = useQuery(testSuiteTypesQuery);
@@ -67,9 +69,9 @@ export function CreateTestSuite({ projectId, projectKey }: CreateTestSuiteProps)
   return (
     <div className={styles.wrap}>
       <div className={styles.header}>
-        <h3 className={styles.title}>Create Test Suite</h3>
+        <h3 className={styles.title}>{t("testSuite.createTitle")}</h3>
         <h4 className={styles.subtitle}>
-          Fill in the details for the new test suite
+          {t("testSuite.createSubtitle")}
         </h4>
       </div>
       <div className={styles.formWrap}>
@@ -82,24 +84,23 @@ export function CreateTestSuite({ projectId, projectKey }: CreateTestSuiteProps)
         >
           <Form.Item
             name="name"
-            label="Test Suite Name"
-            rules={[{ required: true, message: "Name is required" }]}
+            label={t("testSuite.name")}
+            rules={[{ required: true, message: t("testSuite.nameRequired") }]}
           >
-            <Input placeholder="Enter test suite name" />
+            <Input placeholder={t("testSuite.namePlaceholder")} />
           </Form.Item>
-          <Form.Item name="description" label="Description">
+          <Form.Item name="description" label={t("project.description")}>
             <Input.TextArea
-              placeholder="Detailed description of the test suite"
+              placeholder={t("testSuite.descriptionPlaceholder")}
               rows={3}
             />
           </Form.Item>
-          <Form.Item name="typeId" label="Type">
+          <Form.Item name="typeId" label={t("testSuite.type")}>
             <Segmented options={typeOptions} block />
           </Form.Item>
           {error && (
             <div className={styles.error}>
-              {error.message ||
-                "An error occurred while creating the test suite"}
+              {error.message || t("testSuite.createError")}
             </div>
           )}
           <Form.Item>
@@ -110,7 +111,7 @@ export function CreateTestSuite({ projectId, projectKey }: CreateTestSuiteProps)
               block
               loading={loading}
             >
-              Create Test Suite
+              {t("testSuite.createButton")}
             </Button>
           </Form.Item>
         </Form>

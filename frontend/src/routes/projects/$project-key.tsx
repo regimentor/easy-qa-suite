@@ -6,6 +6,7 @@ import { TestSuiteList } from "@/units/test-suite/test-suite-list";
 import { TestCases } from "@/units/test-case/test-cases";
 import { Tabs } from "antd";
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import styles from "./project-id.module.css";
 
 export const Route = createFileRoute("/projects/$project-key")({
@@ -14,6 +15,7 @@ export const Route = createFileRoute("/projects/$project-key")({
 
 function RouteComponent() {
   const { "project-key": projectKey } = Route.useParams();
+  const { t } = useTranslation();
   const [activeTab, setActiveTab] = useState<string>("test-suites");
 
   const { data, loading, error } = useQuery(projectByKeyQuery, {
@@ -45,7 +47,7 @@ function RouteComponent() {
     return (
       <div className={styles.wrap}>
         <div style={{ padding: "1.5rem 0" }}>
-          {loading ? "Loading project..." : error ? `Error: ${error.message}` : "Project not found"}
+          {loading ? t("project.loading") : error ? `${t("common.error")}: ${error.message}` : t("project.notFound")}
         </div>
       </div>
     );
@@ -57,14 +59,14 @@ function RouteComponent() {
   const tabItems = [
     {
       key: "test-suites",
-      label: "Test Suites",
+      label: t("breadcrumb.testSuites"),
       children: (
         <TestSuiteList projectId={projectId} projectKey={project.key} />
       ),
     },
     {
       key: "test-cases",
-      label: "Test Cases",
+      label: t("breadcrumb.testCases"),
       children: (
         <TestCases projectId={projectId} projectKey={project.key} />
       ),

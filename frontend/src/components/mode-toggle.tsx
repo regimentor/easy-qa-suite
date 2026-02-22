@@ -2,17 +2,19 @@ import { Moon, Sun } from "lucide-react";
 import { Button, Dropdown, theme } from "antd";
 import type { MenuProps } from "antd";
 import { useTheme } from "@/components/theme-provider";
+import { useTranslation } from "react-i18next";
 
 export function ModeToggle() {
   const { theme: appTheme, setTheme } = useTheme();
+  const { t } = useTranslation();
   const {
     token: { colorText },
   } = theme.useToken();
 
   const menuItems: MenuProps["items"] = [
-    { key: "light", label: "Light", onClick: () => setTheme("light") },
-    { key: "dark", label: "Dark", onClick: () => setTheme("dark") },
-    { key: "system", label: "System", onClick: () => setTheme("system") },
+    { key: "light", label: t("common.light"), onClick: () => setTheme("light") },
+    { key: "dark", label: t("common.dark"), onClick: () => setTheme("dark") },
+    { key: "system", label: t("common.system"), onClick: () => setTheme("system") },
   ];
 
   const isDark =
@@ -26,7 +28,7 @@ export function ModeToggle() {
       <Button
         type="text"
         icon={isDark ? <Moon size={18} /> : <Sun size={18} />}
-        aria-label="Toggle theme"
+        aria-label={t("common.toggleTheme")}
         style={{ color: colorText }}
       />
     </Dropdown>

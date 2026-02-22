@@ -2,6 +2,7 @@ import { useQuery } from "@apollo/client";
 import { testSuitesQuery } from "./test-suite.queries";
 import type React from "react";
 import { useState, useMemo } from "react";
+import { useTranslation } from "react-i18next";
 import { Button, Input, Segmented } from "antd";
 import { SearchIcon } from "@/components/icons/SearchIcon";
 import { PlusIcon } from "@/components/icons/PlusIcon";
@@ -17,10 +18,11 @@ type TTestSuiteListProps = {
   projectKey: string;
 };
 
-const typeOptions = TEST_SUITE_TYPES.map((type) => ({
-  label: type,
-  value: type,
-}));
+const getTypeOptions = (t: (key: string) => string) =>
+  TEST_SUITE_TYPES.map((type) => ({
+    label: type === "All" ? t("common.all") : type,
+    value: type,
+  }));
 
 export const TestSuiteList: React.FC<TTestSuiteListProps> = ({
   projectId,
@@ -30,8 +32,10 @@ export const TestSuiteList: React.FC<TTestSuiteListProps> = ({
     variables: { projectId },
   });
   const navigate = useNavigate();
+  const { t } = useTranslation();
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedType, setSelectedType] = useState("All");
+  const typeOptions = getTypeOptions(t);
 
   const filteredTestSuites = useMemo(() => {
     if (!data?.testSuites) return [];
@@ -55,8 +59,8 @@ export const TestSuiteList: React.FC<TTestSuiteListProps> = ({
     <div className={styles.wrap}>
       <div className={styles.header}>
         <div>
-          <h1 className={styles.headerTitle}>Test Suites</h1>
-          <p className={styles.headerSub}>Manage test suites for this project</p>
+          <h1 className={styles.headerTitle}>{t("testSuite.listTitle")}</h1>
+          <p className={styles.headerSub}>{t("testSuite.listSubtitle")}</p>
         </div>
         <Button
           type="primary"
@@ -68,13 +72,13 @@ export const TestSuiteList: React.FC<TTestSuiteListProps> = ({
           }
         >
           <PlusIcon className={styles.iconMr + " " + styles.iconSize} />
-          New Test Suite
+          {t("testSuite.newTestSuite")}
         </Button>
       </div>
 
       <div className={styles.filters}>
         <Input
-          placeholder="Search test suites..."
+          placeholder={t("testSuite.searchPlaceholder")}
           value={searchQuery}
           onChange={(e) => handleSearchChange(e)}
           prefix={<SearchIcon className={styles.searchIcon} />}
@@ -98,16 +102,16 @@ export const TestSuiteList: React.FC<TTestSuiteListProps> = ({
         {error && (
           <div className={styles.errorWrap}>
             <ErrorIcon className={styles.errorIcon} />
-            <p className={styles.errorText}>Error: {error.message}</p>
+            <p className={styles.errorText}>{t("common.error")}: {error.message}</p>
           </div>
         )}
 
         {data && data.testSuites.length === 0 && (
           <div className={styles.emptyWrap}>
             <EmptyStateIcon className={styles.emptyIcon} />
-            <h3 className={styles.emptyTitle}>No test suites found</h3>
+            <h3 className={styles.emptyTitle}>{t("testSuite.noSuites")}</h3>
             <p className={styles.emptySub}>
-              Get started by creating a new test suite.
+              {t("testSuite.noSuitesHint")}
             </p>
             <div className={styles.emptyBtnWrap}>
               <Button
@@ -120,7 +124,7 @@ export const TestSuiteList: React.FC<TTestSuiteListProps> = ({
                 }
               >
                 <PlusIcon className={styles.iconMr + " " + styles.iconSize} />
-                New Test Suite
+                {t("testSuite.newTestSuite")}
               </Button>
             </div>
           </div>
@@ -131,9 +135,9 @@ export const TestSuiteList: React.FC<TTestSuiteListProps> = ({
           filteredTestSuites.length === 0 && (
             <div className={styles.emptyWrap}>
               <EmptyStateIcon className={styles.emptyIcon} />
-              <h3 className={styles.emptyTitle}>No matching test suites found</h3>
+              <h3 className={styles.emptyTitle}>{t("testSuite.noMatching")}</h3>
               <p className={styles.emptySub}>
-                Try adjusting your search or filter criteria.
+                {t("testSuite.noMatchingHint")}
               </p>
             </div>
           )}

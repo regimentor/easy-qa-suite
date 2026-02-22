@@ -1,6 +1,7 @@
 import { useQuery } from "@apollo/client";
 import { projectQuery } from "./projects.queries";
 import type React from "react";
+import { useTranslation } from "react-i18next";
 import { CalendarIcon } from "@/components/icons/CalendarIcon";
 import { ClockIcon } from "@/components/icons/ClockIcon";
 import { DateTime } from "luxon";
@@ -11,6 +12,7 @@ type TProjectDetails = {
 };
 
 export const ProjectDetails: React.FC<TProjectDetails> = ({ id }) => {
+  const { t } = useTranslation();
   const { data, loading, error } = useQuery(projectQuery, {
     variables: { id },
   });
@@ -50,11 +52,11 @@ export const ProjectDetails: React.FC<TProjectDetails> = ({ id }) => {
         <div className={styles.meta}>
           <div className={styles.metaItem}>
             <CalendarIcon />
-            <span>Created: {formatDate(project.createdAt)}</span>
+            <span>{t("project.created")}: {formatDate(project.createdAt)}</span>
           </div>
           <div className={styles.metaItem}>
             <ClockIcon />
-            <span>Updated: {formatDate(project.updatedAt)}</span>
+            <span>{t("project.updated")}: {formatDate(project.updatedAt)}</span>
           </div>
         </div>
       </div>

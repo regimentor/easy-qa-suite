@@ -4,6 +4,7 @@ import { RouterProvider, createRouter } from "@tanstack/react-router";
 import { ThemeProvider } from "@/components/theme-provider";
 import { AntdConfigProvider } from "@/components/antd-config-provider";
 import { ApolloClient, ApolloProvider, InMemoryCache } from "@apollo/client";
+import "@/lib/i18n";
 import "./index.css";
 
 // Import the generated route tree
