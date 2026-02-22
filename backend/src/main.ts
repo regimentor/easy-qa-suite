@@ -1,6 +1,7 @@
 import { config } from "./config";
 import { graphqlInit } from "./graphql/graphql";
 import { corsPreflightResponse, handler } from "./http/handler";
+import { meGet } from "./http/handlers/me.get";
 import { refreshTokenPost } from "./http/handlers/refresh-token.post";
 import { signInPost } from "./http/handlers/sign-in.post";
 import { logger } from "./logger/logger";
@@ -40,6 +41,9 @@ export async function main(): Promise<void> {
     routes: {
       "/login": {
         POST: handler(signInPost, { cors: true, name: "POST /login" }),
+      },
+      "/me": {
+        GET: handler(meGet, { cors: true, name: "GET /me" }),
       },
       "/refresh-token": {
         POST: handler(refreshTokenPost, { cors: true, name: "POST /refresh-token" }),

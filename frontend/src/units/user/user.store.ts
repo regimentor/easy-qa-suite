@@ -27,6 +27,7 @@ type TUserStoreLogInFxDone = {
 
 const userDomain = createDomain({ name: "user" });
 const $user = userDomain.createStore<TUser | null>(null);
+const $userIsAuthenticeted = userDomain.createStore<boolean>(false);
 const logInFx = userDomain.createEffect<
   TUserStoreLogInFxInput,
   TUserStoreLogInFxDone,
@@ -50,6 +51,22 @@ $user.on(logInFx.doneData, (_, { data }) => {
   return data;
 });
 
+const getCurrentUserFx = userDomain.createEffect<void, TUser, Error>({
+  name: "getCurrentUser",
+  handler: async () => {
+    const response = await api.get<TUser>("/me");
+    if (response.status !== 200) {
+      throw new Error("Failed to get current user");
+    }
+    return response.data;
+  },
+});
+
+$user.on(getCurrentUserFx.doneData, (_, user) => user);
+$user.on(getCurrentUserFx.fail, () => null);
+$userIsAuthenticeted.on(getCurrentUserFx.doneData, () => true);
+$userIsAuthenticeted.on(getCurrentUserFx.fail, () => false);
+
 const isAuthenticatedFx = userDomain.createEffect({
   name: "isAuthenticated",
   handler: async () => {
@@ -62,7 +79,6 @@ const isAuthenticatedFx = userDomain.createEffect({
   },
 });
 
-const $userIsAuthenticeted = userDomain.createStore<boolean>(false);
 $userIsAuthenticeted.on(isAuthenticatedFx.doneData, (_, result) => result);
 $userIsAuthenticeted.on(logInFx.doneData, () => true);
 
@@ -77,4 +93,12 @@ const logOutFx = userDomain.createEffect({
 $user.on(logOutFx.done, () => null);
 $userIsAuthenticeted.on(logOutFx.done, () => false);
 
-export { userDomain, $user, logInFx, logOutFx, isAuthenticatedFx, $userIsAuthenticeted };
+export {
+  userDomain,
+  $user,
+  logInFx,
+  logOutFx,
+  getCurrentUserFx,
+  isAuthenticatedFx,
+  $userIsAuthenticeted,
+};

@@ -6,7 +6,7 @@ import { LoginForm } from "@/units/auth/login-form";
 import {
   $user,
   $userIsAuthenticeted,
-  isAuthenticatedFx,
+  getCurrentUserFx,
   logOutFx,
 } from "@/units/user/user.store";
 import { createRootRoute, Outlet, useLocation, useNavigate } from "@tanstack/react-router";
@@ -33,13 +33,11 @@ function getInitials(fullName: string, username: string): string {
 const SIDER_COLLAPSED_KEY = "app-sider-collapsed";
 
 const Index = () => {
-  const [isAuthenticated, isAuthenticatedPending, userIsAuthenticeted, user] =
-    useUnit([
-      isAuthenticatedFx,
-      isAuthenticatedFx.pending,
-      $userIsAuthenticeted,
-      $user,
-    ]);
+  const [getCurrentUserPending, userIsAuthenticeted, user] = useUnit([
+    getCurrentUserFx.pending,
+    $userIsAuthenticeted,
+    $user,
+  ]);
 
   const { pathname } = useLocation();
   const navigate = useNavigate();
@@ -54,8 +52,10 @@ const Index = () => {
   );
 
   useEffect(() => {
-    isAuthenticated();
-  }, [isAuthenticated]);
+    if (localStorage.getItem("accessToken")) {
+      getCurrentUserFx();
+    }
+  }, []);
 
   const handleCollapse = (next: boolean) => {
     setCollapsed(next);
@@ -84,7 +84,7 @@ const Index = () => {
     return pathname;
   }, [pathname]);
 
-  if (isAuthenticatedPending) {
+  if (getCurrentUserPending) {
     return (
       <div className={styles.loadingWrap}>
         <div className={styles.loader} />
