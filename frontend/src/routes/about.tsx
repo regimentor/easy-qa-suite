@@ -1,4 +1,4 @@
-import { Button } from "@/components/ui/button";
+import { Button } from "antd";
 import { createFileRoute } from "@tanstack/react-router";
 import styles from "./about.module.css";
 

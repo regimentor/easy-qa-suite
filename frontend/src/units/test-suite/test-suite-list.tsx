@@ -1,5 +1,4 @@
 import { useQuery } from "@apollo/client";
-import type { TestSuiteModel } from "types/graphql";
 import { testSuitesQuery } from "./test-suite.queries";
 import type React from "react";
 import { useState, useMemo } from "react";
@@ -23,10 +22,9 @@ const typeOptions = TEST_SUITE_TYPES.map((type) => ({
 }));
 
 export const TestSuiteList: React.FC<TTestSuiteListProps> = ({ projectId }) => {
-  const { data, loading, error } = useQuery<{ testSuites: TestSuiteModel[] }>(
-    testSuitesQuery,
-    { variables: { projectId } }
-  );
+  const { data, loading, error } = useQuery(testSuitesQuery, {
+    variables: { projectId },
+  });
   const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedType, setSelectedType] = useState("All");
@@ -39,7 +37,8 @@ export const TestSuiteList: React.FC<TTestSuiteListProps> = ({ projectId }) => {
         .includes(searchQuery.toLowerCase());
       const matchesType =
         selectedType.toLowerCase() === "all" ||
-        testSuite.type.toLowerCase() === selectedType.toLowerCase();
+        (testSuite.type?.value?.toLowerCase() ?? "") ===
+          selectedType.toLowerCase();
       return matchesSearch && matchesType;
     });
   }, [data?.testSuites, searchQuery, selectedType]);

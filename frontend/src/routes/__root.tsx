@@ -33,6 +33,9 @@ const Index = () => {
   if (!userIsAuthenticeted) {
     return (
       <div className={styles.loginWrap}>
+        <div className={styles.loginToggle}>
+          <ModeToggle />
+        </div>
         <LoginForm />
       </div>
     );

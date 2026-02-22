@@ -1,5 +1,4 @@
 import { useQuery } from "@apollo/client";
-import type { ProjectModel } from "types/graphql";
 import { projectQuery } from "./projects.queries";
 import type React from "react";
 import { CalendarIcon } from "@/components/icons/CalendarIcon";
@@ -12,10 +11,9 @@ type TProjectDetails = {
 };
 
 export const ProjectDetails: React.FC<TProjectDetails> = ({ id }) => {
-  const { data, loading, error } = useQuery<{ project: ProjectModel }>(
-    projectQuery,
-    { variables: { id } }
-  );
+  const { data, loading, error } = useQuery(projectQuery, {
+    variables: { id },
+  });
 
   const formatDate = (dateString: string) => {
     return DateTime.fromISO(dateString).toFormat("d MMM yyyy");

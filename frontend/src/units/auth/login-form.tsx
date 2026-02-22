@@ -1,31 +1,13 @@
-import { Button } from "@/components/ui/button";
-import { Form, FormField, FormItem, FormLabel } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
+import { Button, Form, Input } from "antd";
 import { logInFx } from "@/units/user/user.store";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
 import styles from "./login-form.module.css";
 
-const formSchema = z.object({
-  username: z.string().min(1, "Username is required"),
-  password: z.string().min(1, "Password is required"),
-});
-
-export type TLoginFormValues = z.infer<typeof formSchema>;
-
 export function LoginForm() {
-  const form = useForm<TLoginFormValues>({
-    resolver: zodResolver(formSchema),
-    defaultValues: {
-      username: "",
-      password: "",
-    },
-  });
+  const [form] = Form.useForm();
 
-  const handleSubmit = async (data: TLoginFormValues) => {
+  const handleSubmit = async (values: { username: string; password: string }) => {
     try {
-      await logInFx(data);
+      await logInFx(values);
     } catch (error) {
       console.error("Login failed:", error);
     }
@@ -39,50 +21,33 @@ export function LoginForm() {
         <h4 className={styles.hint}>Welcome back! Please enter your details</h4>
       </div>
       <div className={styles.formWrap}>
-        <Form {...form}>
-          <form
-            onSubmit={form.handleSubmit(handleSubmit)}
-            className={styles.form}
+        <Form
+          form={form}
+          layout="vertical"
+          onFinish={handleSubmit}
+          className={styles.form}
+        >
+          <Form.Item
+            name="username"
+            label="Username"
+            rules={[{ required: true, message: "Username is required" }]}
           >
-            <FormField
-              control={form.control}
-              name="username"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel htmlFor="username" className={styles.label}>
-                    Username
-                  </FormLabel>
-                  <Input
-                    id="username"
-                    placeholder="Enter your username"
-                    {...field}
-                  />
-                </FormItem>
-              )}
-            />
+            <Input placeholder="Enter your username" />
+          </Form.Item>
 
-            <FormField
-              control={form.control}
-              name="password"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel htmlFor="password" className={styles.label}>
-                    Password
-                  </FormLabel>
-                  <Input
-                    id="password"
-                    placeholder="Enter your password"
-                    type="password"
-                    {...field}
-                  />
-                </FormItem>
-              )}
-            />
+          <Form.Item
+            name="password"
+            label="Password"
+            rules={[{ required: true, message: "Password is required" }]}
+          >
+            <Input.Password placeholder="Enter your password" />
+          </Form.Item>
 
-            <Button type="submit" className={styles.submitBtn}>
-              {form.formState.isSubmitting ? "Signing in..." : "Sign in"}
+          <Form.Item>
+            <Button type="primary" htmlType="submit" block>
+              Sign in
             </Button>
-          </form>
+          </Form.Item>
         </Form>
       </div>
     </div>

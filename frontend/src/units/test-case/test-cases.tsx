@@ -1,5 +1,4 @@
 import { useQuery } from "@apollo/client";
-import type { TestCaseModel } from "types/graphql";
 import { testCasesQuery } from "./test-case.queries";
 import type React from "react";
 import { useState, useMemo } from "react";
@@ -26,10 +25,9 @@ const statusOptions = TEST_CASE_STATUSES.map((s) => ({
 }));
 
 export const TestCases: React.FC<TTestCasesProps> = ({ projectId }) => {
-  const { data, loading, error } = useQuery<{ testCases: TestCaseModel[] }>(
-    testCasesQuery,
-    { variables: { projectId } }
-  );
+  const { data, loading, error } = useQuery(testCasesQuery, {
+    variables: { projectId },
+  });
   const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedPriority, setSelectedPriority] = useState("All");
@@ -43,10 +41,12 @@ export const TestCases: React.FC<TTestCasesProps> = ({ projectId }) => {
         .includes(searchQuery.toLowerCase());
       const matchesPriority =
         selectedPriority.toLowerCase() === "all" ||
-        testCase.priority.toLowerCase() === selectedPriority.toLowerCase();
+        (testCase.priority?.value?.toLowerCase() ?? "") ===
+          selectedPriority.toLowerCase();
       const matchesStatus =
         selectedStatus.toLowerCase() === "all" ||
-        testCase.status.toLowerCase() === selectedStatus.toLowerCase();
+        (testCase.status?.value?.toLowerCase() ?? "") ===
+          selectedStatus.toLowerCase();
       return matchesSearch && matchesPriority && matchesStatus;
     });
   }, [data?.testCases, searchQuery, selectedPriority, selectedStatus]);

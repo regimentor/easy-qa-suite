@@ -1,6 +1,6 @@
 import { useQuery } from "@apollo/client";
-import type { ProjectModel } from "types/graphql";
 import { projectsQuery } from "./projects.queries";
+import type { ProjectFields } from "./projects.queries";
 import type React from "react";
 import { Button, Input } from "antd";
 import { CalendarIcon } from "@/components/icons/CalendarIcon";
@@ -14,7 +14,7 @@ import { formatDate } from "@/lib/format-date";
 import styles from "./projects-list.module.css";
 
 type TProjectSmallCardProps = {
-  project: ProjectModel;
+  project: ProjectFields;
 };
 
 const ProjectSmallCard: React.FC<TProjectSmallCardProps> = ({ project }) => {
@@ -57,9 +57,7 @@ const ProjectSmallCard: React.FC<TProjectSmallCardProps> = ({ project }) => {
 };
 
 export const ProjectsList: React.FC<{ listType?: "small" | "large" }> = () => {
-  const { data, loading, error } = useQuery<{ projects: ProjectModel[] }>(
-    projectsQuery
-  );
+  const { data, loading, error } = useQuery(projectsQuery);
   const navigate = useNavigate();
 
   return (

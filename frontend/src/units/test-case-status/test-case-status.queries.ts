@@ -1,6 +1,22 @@
 import { gql } from "@apollo/client";
+import type { TypedDocumentNode } from "@apollo/client";
+import type { TestCaseStatusModel } from "types/graphql";
 
-export const testCaseStatusesQuery = gql`
+export type TestCaseStatusFields = Pick<
+  TestCaseStatusModel,
+  "id" | "value" | "description" | "archived" | "createdAt" | "updatedAt"
+>;
+
+type TestCaseStatusesQueryData = { testCaseStatuses: TestCaseStatusFields[] };
+type TestCaseStatusesQueryVariables = { includeArchived?: boolean };
+
+type TestCaseStatusQueryData = { testCaseStatus: TestCaseStatusFields };
+type TestCaseStatusQueryVariables = { id: string };
+
+export const testCaseStatusesQuery: TypedDocumentNode<
+  TestCaseStatusesQueryData,
+  TestCaseStatusesQueryVariables
+> = gql`
   query TestCaseStatuses($includeArchived: Boolean) {
     testCaseStatuses(includeArchived: $includeArchived) {
       id
@@ -13,7 +29,10 @@ export const testCaseStatusesQuery = gql`
   }
 `;
 
-export const testCaseStatusQuery = gql`
+export const testCaseStatusQuery: TypedDocumentNode<
+  TestCaseStatusQueryData,
+  TestCaseStatusQueryVariables
+> = gql`
   query TestCaseStatus($id: String!) {
     testCaseStatus(id: $id) {
       id

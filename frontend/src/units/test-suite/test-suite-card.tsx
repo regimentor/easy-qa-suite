@@ -1,5 +1,5 @@
-import type { TestSuiteModel } from "types/graphql";
 import { useNavigate } from "@tanstack/react-router";
+import type { TestSuiteFields } from "./test-suite.queries";
 import { CalendarIcon } from "@/components/icons/CalendarIcon";
 import { ClockIcon } from "@/components/icons/ClockIcon";
 import { formatDate } from "@/lib/format-date";
@@ -7,7 +7,7 @@ import type React from "react";
 import styles from "./test-suite-card.module.css";
 
 export type TTestSuiteCardProps = {
-  testSuite: TestSuiteModel;
+  testSuite: TestSuiteFields;
 };
 
 export const TestSuiteCard: React.FC<TTestSuiteCardProps> = ({ testSuite }) => {
@@ -30,7 +30,9 @@ export const TestSuiteCard: React.FC<TTestSuiteCardProps> = ({ testSuite }) => {
           <div className={styles.body}>
             <div className={styles.headerRow}>
               <h3 className={styles.name}>{testSuite.name}</h3>
-              <span className={styles.badge}>{testSuite.type.toUpperCase()}</span>
+              <span className={styles.badge}>
+                {(testSuite.type?.value ?? "").toUpperCase()}
+              </span>
             </div>
             {testSuite.description && (
               <p className={styles.desc}>{testSuite.description}</p>

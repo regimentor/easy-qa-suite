@@ -1,39 +1,36 @@
-import { Form, FormField, FormItem, FormLabel } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { Button, Segmented } from "antd";
-import { useMutation } from "@apollo/client";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
-import { createTestSuiteMutation } from "./test-suite.queries";
+import { Button, Form, Input, Segmented } from "antd";
+import { useMutation, useQuery } from "@apollo/client";
 import { useNavigate } from "@tanstack/react-router";
-import { TEST_SUITE_TYPES } from "./const";
+import { useEffect } from "react";
+import { createTestSuiteMutation } from "./test-suite.queries";
+import { testSuiteTypesQuery } from "@/units/test-suite-type/test-suite-type.queries";
 import styles from "./create-test-suite.module.css";
 
-const formSchema = z.object({
-  name: z.string().min(1, "Name is required"),
-  description: z.string().optional(),
-  type: z.enum(["SMOKE", "REGRESSION", "FUNCTIONAL", "COMPATIBILITY"]),
-});
-
-export type TTestSuiteFormValues = z.infer<typeof formSchema>;
+type TTestSuiteFormValues = {
+  name: string;
+  description?: string;
+  typeId: string;
+};
 
 type CreateTestSuiteProps = {
   projectId: string;
 };
 
-const typeOptions = TEST_SUITE_TYPES.filter((t) => t !== "All").map((type) => ({
-  label: type,
-  value: type.toUpperCase(),
-}));
-
 export function CreateTestSuite({ projectId }: CreateTestSuiteProps) {
   const navigate = useNavigate();
+  const [form] = Form.useForm<TTestSuiteFormValues>();
+
+  const { data: typesData } = useQuery(testSuiteTypesQuery);
+
+  const typeOptions =
+    typesData?.testSuiteTypes.map((t) => ({
+      label: t.value,
+      value: t.id,
+    })) ?? [];
 
   const [mutate, { loading, error }] = useMutation(createTestSuiteMutation, {
     onCompleted: () => {
-      form.reset();
+      form.resetFields();
       navigate({
         to: "/projects/$project-id",
         params: { "project-id": projectId },
@@ -42,31 +39,29 @@ export function CreateTestSuite({ projectId }: CreateTestSuiteProps) {
     },
   });
 
-  const form = useForm<TTestSuiteFormValues>({
-    resolver: zodResolver(formSchema),
-    defaultValues: {
-      name: "",
-      description: "",
-      type: "FUNCTIONAL",
-    },
-  });
-
-  const handleSubmit = async (formData: TTestSuiteFormValues) => {
-    try {
-      await mutate({
-        variables: {
-          input: {
-            name: formData.name,
-            description: formData.description || "",
-            type: formData.type,
-            projectId: projectId,
-          },
+  const handleSubmit = (values: TTestSuiteFormValues) => {
+    mutate({
+      variables: {
+        input: {
+          name: values.name,
+          description: values.description ?? "",
+          typeId: values.typeId,
+          projectId,
         },
-      });
-    } catch (err) {
-      console.error("Error creating test suite:", err);
-    }
+      },
+    });
   };
+
+  const defaultTypeId =
+    typesData?.testSuiteTypes.find(
+      (t) => t.value.toUpperCase() === "FUNCTIONAL"
+    )?.id ?? typesData?.testSuiteTypes[0]?.id ?? "";
+
+  useEffect(() => {
+    if (defaultTypeId) {
+      form.setFieldsValue({ typeId: defaultTypeId });
+    }
+  }, [defaultTypeId, form]);
 
   return (
     <div className={styles.wrap}>
@@ -77,78 +72,46 @@ export function CreateTestSuite({ projectId }: CreateTestSuiteProps) {
         </h4>
       </div>
       <div className={styles.formWrap}>
-        <Form {...form}>
-          <form
-            onSubmit={form.handleSubmit(handleSubmit)}
-            className={styles.form}
+        <Form
+          form={form}
+          layout="vertical"
+          onFinish={handleSubmit}
+          initialValues={{ typeId: "" }}
+          className={styles.form}
+        >
+          <Form.Item
+            name="name"
+            label="Test Suite Name"
+            rules={[{ required: true, message: "Name is required" }]}
           >
-            <FormField
-              control={form.control}
-              name="name"
-              render={({ field }) => (
-                <FormItem className={styles.formItem}>
-                  <FormLabel htmlFor="name" className={styles.label}>
-                    Test Suite Name
-                  </FormLabel>
-                  <Input
-                    id="name"
-                    placeholder="Enter test suite name"
-                    {...field}
-                  />
-                </FormItem>
-              )}
+            <Input placeholder="Enter test suite name" />
+          </Form.Item>
+          <Form.Item name="description" label="Description">
+            <Input.TextArea
+              placeholder="Detailed description of the test suite"
+              rows={3}
             />
-            <FormField
-              control={form.control}
-              name="description"
-              render={({ field }) => (
-                <FormItem className={styles.formItem}>
-                  <FormLabel htmlFor="description" className={styles.label}>
-                    Description
-                  </FormLabel>
-                  <Textarea
-                    id="description"
-                    placeholder="Detailed description of the test suite"
-                    {...field}
-                  />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="type"
-              render={({ field }) => (
-                <FormItem className={styles.formItem}>
-                  <FormLabel htmlFor="type" className={styles.label}>
-                    Type
-                  </FormLabel>
-                  <div className={styles.segmentedWrap}>
-                    <Segmented
-                      value={field.value}
-                      onChange={(value) =>
-                        value && field.onChange(value as string)
-                      }
-                      options={typeOptions}
-                      block
-                    />
-                  </div>
-                </FormItem>
-              )}
-            />
-            {error && (
-              <div className={styles.error}>
-                {error.message || "An error occurred while creating the test suite"}
-              </div>
-            )}
+          </Form.Item>
+          <Form.Item name="typeId" label="Type">
+            <Segmented options={typeOptions} block />
+          </Form.Item>
+          {error && (
+            <div className={styles.error}>
+              {error.message ||
+                "An error occurred while creating the test suite"}
+            </div>
+          )}
+          <Form.Item>
             <Button
               type="primary"
               htmlType="submit"
               className={styles.submitBtn}
-              disabled={loading}
+              block
+              loading={loading}
             >
-              {loading ? "Creating..." : "Create Test Suite"}
+              Create Test Suite
             </Button>
-          </form>
+          </Form.Item>
         </Form>
       </div>
     </div>

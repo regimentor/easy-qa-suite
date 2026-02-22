@@ -1,5 +1,5 @@
-import type { TestCaseModel } from "types/graphql";
 import { useNavigate } from "@tanstack/react-router";
+import type { TestCaseFields } from "./test-case.queries";
 import { CalendarIcon } from "@/components/icons/CalendarIcon";
 import { ClockIcon } from "@/components/icons/ClockIcon";
 import { formatDate } from "@/lib/format-date";
@@ -7,7 +7,7 @@ import React from "react";
 import styles from "./test-case-card.module.css";
 
 export type TTestCaseCardProps = {
-  testCase: TestCaseModel;
+  testCase: TestCaseFields;
 };
 
 export const TestCaseCard: React.FC<TTestCaseCardProps> = ({ testCase }) => {
@@ -56,14 +56,22 @@ export const TestCaseCard: React.FC<TTestCaseCardProps> = ({ testCase }) => {
             <div className={styles.headerRow}>
               <h3 className={styles.name}>{testCase.title}</h3>
               <span
-                className={styles.badge + " " + getPriorityClass(testCase.priority)}
+                className={
+                  styles.badge +
+                  " " +
+                  getPriorityClass(testCase.priority?.value ?? "")
+                }
               >
-                {testCase.priority.toUpperCase()}
+                {(testCase.priority?.value ?? "").toUpperCase()}
               </span>
               <span
-                className={styles.badge + " " + getStatusClass(testCase.status)}
+                className={
+                  styles.badge +
+                  " " +
+                  getStatusClass(testCase.status?.value ?? "")
+                }
               >
-                {testCase.status.toUpperCase()}
+                {(testCase.status?.value ?? "").toUpperCase()}
               </span>
             </div>
             {testCase.description && (

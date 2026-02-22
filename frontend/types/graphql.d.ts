@@ -12,7 +12,7 @@ export type Scalars = {
   Boolean: { input: boolean; output: boolean; }
   Int: { input: number; output: number; }
   Float: { input: number; output: number; }
-  DateTimeISO: { input: string; output: string; }
+  DateTimeISO: { input: any; output: any; }
 };
 
 export type AddTestCasesToSuiteInput = {
@@ -30,9 +30,9 @@ export type CreateTestCaseInput = {
   description: Scalars['String']['input'];
   postconditions?: InputMaybe<Scalars['String']['input']>;
   preconditions?: InputMaybe<Scalars['String']['input']>;
-  priority: Scalars['String']['input'];
+  priorityId: Scalars['String']['input'];
   projectId: Scalars['String']['input'];
-  status: Scalars['String']['input'];
+  statusId: Scalars['String']['input'];
   title: Scalars['String']['input'];
 };
 
@@ -50,7 +50,7 @@ export type CreateTestSuiteInput = {
   description?: InputMaybe<Scalars['String']['input']>;
   name: Scalars['String']['input'];
   projectId: Scalars['String']['input'];
-  type: Scalars['String']['input'];
+  typeId: Scalars['String']['input'];
 };
 
 export type CreateUserInput = {
@@ -110,17 +110,69 @@ export type ProjectModel = {
 
 export type Query = {
   __typename?: 'Query';
+  project: ProjectModel;
   projects: Array<ProjectModel>;
+  testCasePriorities: Array<TestCasePriorityModel>;
+  testCasePriority: TestCasePriorityModel;
+  testCaseStatus: TestCaseStatusModel;
+  testCaseStatuses: Array<TestCaseStatusModel>;
   testCases: Array<TestCaseModel>;
   testResults: Array<TestResultModel>;
   testSuite: TestSuiteModel;
+  testSuiteType: TestSuiteTypeModel;
+  testSuiteTypes: Array<TestSuiteTypeModel>;
   testSuites: Array<TestSuiteModel>;
   users: Array<UserModel>;
 };
 
 
+export type QueryProjectArgs = {
+  id: Scalars['String']['input'];
+};
+
+
+export type QueryTestCasePrioritiesArgs = {
+  includeArchived?: InputMaybe<Scalars['Boolean']['input']>;
+};
+
+
+export type QueryTestCasePriorityArgs = {
+  id: Scalars['String']['input'];
+};
+
+
+export type QueryTestCaseStatusArgs = {
+  id: Scalars['String']['input'];
+};
+
+
+export type QueryTestCaseStatusesArgs = {
+  includeArchived?: InputMaybe<Scalars['Boolean']['input']>;
+};
+
+
+export type QueryTestCasesArgs = {
+  projectId: Scalars['String']['input'];
+};
+
+
 export type QueryTestSuiteArgs = {
   id: Scalars['String']['input'];
+};
+
+
+export type QueryTestSuiteTypeArgs = {
+  id: Scalars['String']['input'];
+};
+
+
+export type QueryTestSuiteTypesArgs = {
+  includeArchived?: InputMaybe<Scalars['Boolean']['input']>;
+};
+
+
+export type QueryTestSuitesArgs = {
+  projectId?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type TestCaseModel = {
@@ -130,11 +182,33 @@ export type TestCaseModel = {
   id: Scalars['ID']['output'];
   postconditions?: Maybe<Scalars['String']['output']>;
   preconditions?: Maybe<Scalars['String']['output']>;
-  priority: Scalars['String']['output'];
+  priority?: Maybe<TestCasePriorityModel>;
+  priorityId: Scalars['ID']['output'];
   projectId: Scalars['String']['output'];
-  status: Scalars['String']['output'];
+  status?: Maybe<TestCaseStatusModel>;
+  statusId: Scalars['ID']['output'];
   title: Scalars['String']['output'];
   updatedAt: Scalars['DateTimeISO']['output'];
+};
+
+export type TestCasePriorityModel = {
+  __typename?: 'TestCasePriorityModel';
+  archived: Scalars['Boolean']['output'];
+  createdAt: Scalars['DateTimeISO']['output'];
+  description: Scalars['String']['output'];
+  id: Scalars['ID']['output'];
+  updatedAt: Scalars['DateTimeISO']['output'];
+  value: Scalars['String']['output'];
+};
+
+export type TestCaseStatusModel = {
+  __typename?: 'TestCaseStatusModel';
+  archived: Scalars['Boolean']['output'];
+  createdAt: Scalars['DateTimeISO']['output'];
+  description: Scalars['String']['output'];
+  id: Scalars['ID']['output'];
+  updatedAt: Scalars['DateTimeISO']['output'];
+  value: Scalars['String']['output'];
 };
 
 export type TestResultModel = {
@@ -157,8 +231,20 @@ export type TestSuiteModel = {
   name: Scalars['String']['output'];
   projectId: Scalars['String']['output'];
   testCases?: Maybe<Array<TestCaseModel>>;
-  type: Scalars['String']['output'];
+  type?: Maybe<TestSuiteTypeModel>;
+  typeId: Scalars['ID']['output'];
+  typeModel?: Maybe<TestSuiteTypeModel>;
   updatedAt: Scalars['DateTimeISO']['output'];
+};
+
+export type TestSuiteTypeModel = {
+  __typename?: 'TestSuiteTypeModel';
+  archived: Scalars['Boolean']['output'];
+  createdAt: Scalars['DateTimeISO']['output'];
+  description: Scalars['String']['output'];
+  id: Scalars['ID']['output'];
+  updatedAt: Scalars['DateTimeISO']['output'];
+  value: Scalars['String']['output'];
 };
 
 export type UserModel = {

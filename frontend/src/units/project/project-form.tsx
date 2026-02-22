@@ -1,29 +1,22 @@
-import { Button } from "@/components/ui/button";
-import { Form, FormField, FormItem, FormLabel } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
+import { Button, Form, Input } from "antd";
 import { useMutation } from "@apollo/client";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
-import { createProjectMutation } from "./projects.queries";
 import { useNavigate } from "@tanstack/react-router";
+import { createProjectMutation } from "./projects.queries";
 import styles from "./project-form.module.css";
 
-const formSchema = z.object({
-  name: z.string().min(1, "Name is required"),
-  key: z.string().min(1, "Project code is required"),
-  description: z.string().optional(),
-});
-
-export type TProjectFormValues = z.infer<typeof formSchema>;
+type TProjectFormValues = {
+  name: string;
+  key: string;
+  description?: string;
+};
 
 export function ProjectForm() {
   const navigate = useNavigate();
+  const [form] = Form.useForm<TProjectFormValues>();
 
   const [mutate, { loading, error }] = useMutation(createProjectMutation, {
     onCompleted: (data) => {
-      form.reset();
+      form.resetFields();
       navigate({
         to: "/projects/$project-id",
         params: { "project-id": data.createProject.id },
@@ -31,29 +24,16 @@ export function ProjectForm() {
     },
   });
 
-  const form = useForm<TProjectFormValues>({
-    resolver: zodResolver(formSchema),
-    defaultValues: {
-      name: "",
-      key: "",
-      description: "",
-    },
-  });
-
-  const handleSubmit = async (formData: TProjectFormValues) => {
-    try {
-      await mutate({
-        variables: {
-          input: {
-            name: formData.name,
-            key: formData.key,
-            description: formData.description || "",
-          },
+  const handleSubmit = (values: TProjectFormValues) => {
+    mutate({
+      variables: {
+        input: {
+          name: values.name,
+          key: values.key,
+          description: values.description || "",
         },
-      });
-    } catch (err) {
-      console.error("Error creating project:", err);
-    }
+      },
+    });
   };
 
   return (
@@ -65,69 +45,48 @@ export function ProjectForm() {
         </h4>
       </div>
       <div className={styles.formWrap}>
-        <Form {...form}>
-          <form
-            onSubmit={form.handleSubmit(handleSubmit)}
-            className={styles.form}
+        <Form
+          form={form}
+          layout="vertical"
+          onFinish={handleSubmit}
+          className={styles.form}
+        >
+          <Form.Item
+            name="name"
+            label="Project Name"
+            rules={[{ required: true, message: "Name is required" }]}
           >
-            <FormField
-              control={form.control}
-              name="name"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel htmlFor="name" className={styles.label}>
-                    Project Name
-                  </FormLabel>
-                  <Input
-                    id="name"
-                    placeholder="Enter project name"
-                    {...field}
-                  />
-                </FormItem>
-              )}
+            <Input placeholder="Enter project name" />
+          </Form.Item>
+          <Form.Item
+            name="key"
+            label="Project Code"
+            rules={[{ required: true, message: "Project code is required" }]}
+          >
+            <Input placeholder="Unique code (e.g., EQA)" />
+          </Form.Item>
+          <Form.Item name="description" label="Description">
+            <Input.TextArea
+              placeholder="Brief project description"
+              rows={3}
             />
-            <FormField
-              control={form.control}
-              name="key"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel htmlFor="key" className={styles.label}>
-                    Project Code
-                  </FormLabel>
-                  <Input
-                    id="key"
-                    placeholder="Unique code (e.g., EQA)"
-                    {...field}
-                  />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="description"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel htmlFor="description" className={styles.label}>
-                    Description
-                  </FormLabel>
-                  <Textarea
-                    id="description"
-                    placeholder="Brief project description"
-                    {...field}
-                  />
-                </FormItem>
-              )}
-            />
-            {error && (
-              <div className={styles.error}>
-                {error.message ||
-                  "An error occurred while creating the project"}
-              </div>
-            )}
-            <Button type="submit" className={styles.submitBtn} disabled={loading}>
-              {loading ? "Creating..." : "Create Project"}
+          </Form.Item>
+          {error && (
+            <div className={styles.error}>
+              {error.message || "An error occurred while creating the project"}
+            </div>
+          )}
+          <Form.Item>
+            <Button
+              className={styles.submitBtn}
+              type="primary"
+              htmlType="submit"
+              block
+              loading={loading}
+            >
+              Create Project
             </Button>
-          </form>
+          </Form.Item>
         </Form>
       </div>
     </div>

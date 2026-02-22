@@ -1,44 +1,52 @@
-import { Form, FormField, FormItem, FormLabel } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { Button, Segmented } from "antd";
-import { useMutation } from "@apollo/client";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
-import { createTestCaseMutation } from "./test-case.queries";
+import { Button, Form, Input, Segmented } from "antd";
+import { useMutation, useQuery } from "@apollo/client";
 import { useNavigate } from "@tanstack/react-router";
-import { TEST_CASE_PRIORITIES, TEST_CASE_STATUSES } from "./consts";
+import { useEffect } from "react";
+import { createTestCaseMutation } from "./test-case.queries";
+import {
+  testCasePrioritiesQuery,
+  type TestCasePriorityFields,
+} from "@/units/test-case-priority/test-case-priority.queries";
+import {
+  testCaseStatusesQuery,
+  type TestCaseStatusFields,
+} from "@/units/test-case-status/test-case-status.queries";
 import styles from "./create-test-case.module.css";
 
-const formSchema = z.object({
-  title: z.string().min(1, "Title is required"),
-  description: z.string().optional(),
-  preconditions: z.string().optional(),
-  postconditions: z.string().optional(),
-  priority: z.enum(["LOW", "MEDIUM", "HIGH", "CRITICAL"]),
-  status: z.enum(["DRAFT", "ACTIVE", "DEPRECATED"]),
-});
-
-export type TTestCaseFormValues = z.infer<typeof formSchema>;
+type TTestCaseFormValues = {
+  title: string;
+  description?: string;
+  preconditions?: string;
+  postconditions?: string;
+  priorityId: string;
+  statusId: string;
+};
 
 type CreateTestCaseProps = {
   projectId: string;
 };
 
-const priorityOptions = TEST_CASE_PRIORITIES.filter((p) => p !== "All").map(
-  (p) => ({ label: p, value: p.toUpperCase() })
-);
-const statusOptions = TEST_CASE_STATUSES.filter((s) => s !== "All").map(
-  (s) => ({ label: s, value: s.toUpperCase() })
-);
-
 export function CreateTestCase({ projectId }: CreateTestCaseProps) {
   const navigate = useNavigate();
+  const [form] = Form.useForm<TTestCaseFormValues>();
+
+  const { data: prioritiesData } = useQuery(testCasePrioritiesQuery);
+  const { data: statusesData } = useQuery(testCaseStatusesQuery);
+
+  const priorityOptions =
+    prioritiesData?.testCasePriorities.map((p: TestCasePriorityFields) => ({
+      label: p.value,
+      value: p.id,
+    })) ?? [];
+  const statusOptions =
+    statusesData?.testCaseStatuses.map((s: TestCaseStatusFields) => ({
+      label: s.value,
+      value: s.id,
+    })) ?? [];
 
   const [mutate, { loading, error }] = useMutation(createTestCaseMutation, {
     onCompleted: () => {
-      form.reset();
+      form.resetFields();
       navigate({
         to: "/projects/$project-id",
         params: { "project-id": projectId },
@@ -47,37 +55,39 @@ export function CreateTestCase({ projectId }: CreateTestCaseProps) {
     },
   });
 
-  const form = useForm<TTestCaseFormValues>({
-    resolver: zodResolver(formSchema),
-    defaultValues: {
-      title: "",
-      description: "",
-      preconditions: "",
-      postconditions: "",
-      priority: "MEDIUM",
-      status: "DRAFT",
-    },
-  });
-
-  const handleSubmit = async (formData: TTestCaseFormValues) => {
-    try {
-      await mutate({
-        variables: {
-          input: {
-            title: formData.title,
-            description: formData.description || "",
-            preconditions: formData.preconditions || "",
-            postconditions: formData.postconditions || "",
-            priority: formData.priority,
-            status: formData.status,
-            projectId: projectId,
-          },
+  const handleSubmit = (values: TTestCaseFormValues) => {
+    mutate({
+      variables: {
+        input: {
+          title: values.title,
+          description: values.description ?? "",
+          preconditions: values.preconditions ?? "",
+          postconditions: values.postconditions ?? "",
+          priorityId: values.priorityId,
+          statusId: values.statusId,
+          projectId,
         },
-      });
-    } catch (err) {
-      console.error("Error creating test case:", err);
-    }
+      },
+    });
   };
+
+  const defaultPriorityId =
+    prioritiesData?.testCasePriorities.find(
+      (p: TestCasePriorityFields) => p.value.toUpperCase() === "MEDIUM"
+    )?.id ?? prioritiesData?.testCasePriorities[0]?.id ?? "";
+  const defaultStatusId =
+    statusesData?.testCaseStatuses.find(
+      (s: TestCaseStatusFields) => s.value.toUpperCase() === "DRAFT"
+    )?.id ?? statusesData?.testCaseStatuses[0]?.id ?? "";
+
+  useEffect(() => {
+    if (defaultPriorityId || defaultStatusId) {
+      form.setFieldsValue({
+        priorityId: defaultPriorityId || form.getFieldValue("priorityId"),
+        statusId: defaultStatusId || form.getFieldValue("statusId"),
+      });
+    }
+  }, [defaultPriorityId, defaultStatusId, form]);
 
   return (
     <div className={styles.wrap}>
@@ -88,132 +98,61 @@ export function CreateTestCase({ projectId }: CreateTestCaseProps) {
         </h4>
       </div>
       <div className={styles.formWrap}>
-        <Form {...form}>
-          <form
-            onSubmit={form.handleSubmit(handleSubmit)}
-            className={styles.form}
+        <Form
+          form={form}
+          layout="vertical"
+          onFinish={handleSubmit}
+          initialValues={{ priorityId: "", statusId: "" }}
+          className={styles.form}
+        >
+          <Form.Item
+            name="title"
+            label="Test Case Title"
+            rules={[{ required: true, message: "Title is required" }]}
           >
-            <FormField
-              control={form.control}
-              name="title"
-              render={({ field }) => (
-                <FormItem className={styles.formItem}>
-                  <FormLabel htmlFor="title" className={styles.label}>
-                    Test Case Title
-                  </FormLabel>
-                  <Input
-                    id="title"
-                    placeholder="Enter test case title"
-                    {...field}
-                  />
-                </FormItem>
-              )}
+            <Input placeholder="Enter test case title" />
+          </Form.Item>
+          <Form.Item name="description" label="Description">
+            <Input.TextArea
+              placeholder="Detailed description of the test case"
+              rows={3}
             />
-            <FormField
-              control={form.control}
-              name="description"
-              render={({ field }) => (
-                <FormItem className={styles.formItem}>
-                  <FormLabel htmlFor="description" className={styles.label}>
-                    Description
-                  </FormLabel>
-                  <Textarea
-                    id="description"
-                    placeholder="Detailed description of the test case"
-                    {...field}
-                  />
-                </FormItem>
-              )}
+          </Form.Item>
+          <Form.Item name="preconditions" label="Preconditions">
+            <Input.TextArea
+              placeholder="Conditions that must be met before running the test"
+              rows={2}
             />
-            <FormField
-              control={form.control}
-              name="preconditions"
-              render={({ field }) => (
-                <FormItem className={styles.formItem}>
-                  <FormLabel htmlFor="preconditions" className={styles.label}>
-                    Preconditions
-                  </FormLabel>
-                  <Textarea
-                    id="preconditions"
-                    placeholder="Conditions that must be met before running the test"
-                    {...field}
-                  />
-                </FormItem>
-              )}
+          </Form.Item>
+          <Form.Item name="postconditions" label="Postconditions">
+            <Input.TextArea
+              placeholder="Results that should be achieved after successful test execution"
+              rows={2}
             />
-            <FormField
-              control={form.control}
-              name="postconditions"
-              render={({ field }) => (
-                <FormItem className={styles.formItem}>
-                  <FormLabel htmlFor="postconditions" className={styles.label}>
-                    Postconditions
-                  </FormLabel>
-                  <Textarea
-                    id="postconditions"
-                    placeholder="Results that should be achieved after successful test execution"
-                    {...field}
-                  />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="priority"
-              render={({ field }) => (
-                <FormItem className={styles.formItem}>
-                  <FormLabel htmlFor="priority" className={styles.label}>
-                    Priority
-                  </FormLabel>
-                  <div className={styles.segmentedWrap}>
-                    <Segmented
-                      value={field.value}
-                      onChange={(value) =>
-                        value && field.onChange(value as string)
-                      }
-                      options={priorityOptions}
-                      block
-                    />
-                  </div>
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="status"
-              render={({ field }) => (
-                <FormItem className={styles.formItem}>
-                  <FormLabel htmlFor="status" className={styles.label}>
-                    Status
-                  </FormLabel>
-                  <div className={styles.segmentedWrap}>
-                    <Segmented
-                      value={field.value}
-                      onChange={(value) =>
-                        value && field.onChange(value as string)
-                      }
-                      options={statusOptions}
-                      block
-                    />
-                  </div>
-                </FormItem>
-              )}
-            />
-            {error && (
-              <div className={styles.error}>
-                {error.message ||
-                  "An error occurred while creating the test case"}
-              </div>
-            )}
+          </Form.Item>
+          <Form.Item name="priorityId" label="Priority">
+            <Segmented options={priorityOptions} block />
+          </Form.Item>
+          <Form.Item name="statusId" label="Status">
+            <Segmented options={statusOptions} block />
+          </Form.Item>
+          {error && (
+            <div className={styles.error}>
+              {error.message ||
+                "An error occurred while creating the test case"}
+            </div>
+          )}
+          <Form.Item>
             <Button
               type="primary"
               htmlType="submit"
               className={styles.submitBtn}
-              disabled={loading}
+              block
+              loading={loading}
             >
-              {loading ? "Creating..." : "Create Test Case"}
+              Create Test Case
             </Button>
-          </form>
+          </Form.Item>
         </Form>
       </div>
     </div>

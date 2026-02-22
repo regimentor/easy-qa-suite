@@ -1,6 +1,25 @@
 import { gql } from "@apollo/client";
+import type { TypedDocumentNode } from "@apollo/client";
+import type { CreateProjectInput, ProjectModel } from "types/graphql";
 
-export const projectsQuery = gql`
+export type ProjectFields = Pick<
+  ProjectModel,
+  "id" | "key" | "name" | "description" | "createdAt" | "updatedAt"
+>;
+
+type ProjectsQueryData = { projects: ProjectFields[] };
+type ProjectsQueryVariables = Record<string, never>;
+
+type ProjectQueryData = { project: ProjectFields };
+type ProjectQueryVariables = { id: string };
+
+type CreateProjectMutationData = { createProject: ProjectFields };
+type CreateProjectMutationVariables = { input: CreateProjectInput };
+
+export const projectsQuery: TypedDocumentNode<
+  ProjectsQueryData,
+  ProjectsQueryVariables
+> = gql`
   query {
     projects {
       id
@@ -13,7 +32,10 @@ export const projectsQuery = gql`
   }
 `;
 
-export const createProjectMutation = gql`
+export const createProjectMutation: TypedDocumentNode<
+  CreateProjectMutationData,
+  CreateProjectMutationVariables
+> = gql`
   mutation CreateProject($input: CreateProjectInput!) {
     createProject(data: $input) {
       id
@@ -26,7 +48,10 @@ export const createProjectMutation = gql`
   }
 `;
 
-export const projectQuery = gql`
+export const projectQuery: TypedDocumentNode<
+  ProjectQueryData,
+  ProjectQueryVariables
+> = gql`
   query Project($id: String!) {
     project(id: $id) {
       id

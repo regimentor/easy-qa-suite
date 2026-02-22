@@ -1,4 +1,4 @@
-import { ConfigProvider, theme } from "antd";
+import { App, ConfigProvider, theme } from "antd";
 import { useTheme } from "@/components/theme-provider";
 
 export function AntdConfigProvider({
@@ -16,11 +16,12 @@ export function AntdConfigProvider({
 
   return (
     <ConfigProvider
+      componentSize="small"
       theme={{
         algorithm: isDark ? theme.darkAlgorithm : theme.defaultAlgorithm,
       }}
     >
-      {children}
+      <App>{children}</App>
     </ConfigProvider>
   );
 }
