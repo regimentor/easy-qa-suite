@@ -1,6 +1,7 @@
 import { usersSeed } from "./seeds/users.seed";
 import { projectsSeed } from "./seeds/projects.seed";
 import { testCasesSeed } from "./seeds/test_cases.seed";
+import { testCasesBulkSeed } from "./seeds/test_cases_bulk.seed";
 import { testResultsSeed } from "./seeds/test_results.seed";
 import { testSuitesSeed } from "./seeds/test_suites.seed";
 import { suiteTestCasesSeed } from "./seeds/suite_test_cases.seed";
@@ -19,6 +20,7 @@ async function main() {
   await testResultsSeed(prismaClient);
   await testSuitesSeed(prismaClient);
   await suiteTestCasesSeed(prismaClient);
+  await testCasesBulkSeed(prismaClient);
 }
 
 main()

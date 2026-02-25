@@ -11,6 +11,16 @@ function findBy(where: Prisma.TestCaseWhereInput) {
   });
 }
 
+function findById(id: bigint) {
+  return prismaClient.testCase.findUnique({
+    where: { id },
+    include: {
+      status: true,
+      priority: true,
+    },
+  });
+}
+
 function firstFindBy(where: Prisma.TestCaseWhereInput) {
   return prismaClient.testCase.findFirst({ 
     where,
@@ -27,6 +37,7 @@ function create(data: Prisma.TestCaseCreateInput) {
 
 export const testCasesRepository = {
   findBy,
+  findById,
   firstFindBy,
   create
 };

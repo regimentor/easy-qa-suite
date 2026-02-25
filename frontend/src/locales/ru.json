@@ -87,7 +87,14 @@
     "noSuites": "Наборы тестов не найдены",
     "noSuitesHint": "Создайте первый набор тестов.",
     "noMatching": "Подходящих наборов не найдено",
-    "noMatchingHint": "Измените критерии поиска или фильтры."
+    "noMatchingHint": "Измените критерии поиска или фильтры.",
+    "addTestCases": "Добавить тест-кейсы",
+    "testCasesInSuite": "Тест-кейсы в наборе",
+    "noTestCasesInSuite": "В наборе пока нет тест-кейсов",
+    "noTestCasesInSuiteHint": "Добавьте тест-кейсы из проекта в этот набор.",
+    "addTestCasesDrawerTitle": "Добавить тест-кейсы в набор",
+    "addTestCasesDrawerHint": "Выберите тест-кейсы для добавления в набор.",
+    "noTestCasesToAdd": "Нет тест-кейсов для добавления или поиск не дал результатов."
   },
   "testCase": {
     "createTitle": "Создать тест-кейс",
@@ -95,6 +102,7 @@
     "title": "Название тест-кейса",
     "titleRequired": "Введите название",
     "titlePlaceholder": "Введите название тест-кейса",
+    "description": "Описание",
     "descriptionPlaceholder": "Подробное описание тест-кейса",
     "preconditions": "Предусловия",
     "preconditionsPlaceholder": "Условия, которые должны быть выполнены до запуска теста",

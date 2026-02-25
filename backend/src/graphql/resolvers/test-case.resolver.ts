@@ -21,6 +21,18 @@ import { logger } from "../../logger/logger";
 @Resolver(() => TestCaseModel)
 @ErrorHandler()
 export class TestCaseResolver {
+  @Query(() => TestCaseModel, {
+    name: "testCase",
+  })
+  async getTestCase(
+    @Arg("id", () => String) id: string,
+    @Ctx() ctx: TGraphqlContext
+  ): Promise<TestCaseModel> {
+    logger.debug("Fetching test case by ID", { id });
+    const testCase = await testCaseService.findTestCaseById(id);
+    return TestCaseModel.fromPrisma(testCase);
+  }
+
   @Query(() => [TestCaseModel], {
     name: "testCases",
   })

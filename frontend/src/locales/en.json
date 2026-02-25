@@ -87,7 +87,14 @@
     "noSuites": "No test suites found",
     "noSuitesHint": "Get started by creating a new test suite.",
     "noMatching": "No matching test suites found",
-    "noMatchingHint": "Try adjusting your search or filter criteria."
+    "noMatchingHint": "Try adjusting your search or filter criteria.",
+    "addTestCases": "Add test cases",
+    "testCasesInSuite": "Test cases in suite",
+    "noTestCasesInSuite": "No test cases in this suite yet",
+    "noTestCasesInSuiteHint": "Add test cases from the project to this suite.",
+    "addTestCasesDrawerTitle": "Add test cases to suite",
+    "addTestCasesDrawerHint": "Select test cases to add to the suite.",
+    "noTestCasesToAdd": "No test cases to add or search returned no results."
   },
   "testCase": {
     "createTitle": "Create Test Case",
@@ -95,6 +102,7 @@
     "title": "Test Case Title",
     "titleRequired": "Title is required",
     "titlePlaceholder": "Enter test case title",
+    "description": "Description",
     "descriptionPlaceholder": "Detailed description of the test case",
     "preconditions": "Preconditions",
     "preconditionsPlaceholder": "Conditions that must be met before running the test",

@@ -19,8 +19,8 @@ export const TestCaseCard: React.FC<TTestCaseCardProps> = ({
 
   const handleCardClick = () => {
     navigate({
-      to: "/projects/$project-key",
-      params: { "project-key": projectKey },
+      to: "/projects/$project-key/test-cases/$case-id",
+      params: { "project-key": projectKey, "case-id": testCase.id },
     });
   };
 

@@ -1,9 +1,16 @@
 import { testCasesRepository } from "../repositories/test-cases.repository";
 import { CreateTestCaseInput } from "../graphql/inputs/create-test-case.input";
+import { TestCaseNotFoundError } from "../errors/test-case.errors";
 
 export const testCaseService = {
   async findTestCases() {
     return testCasesRepository.findBy({});
+  },
+
+  async findTestCaseById(id: string) {
+    const testCase = await testCasesRepository.findById(BigInt(id));
+    if (!testCase) throw new TestCaseNotFoundError(id);
+    return testCase;
   },
 
   async findTestCasesByProjectId(projectId: string) {
