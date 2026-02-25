@@ -32,7 +32,8 @@
     "testSuites": "Наборы тестов",
     "testCases": "Тест-кейсы",
     "new": "Создать",
-    "edit": "Редактировать"
+    "edit": "Редактировать",
+    "settings": "Настройки"
   },
   "auth": {
     "title": "EasyQASuite",
@@ -68,7 +69,17 @@
     "noProjects": "Проекты не найдены",
     "noProjectsHint": "Создайте первый проект.",
     "created": "Создан",
-    "updated": "Обновлён"
+    "updated": "Обновлён",
+    "settings": "Настройки",
+    "priorities": "Приоритеты тест-кейсов",
+    "statuses": "Статусы тест-кейсов",
+    "settingsTitle": "Настройки проекта",
+    "settingsSubtitle": "Управление приоритетами и статусами тест-кейсов",
+    "addPriority": "Добавить приоритет",
+    "addStatus": "Добавить статус",
+    "archive": "В архив",
+    "value": "Значение",
+    "archived": "В архиве"
   },
   "testSuite": {
     "createTitle": "Создать набор тестов",
@@ -94,7 +105,8 @@
     "noTestCasesInSuiteHint": "Добавьте тест-кейсы из проекта в этот набор.",
     "addTestCasesDrawerTitle": "Добавить тест-кейсы в набор",
     "addTestCasesDrawerHint": "Выберите тест-кейсы для добавления в набор.",
-    "noTestCasesToAdd": "Нет тест-кейсов для добавления или поиск не дал результатов."
+    "noTestCasesToAdd": "Нет тест-кейсов для добавления или поиск не дал результатов.",
+    "open": "Открыть"
   },
   "testCase": {
     "createTitle": "Создать тест-кейс",
@@ -121,6 +133,12 @@
     "noMatching": "Подходящих тест-кейсов не найдено",
     "noMatchingHint": "Измените критерии поиска или фильтры.",
     "priorityFilter": "Фильтр по приоритету",
-    "statusFilter": "Фильтр по статусу"
+    "statusFilter": "Фильтр по статусу",
+    "tableCreated": "Создан",
+    "tableUpdated": "Обновлён",
+    "tableTotal": "Всего: {{count}}",
+    "loadMoreHint": "Показано {{count}} из {{total}}. Прокрутите вниз для загрузки.",
+    "editDrawerTitle": "Тест-кейс",
+    "openCasePage": "Открыть страницу кейса"
   }
 }

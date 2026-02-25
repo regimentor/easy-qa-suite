@@ -11,6 +11,7 @@
     "types": "graphql-codegen --config codegen.ts"
   },
   "dependencies": {
+    "@ant-design/icons": "^6.1.0",
     "@apollo/client": "^3.13.8",
     "@graphql-codegen/cli": "^5.0.6",
     "@hookform/resolvers": "^5.0.1",

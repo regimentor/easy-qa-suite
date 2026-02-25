@@ -38,10 +38,15 @@ export class TestCaseResolver {
   })
   async getTestCases(
     @Arg("projectId", () => String) projectId: string,
-    @Ctx() ctx: TGraphqlContext
+    @Ctx() ctx: TGraphqlContext,
+    @Arg("testSuiteId", () => String, { nullable: true })
+    testSuiteId?: string | null
   ): Promise<TestCaseModel[]> {
-    logger.debug("Fetching test cases for project", { projectId });
-    const testCases = await testCaseService.findTestCasesByProjectId(projectId);
+    logger.debug("Fetching test cases for project", { projectId, testSuiteId });
+    const testCases = await testCaseService.findTestCasesByProjectId(
+      projectId,
+      testSuiteId
+    );
     return TestCaseModel.fromPrismaArray(testCases);
   }
 

@@ -2,9 +2,8 @@ import { testCasePrioritiesRepository } from "../repositories/test-case-prioriti
 import { TestCasePriorityNotFoundError } from "../errors/test-case-priority.errors";
 
 export const testCasePriorityService = {
-  async findAll(includeArchived: boolean = false) {
-    const where = includeArchived ? {} : { archived: false };
-    return testCasePrioritiesRepository.findBy(where);
+  async findAllByProjectId(projectId: string, includeArchived: boolean = false) {
+    return testCasePrioritiesRepository.findByProjectId(BigInt(projectId), includeArchived);
   },
 
   async findById(id: string) {
@@ -15,11 +14,14 @@ export const testCasePriorityService = {
     return priority;
   },
 
-  async findByValue(value: string) {
-    const priority = await testCasePrioritiesRepository.findByValue(value);
+  async findByProjectIdAndValue(projectId: string, value: string) {
+    const priority = await testCasePrioritiesRepository.findByProjectIdAndValue(
+      BigInt(projectId),
+      value
+    );
     if (!priority) {
-      throw new Error(`Test case priority with value ${value} not found`);
+      throw new Error(`Test case priority with value ${value} not found in project`);
     }
     return priority;
-  }
+  },
 };

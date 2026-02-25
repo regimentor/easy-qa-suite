@@ -26,6 +26,7 @@ function getSegmentLabel(
   if (index === 2 && segments[0] === "projects") {
     if (seg === "test-suites") return t("breadcrumb.testSuites");
     if (seg === "test-cases") return t("breadcrumb.testCases");
+    if (seg === "settings") return t("breadcrumb.settings");
     return seg;
   }
 

@@ -32,7 +32,8 @@
     "testSuites": "Test Suites",
     "testCases": "Test Cases",
     "new": "New",
-    "edit": "Edit"
+    "edit": "Edit",
+    "settings": "Settings"
   },
   "auth": {
     "title": "EasyQASuite",
@@ -68,7 +69,17 @@
     "noProjects": "No projects found",
     "noProjectsHint": "Get started by creating a new project.",
     "created": "Created",
-    "updated": "Updated"
+    "updated": "Updated",
+    "settings": "Settings",
+    "priorities": "Test case priorities",
+    "statuses": "Test case statuses",
+    "settingsTitle": "Project settings",
+    "settingsSubtitle": "Manage priorities and statuses for test cases",
+    "addPriority": "Add priority",
+    "addStatus": "Add status",
+    "archive": "Archive",
+    "value": "Value",
+    "archived": "Archived"
   },
   "testSuite": {
     "createTitle": "Create Test Suite",
@@ -94,7 +105,8 @@
     "noTestCasesInSuiteHint": "Add test cases from the project to this suite.",
     "addTestCasesDrawerTitle": "Add test cases to suite",
     "addTestCasesDrawerHint": "Select test cases to add to the suite.",
-    "noTestCasesToAdd": "No test cases to add or search returned no results."
+    "noTestCasesToAdd": "No test cases to add or search returned no results.",
+    "open": "Open"
   },
   "testCase": {
     "createTitle": "Create Test Case",
@@ -121,6 +133,12 @@
     "noMatching": "No matching test cases found",
     "noMatchingHint": "Try adjusting your search or filter criteria.",
     "priorityFilter": "Priority Filter",
-    "statusFilter": "Status Filter"
+    "statusFilter": "Status Filter",
+    "tableCreated": "Created",
+    "tableUpdated": "Updated",
+    "tableTotal": "Total: {{count}}",
+    "loadMoreHint": "Showing {{count}} of {{total}}. Scroll for more.",
+    "editDrawerTitle": "Test case",
+    "openCasePage": "Open case page"
   }
 }

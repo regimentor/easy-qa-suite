@@ -1140,6 +1140,7 @@ export type SuiteTestCaseScalarFieldEnum = (typeof SuiteTestCaseScalarFieldEnum)
 
 export const TestCasePriorityScalarFieldEnum = {
   id: 'id',
+  project_id: 'project_id',
   value: 'value',
   description: 'description',
   archived: 'archived',
@@ -1152,6 +1153,7 @@ export type TestCasePriorityScalarFieldEnum = (typeof TestCasePriorityScalarFiel
 
 export const TestCaseStatusScalarFieldEnum = {
   id: 'id',
+  project_id: 'project_id',
   value: 'value',
   description: 'description',
   archived: 'archived',

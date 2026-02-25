@@ -6,8 +6,10 @@ model Project {
   created_at  DateTime    @default(now()) @db.Timestamp()
   updated_at  DateTime    @updatedAt @db.Timestamp()
 
-  test_cases      TestCase[]
-  test_suites     TestSuite[]
+  test_cases         TestCase[]
+  test_suites        TestSuite[]
+  testCasePriorities TestCasePriority[]
+  testCaseStatuses   TestCaseStatus[]
 
   @@map("projects")
 }

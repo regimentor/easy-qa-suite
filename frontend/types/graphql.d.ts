@@ -36,6 +36,18 @@ export type CreateTestCaseInput = {
   title: Scalars['String']['input'];
 };
 
+export type CreateTestCasePriorityInput = {
+  description: Scalars['String']['input'];
+  projectId: Scalars['String']['input'];
+  value: Scalars['String']['input'];
+};
+
+export type CreateTestCaseStatusInput = {
+  description: Scalars['String']['input'];
+  projectId: Scalars['String']['input'];
+  value: Scalars['String']['input'];
+};
+
 export type CreateTestResultInput = {
   defectLink?: InputMaybe<Scalars['String']['input']>;
   finishedAt: Scalars['DateTimeISO']['input'];
@@ -63,9 +75,13 @@ export type Mutation = {
   addTestCasesToSuite: TestSuiteModel;
   createProject: ProjectModel;
   createTestCase: TestCaseModel;
+  createTestCasePriority: TestCasePriorityModel;
+  createTestCaseStatus: TestCaseStatusModel;
   createTestResult: TestResultModel;
   createTestSuite: TestSuiteModel;
   createUser: UserModel;
+  updateTestCasePriority: TestCasePriorityModel;
+  updateTestCaseStatus: TestCaseStatusModel;
 };
 
 
@@ -84,6 +100,16 @@ export type MutationCreateTestCaseArgs = {
 };
 
 
+export type MutationCreateTestCasePriorityArgs = {
+  input: CreateTestCasePriorityInput;
+};
+
+
+export type MutationCreateTestCaseStatusArgs = {
+  input: CreateTestCaseStatusInput;
+};
+
+
 export type MutationCreateTestResultArgs = {
   data: CreateTestResultInput;
 };
@@ -96,6 +122,18 @@ export type MutationCreateTestSuiteArgs = {
 
 export type MutationCreateUserArgs = {
   data: CreateUserInput;
+};
+
+
+export type MutationUpdateTestCasePriorityArgs = {
+  id: Scalars['String']['input'];
+  input: UpdateTestCasePriorityInput;
+};
+
+
+export type MutationUpdateTestCaseStatusArgs = {
+  id: Scalars['String']['input'];
+  input: UpdateTestCaseStatusInput;
 };
 
 export type ProjectModel = {
@@ -111,7 +149,9 @@ export type ProjectModel = {
 export type Query = {
   __typename?: 'Query';
   project: ProjectModel;
+  projectByKey: ProjectModel;
   projects: Array<ProjectModel>;
+  testCase: TestCaseModel;
   testCasePriorities: Array<TestCasePriorityModel>;
   testCasePriority: TestCasePriorityModel;
   testCaseStatus: TestCaseStatusModel;
@@ -131,8 +171,19 @@ export type QueryProjectArgs = {
 };
 
 
+export type QueryProjectByKeyArgs = {
+  key: Scalars['String']['input'];
+};
+
+
+export type QueryTestCaseArgs = {
+  id: Scalars['String']['input'];
+};
+
+
 export type QueryTestCasePrioritiesArgs = {
   includeArchived?: InputMaybe<Scalars['Boolean']['input']>;
+  projectId: Scalars['String']['input'];
 };
 
 
@@ -148,11 +199,13 @@ export type QueryTestCaseStatusArgs = {
 
 export type QueryTestCaseStatusesArgs = {
   includeArchived?: InputMaybe<Scalars['Boolean']['input']>;
+  projectId: Scalars['String']['input'];
 };
 
 
 export type QueryTestCasesArgs = {
   projectId: Scalars['String']['input'];
+  testSuiteId?: InputMaybe<Scalars['String']['input']>;
 };
 
 
@@ -245,6 +298,18 @@ export type TestSuiteTypeModel = {
   id: Scalars['ID']['output'];
   updatedAt: Scalars['DateTimeISO']['output'];
   value: Scalars['String']['output'];
+};
+
+export type UpdateTestCasePriorityInput = {
+  archived?: InputMaybe<Scalars['Boolean']['input']>;
+  description?: InputMaybe<Scalars['String']['input']>;
+  value?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type UpdateTestCaseStatusInput = {
+  archived?: InputMaybe<Scalars['Boolean']['input']>;
+  description?: InputMaybe<Scalars['String']['input']>;
+  value?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type UserModel = {

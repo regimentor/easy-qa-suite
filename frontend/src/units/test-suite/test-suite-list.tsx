@@ -3,7 +3,7 @@ import { testSuitesQuery } from "./test-suite.queries";
 import type React from "react";
 import { useState, useMemo } from "react";
 import { useTranslation } from "react-i18next";
-import { Button, Input, Segmented } from "antd";
+import { Button, Input, Select } from "antd";
 import { SearchIcon } from "@/components/icons/SearchIcon";
 import { PlusIcon } from "@/components/icons/PlusIcon";
 import { ErrorIcon } from "@/components/icons/ErrorIcon";
@@ -16,6 +16,8 @@ import styles from "./test-suite-list.module.css";
 type TTestSuiteListProps = {
   projectId: string;
   projectKey: string;
+  selectedSuiteId?: string | null;
+  onSuiteSelect?: (suiteId: string | null) => void;
 };
 
 const getTypeOptions = (t: (key: string) => string) =>
@@ -27,7 +29,10 @@ const getTypeOptions = (t: (key: string) => string) =>
 export const TestSuiteList: React.FC<TTestSuiteListProps> = ({
   projectId,
   projectKey,
+  selectedSuiteId,
+  onSuiteSelect,
 }) => {
+  const isSelectable = typeof onSuiteSelect === "function";
   const { data, loading, error } = useQuery(testSuitesQuery, {
     variables: { projectId },
   });
@@ -58,22 +63,18 @@ export const TestSuiteList: React.FC<TTestSuiteListProps> = ({
   return (
     <div className={styles.wrap}>
       <div className={styles.header}>
-        <div>
-          <h1 className={styles.headerTitle}>{t("testSuite.listTitle")}</h1>
-          <p className={styles.headerSub}>{t("testSuite.listSubtitle")}</p>
-        </div>
+        <h1 className={styles.headerTitle}>{t("testSuite.listTitle")}</h1>
         <Button
           type="primary"
+          icon={<PlusIcon className={styles.iconSize} />}
+          title={t("testSuite.newTestSuite")}
           onClick={() =>
             navigate({
               to: "/projects/$project-key/test-suites/create",
               params: { "project-key": projectKey },
             })
           }
-        >
-          <PlusIcon className={styles.iconMr + " " + styles.iconSize} />
-          {t("testSuite.newTestSuite")}
-        </Button>
+        />
       </div>
 
       <div className={styles.filters}>
@@ -82,13 +83,13 @@ export const TestSuiteList: React.FC<TTestSuiteListProps> = ({
           value={searchQuery}
           onChange={(e) => handleSearchChange(e)}
           prefix={<SearchIcon className={styles.searchIcon} />}
+          className={styles.searchInput}
         />
-
-        <Segmented
+        <Select
           value={selectedType}
-          onChange={(value) => value && setSelectedType(value as string)}
+          onChange={setSelectedType}
           options={typeOptions}
-          block
+          className={styles.typeSelect}
         />
       </div>
 
@@ -123,7 +124,7 @@ export const TestSuiteList: React.FC<TTestSuiteListProps> = ({
                   })
                 }
               >
-                <PlusIcon className={styles.iconMr + " " + styles.iconSize} />
+                <PlusIcon className={styles.iconSize} />
                 {t("testSuite.newTestSuite")}
               </Button>
             </div>
@@ -148,7 +149,22 @@ export const TestSuiteList: React.FC<TTestSuiteListProps> = ({
             <div className={styles.list}>
               {filteredTestSuites.map((testSuite) => (
                 <div key={testSuite.id} className={styles.listItem}>
-                  <TestSuiteCard testSuite={testSuite} projectKey={projectKey} />
+                  <TestSuiteCard
+                    testSuite={testSuite}
+                    projectKey={projectKey}
+                    selectable={isSelectable}
+                    selected={testSuite.id === selectedSuiteId}
+                    onSelect={
+                      isSelectable
+                        ? () =>
+                            onSuiteSelect?.(
+                              testSuite.id === selectedSuiteId
+                                ? null
+                                : testSuite.id
+                            )
+                        : undefined
+                    }
+                  />
                 </div>
               ))}
             </div>

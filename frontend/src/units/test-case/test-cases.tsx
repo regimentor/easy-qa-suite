@@ -1,65 +1,67 @@
 import { useQuery } from "@apollo/client";
 import { testCasesQuery } from "./test-case.queries";
+import type { TestCaseFields } from "./test-case.queries";
 import type React from "react";
-import { useState, useMemo } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { useTranslation } from "react-i18next";
-import { Button, Input, Segmented } from "antd";
+import { Button } from "antd";
 import { PlusIcon } from "@/components/icons/PlusIcon";
 import { ErrorIcon } from "@/components/icons/ErrorIcon";
 import { EmptyStateIcon } from "@/components/icons/EmptyStateIcon";
 import { useNavigate } from "@tanstack/react-router";
-import { TEST_CASE_PRIORITIES, TEST_CASE_STATUSES } from "./consts";
-import { TestCaseCard } from "./test-case-card";
+import { useTestCasesFilters } from "./use-test-cases-filters";
+import { useInfiniteScroll } from "./use-infinite-scroll";
+import { getTestCasesColumns } from "./test-cases-columns";
+import { TestCasesHeader } from "./test-cases-header";
+import { TestCasesFilters } from "./test-cases-filters";
+import { TestCasesTableBlock } from "./test-cases-table-block";
+import { TestCaseEditDrawer } from "./test-case-edit-drawer";
+import { INITIAL_VISIBLE } from "./consts";
 import styles from "./test-cases.module.css";
+
+/** Cast for passing CSS module to subcomponents that expect specific class keys */
+const s = styles as Record<string, string>;
 
 type TTestCasesProps = {
   projectId: string;
   projectKey: string;
+  testSuiteId?: string | null;
 };
-
-const getPriorityOptions = (t: (key: string) => string) =>
-  TEST_CASE_PRIORITIES.map((p) => ({
-    label: p === "All" ? t("common.all") : p,
-    value: p,
-  }));
-const getStatusOptions = (t: (key: string) => string) =>
-  TEST_CASE_STATUSES.map((s) => ({
-    label: s === "All" ? t("common.all") : s,
-    value: s,
-  }));
 
 export const TestCases: React.FC<TTestCasesProps> = ({
   projectId,
   projectKey,
+  testSuiteId,
 }) => {
   const { data, loading, error } = useQuery(testCasesQuery, {
-    variables: { projectId },
+    variables: { projectId, testSuiteId: testSuiteId ?? undefined },
   });
   const navigate = useNavigate();
   const { t } = useTranslation();
-  const [searchQuery, setSearchQuery] = useState("");
-  const [selectedPriority, setSelectedPriority] = useState("All");
-  const [selectedStatus, setSelectedStatus] = useState("All");
+  const [editingCase, setEditingCase] = useState<TestCaseFields | null>(null);
+
+  const filters = useTestCasesFilters(data?.testCases);
+  const {
+    filteredTestCases,
+    priorityOptions: getPriorityOptions,
+    statusOptions: getStatusOptions,
+  } = filters;
   const priorityOptions = getPriorityOptions(t);
   const statusOptions = getStatusOptions(t);
 
-  const filteredTestCases = useMemo(() => {
-    if (!data?.testCases) return [];
-    return data.testCases.filter((testCase) => {
-      const matchesSearch = testCase.title
-        .toLowerCase()
-        .includes(searchQuery.toLowerCase());
-      const matchesPriority =
-        selectedPriority.toLowerCase() === "all" ||
-        (testCase.priority?.value?.toLowerCase() ?? "") ===
-          selectedPriority.toLowerCase();
-      const matchesStatus =
-        selectedStatus.toLowerCase() === "all" ||
-        (testCase.status?.value?.toLowerCase() ?? "") ===
-          selectedStatus.toLowerCase();
-      return matchesSearch && matchesPriority && matchesStatus;
-    });
-  }, [data?.testCases, searchQuery, selectedPriority, selectedStatus]);
+  const scroll = useInfiniteScroll(filteredTestCases);
+  const { setVisibleCount } = scroll;
+
+  useEffect(() => {
+    setVisibleCount(INITIAL_VISIBLE);
+  }, [
+    filteredTestCases.length,
+    testSuiteId,
+    filters.searchQuery,
+    filters.selectedPriority,
+    filters.selectedStatus,
+    setVisibleCount,
+  ]);
 
   const handleCreateTestCase = () => {
     navigate({
@@ -68,47 +70,42 @@ export const TestCases: React.FC<TTestCasesProps> = ({
     });
   };
 
+  const handleOpenCasePage = (caseId: string) => {
+    setEditingCase(null);
+    navigate({
+      to: "/projects/$project-key/test-cases/$case-id",
+      params: { "project-key": projectKey, "case-id": caseId },
+    });
+  };
+
+  const columns = useMemo(
+    () => getTestCasesColumns(t, projectKey, setEditingCase, s),
+    [t, projectKey]
+  );
+
   return (
     <div className={styles.wrap}>
-      <div className={styles.header}>
-        <div>
-          <h1 className={styles.headerTitle}>{t("testCase.listTitle")}</h1>
-          <p className={styles.headerSub}>{t("testCase.listSubtitle")}</p>
-        </div>
-        <Button type="primary" onClick={handleCreateTestCase}>
-          <PlusIcon className={styles.iconMr + " " + styles.iconSize} />
-          {t("testCase.newTestCase")}
-        </Button>
-      </div>
+      <TestCasesHeader
+        title={t("testCase.listTitle")}
+        createButtonTitle={t("testCase.newTestCase")}
+        onCreateClick={handleCreateTestCase}
+        styles={s}
+      />
 
-      <div className={styles.filters}>
-        <Input
-          placeholder={t("testCase.searchPlaceholder")}
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-        />
-
-        <div className={styles.filterGrid}>
-          <div className={styles.filterBlock}>
-            <label>{t("testCase.priorityFilter")}</label>
-            <Segmented
-              value={selectedPriority}
-              onChange={(value) => value && setSelectedPriority(value as string)}
-              options={priorityOptions}
-              block
-            />
-          </div>
-          <div className={styles.filterBlock}>
-            <label>{t("testCase.statusFilter")}</label>
-            <Segmented
-              value={selectedStatus}
-              onChange={(value) => value && setSelectedStatus(value as string)}
-              options={statusOptions}
-              block
-            />
-          </div>
-        </div>
-      </div>
+      <TestCasesFilters
+        searchQuery={filters.searchQuery}
+        onSearchChange={filters.setSearchQuery}
+        selectedPriority={filters.selectedPriority}
+        onPriorityChange={filters.setSelectedPriority}
+        selectedStatus={filters.selectedStatus}
+        onStatusChange={filters.setSelectedStatus}
+        priorityOptions={priorityOptions}
+        statusOptions={statusOptions}
+        searchPlaceholder={t("testCase.searchPlaceholder")}
+        priorityFilterPlaceholder={t("testCase.priorityFilter")}
+        statusFilterPlaceholder={t("testCase.statusFilter")}
+        styles={s}
+      />
 
       <div className={styles.content}>
         {loading && (
@@ -120,7 +117,9 @@ export const TestCases: React.FC<TTestCasesProps> = ({
         {error && (
           <div className={styles.errorWrap}>
             <ErrorIcon className={styles.errorIcon} />
-            <p className={styles.errorText}>{t("common.error")}: {error.message}</p>
+            <p className={styles.errorText}>
+              {t("common.error")}: {error.message}
+            </p>
           </div>
         )}
 
@@ -128,12 +127,12 @@ export const TestCases: React.FC<TTestCasesProps> = ({
           <div className={styles.emptyWrap}>
             <EmptyStateIcon className={styles.emptyIcon} />
             <h3 className={styles.emptyTitle}>{t("testCase.noCases")}</h3>
-            <p className={styles.emptySub}>
-              {t("testCase.noCasesHint")}
-            </p>
+            <p className={styles.emptySub}>{t("testCase.noCasesHint")}</p>
             <div className={styles.emptyBtnWrap}>
               <Button type="primary" onClick={handleCreateTestCase}>
-                <PlusIcon className={styles.iconMr + " " + styles.iconSize} />
+                <PlusIcon
+                  className={styles.iconMr + " " + styles.iconSize}
+                />
                 {t("testCase.newTestCase")}
               </Button>
             </div>
@@ -142,7 +141,7 @@ export const TestCases: React.FC<TTestCasesProps> = ({
 
         {data &&
           data.testCases.length > 0 &&
-          filteredTestCases.length === 0 && (
+          filters.filteredTestCases.length === 0 && (
             <div className={styles.emptyWrap}>
               <EmptyStateIcon className={styles.emptyIcon} />
               <h3 className={styles.emptyTitle}>
@@ -156,16 +155,36 @@ export const TestCases: React.FC<TTestCasesProps> = ({
 
         {data &&
           data.testCases.length > 0 &&
-          filteredTestCases.length > 0 && (
-            <div className={styles.list}>
-              {filteredTestCases.map((testCase) => (
-                <div key={testCase.id} className={styles.listItem}>
-                  <TestCaseCard testCase={testCase} projectKey={projectKey} />
-                </div>
-              ))}
-            </div>
-          )}
+          filters.filteredTestCases.length > 0 && (
+          <TestCasesTableBlock
+            scrollRef={scroll.scrollRef}
+            onScroll={scroll.handleScroll}
+            columns={columns}
+            visibleTestCases={scroll.visibleItems}
+            hasMore={scroll.hasMore}
+            loading={loading}
+            loadMoreHintText={t("testCase.loadMoreHint", {
+              count: scroll.visibleItems.length,
+              total: filteredTestCases.length,
+            })}
+            styles={s}
+          />
+        )}
       </div>
+
+      <TestCaseEditDrawer
+        open={editingCase !== null}
+        editingCase={editingCase}
+        onClose={() => setEditingCase(null)}
+        onOpenPage={handleOpenCasePage}
+        drawerTitle={t("testCase.editDrawerTitle")}
+        titleLabel={t("testCase.title")}
+        priorityLabel={t("testCase.priority")}
+        statusLabel={t("testCase.status")}
+        descriptionLabel={t("testCase.description")}
+        openCasePageButtonLabel={t("testCase.openCasePage")}
+        styles={s}
+      />
     </div>
   );
 };

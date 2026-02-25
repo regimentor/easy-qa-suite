@@ -33,7 +33,10 @@ export type TestCaseFields = Pick<
 };
 
 type TestCasesQueryData = { testCases: TestCaseFields[] };
-type TestCasesQueryVariables = { projectId: string };
+type TestCasesQueryVariables = {
+  projectId: string;
+  testSuiteId?: string | null;
+};
 type TestCaseQueryData = { testCase: TestCaseFields };
 type TestCaseQueryVariables = { id: string };
 type CreateTestCaseMutationData = { createTestCase: TestCaseFields };
@@ -43,8 +46,8 @@ export const testCasesQuery: TypedDocumentNode<
   TestCasesQueryData,
   TestCasesQueryVariables
 > = gql`
-  query TestCases($projectId: String!) {
-    testCases(projectId: $projectId) {
+  query TestCases($projectId: String!, $testSuiteId: String) {
+    testCases(projectId: $projectId, testSuiteId: $testSuiteId) {
       id
       title
       description

@@ -28,14 +28,17 @@ export type AggregateTestCaseStatus = {
 
 export type TestCaseStatusAvgAggregateOutputType = {
   id: number | null
+  project_id: number | null
 }
 
 export type TestCaseStatusSumAggregateOutputType = {
   id: bigint | null
+  project_id: bigint | null
 }
 
 export type TestCaseStatusMinAggregateOutputType = {
   id: bigint | null
+  project_id: bigint | null
   value: string | null
   description: string | null
   archived: boolean | null
@@ -45,6 +48,7 @@ export type TestCaseStatusMinAggregateOutputType = {
 
 export type TestCaseStatusMaxAggregateOutputType = {
   id: bigint | null
+  project_id: bigint | null
   value: string | null
   description: string | null
   archived: boolean | null
@@ -54,6 +58,7 @@ export type TestCaseStatusMaxAggregateOutputType = {
 
 export type TestCaseStatusCountAggregateOutputType = {
   id: number
+  project_id: number
   value: number
   description: number
   archived: number
@@ -65,14 +70,17 @@ export type TestCaseStatusCountAggregateOutputType = {
 
 export type TestCaseStatusAvgAggregateInputType = {
   id?: true
+  project_id?: true
 }
 
 export type TestCaseStatusSumAggregateInputType = {
   id?: true
+  project_id?: true
 }
 
 export type TestCaseStatusMinAggregateInputType = {
   id?: true
+  project_id?: true
   value?: true
   description?: true
   archived?: true
@@ -82,6 +90,7 @@ export type TestCaseStatusMinAggregateInputType = {
 
 export type TestCaseStatusMaxAggregateInputType = {
   id?: true
+  project_id?: true
   value?: true
   description?: true
   archived?: true
@@ -91,6 +100,7 @@ export type TestCaseStatusMaxAggregateInputType = {
 
 export type TestCaseStatusCountAggregateInputType = {
   id?: true
+  project_id?: true
   value?: true
   description?: true
   archived?: true
@@ -187,6 +197,7 @@ export type TestCaseStatusGroupByArgs<ExtArgs extends runtime.Types.Extensions.I
 
 export type TestCaseStatusGroupByOutputType = {
   id: bigint
+  project_id: bigint
   value: string
   description: string
   archived: boolean
@@ -219,39 +230,47 @@ export type TestCaseStatusWhereInput = {
   OR?: Prisma.TestCaseStatusWhereInput[]
   NOT?: Prisma.TestCaseStatusWhereInput | Prisma.TestCaseStatusWhereInput[]
   id?: Prisma.BigIntFilter<"TestCaseStatus"> | bigint | number
+  project_id?: Prisma.BigIntFilter<"TestCaseStatus"> | bigint | number
   value?: Prisma.StringFilter<"TestCaseStatus"> | string
   description?: Prisma.StringFilter<"TestCaseStatus"> | string
   archived?: Prisma.BoolFilter<"TestCaseStatus"> | boolean
   createdAt?: Prisma.DateTimeFilter<"TestCaseStatus"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"TestCaseStatus"> | Date | string
+  project?: Prisma.XOR<Prisma.ProjectScalarRelationFilter, Prisma.ProjectWhereInput>
   test_cases?: Prisma.TestCaseListRelationFilter
 }
 
 export type TestCaseStatusOrderByWithRelationInput = {
   id?: Prisma.SortOrder
+  project_id?: Prisma.SortOrder
   value?: Prisma.SortOrder
   description?: Prisma.SortOrder
   archived?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  project?: Prisma.ProjectOrderByWithRelationInput
   test_cases?: Prisma.TestCaseOrderByRelationAggregateInput
 }
 
 export type TestCaseStatusWhereUniqueInput = Prisma.AtLeast<{
   id?: bigint | number
-  value?: string
+  project_id_value?: Prisma.TestCaseStatusProject_idValueCompoundUniqueInput
   AND?: Prisma.TestCaseStatusWhereInput | Prisma.TestCaseStatusWhereInput[]
   OR?: Prisma.TestCaseStatusWhereInput[]
   NOT?: Prisma.TestCaseStatusWhereInput | Prisma.TestCaseStatusWhereInput[]
+  project_id?: Prisma.BigIntFilter<"TestCaseStatus"> | bigint | number
+  value?: Prisma.StringFilter<"TestCaseStatus"> | string
   description?: Prisma.StringFilter<"TestCaseStatus"> | string
   archived?: Prisma.BoolFilter<"TestCaseStatus"> | boolean
   createdAt?: Prisma.DateTimeFilter<"TestCaseStatus"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"TestCaseStatus"> | Date | string
+  project?: Prisma.XOR<Prisma.ProjectScalarRelationFilter, Prisma.ProjectWhereInput>
   test_cases?: Prisma.TestCaseListRelationFilter
-}, "id" | "value">
+}, "id" | "project_id_value">
 
 export type TestCaseStatusOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
+  project_id?: Prisma.SortOrder
   value?: Prisma.SortOrder
   description?: Prisma.SortOrder
   archived?: Prisma.SortOrder
@@ -269,6 +288,7 @@ export type TestCaseStatusScalarWhereWithAggregatesInput = {
   OR?: Prisma.TestCaseStatusScalarWhereWithAggregatesInput[]
   NOT?: Prisma.TestCaseStatusScalarWhereWithAggregatesInput | Prisma.TestCaseStatusScalarWhereWithAggregatesInput[]
   id?: Prisma.BigIntWithAggregatesFilter<"TestCaseStatus"> | bigint | number
+  project_id?: Prisma.BigIntWithAggregatesFilter<"TestCaseStatus"> | bigint | number
   value?: Prisma.StringWithAggregatesFilter<"TestCaseStatus"> | string
   description?: Prisma.StringWithAggregatesFilter<"TestCaseStatus"> | string
   archived?: Prisma.BoolWithAggregatesFilter<"TestCaseStatus"> | boolean
@@ -283,11 +303,13 @@ export type TestCaseStatusCreateInput = {
   archived?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
+  project: Prisma.ProjectCreateNestedOneWithoutTestCaseStatusesInput
   test_cases?: Prisma.TestCaseCreateNestedManyWithoutStatusInput
 }
 
 export type TestCaseStatusUncheckedCreateInput = {
   id?: bigint | number
+  project_id: bigint | number
   value: string
   description: string
   archived?: boolean
@@ -303,11 +325,13 @@ export type TestCaseStatusUpdateInput = {
   archived?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  project?: Prisma.ProjectUpdateOneRequiredWithoutTestCaseStatusesNestedInput
   test_cases?: Prisma.TestCaseUpdateManyWithoutStatusNestedInput
 }
 
 export type TestCaseStatusUncheckedUpdateInput = {
   id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  project_id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   value?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
   archived?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -318,6 +342,7 @@ export type TestCaseStatusUncheckedUpdateInput = {
 
 export type TestCaseStatusCreateManyInput = {
   id?: bigint | number
+  project_id: bigint | number
   value: string
   description: string
   archived?: boolean
@@ -336,6 +361,7 @@ export type TestCaseStatusUpdateManyMutationInput = {
 
 export type TestCaseStatusUncheckedUpdateManyInput = {
   id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  project_id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   value?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
   archived?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -343,8 +369,24 @@ export type TestCaseStatusUncheckedUpdateManyInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
+export type TestCaseStatusListRelationFilter = {
+  every?: Prisma.TestCaseStatusWhereInput
+  some?: Prisma.TestCaseStatusWhereInput
+  none?: Prisma.TestCaseStatusWhereInput
+}
+
+export type TestCaseStatusOrderByRelationAggregateInput = {
+  _count?: Prisma.SortOrder
+}
+
+export type TestCaseStatusProject_idValueCompoundUniqueInput = {
+  project_id: bigint | number
+  value: string
+}
+
 export type TestCaseStatusCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  project_id?: Prisma.SortOrder
   value?: Prisma.SortOrder
   description?: Prisma.SortOrder
   archived?: Prisma.SortOrder
@@ -354,10 +396,12 @@ export type TestCaseStatusCountOrderByAggregateInput = {
 
 export type TestCaseStatusAvgOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  project_id?: Prisma.SortOrder
 }
 
 export type TestCaseStatusMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  project_id?: Prisma.SortOrder
   value?: Prisma.SortOrder
   description?: Prisma.SortOrder
   archived?: Prisma.SortOrder
@@ -367,6 +411,7 @@ export type TestCaseStatusMaxOrderByAggregateInput = {
 
 export type TestCaseStatusMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  project_id?: Prisma.SortOrder
   value?: Prisma.SortOrder
   description?: Prisma.SortOrder
   archived?: Prisma.SortOrder
@@ -376,11 +421,54 @@ export type TestCaseStatusMinOrderByAggregateInput = {
 
 export type TestCaseStatusSumOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  project_id?: Prisma.SortOrder
 }
 
 export type TestCaseStatusScalarRelationFilter = {
   is?: Prisma.TestCaseStatusWhereInput
   isNot?: Prisma.TestCaseStatusWhereInput
+}
+
+export type TestCaseStatusCreateNestedManyWithoutProjectInput = {
+  create?: Prisma.XOR<Prisma.TestCaseStatusCreateWithoutProjectInput, Prisma.TestCaseStatusUncheckedCreateWithoutProjectInput> | Prisma.TestCaseStatusCreateWithoutProjectInput[] | Prisma.TestCaseStatusUncheckedCreateWithoutProjectInput[]
+  connectOrCreate?: Prisma.TestCaseStatusCreateOrConnectWithoutProjectInput | Prisma.TestCaseStatusCreateOrConnectWithoutProjectInput[]
+  createMany?: Prisma.TestCaseStatusCreateManyProjectInputEnvelope
+  connect?: Prisma.TestCaseStatusWhereUniqueInput | Prisma.TestCaseStatusWhereUniqueInput[]
+}
+
+export type TestCaseStatusUncheckedCreateNestedManyWithoutProjectInput = {
+  create?: Prisma.XOR<Prisma.TestCaseStatusCreateWithoutProjectInput, Prisma.TestCaseStatusUncheckedCreateWithoutProjectInput> | Prisma.TestCaseStatusCreateWithoutProjectInput[] | Prisma.TestCaseStatusUncheckedCreateWithoutProjectInput[]
+  connectOrCreate?: Prisma.TestCaseStatusCreateOrConnectWithoutProjectInput | Prisma.TestCaseStatusCreateOrConnectWithoutProjectInput[]
+  createMany?: Prisma.TestCaseStatusCreateManyProjectInputEnvelope
+  connect?: Prisma.TestCaseStatusWhereUniqueInput | Prisma.TestCaseStatusWhereUniqueInput[]
+}
+
+export type TestCaseStatusUpdateManyWithoutProjectNestedInput = {
+  create?: Prisma.XOR<Prisma.TestCaseStatusCreateWithoutProjectInput, Prisma.TestCaseStatusUncheckedCreateWithoutProjectInput> | Prisma.TestCaseStatusCreateWithoutProjectInput[] | Prisma.TestCaseStatusUncheckedCreateWithoutProjectInput[]
+  connectOrCreate?: Prisma.TestCaseStatusCreateOrConnectWithoutProjectInput | Prisma.TestCaseStatusCreateOrConnectWithoutProjectInput[]
+  upsert?: Prisma.TestCaseStatusUpsertWithWhereUniqueWithoutProjectInput | Prisma.TestCaseStatusUpsertWithWhereUniqueWithoutProjectInput[]
+  createMany?: Prisma.TestCaseStatusCreateManyProjectInputEnvelope
+  set?: Prisma.TestCaseStatusWhereUniqueInput | Prisma.TestCaseStatusWhereUniqueInput[]
+  disconnect?: Prisma.TestCaseStatusWhereUniqueInput | Prisma.TestCaseStatusWhereUniqueInput[]
+  delete?: Prisma.TestCaseStatusWhereUniqueInput | Prisma.TestCaseStatusWhereUniqueInput[]
+  connect?: Prisma.TestCaseStatusWhereUniqueInput | Prisma.TestCaseStatusWhereUniqueInput[]
+  update?: Prisma.TestCaseStatusUpdateWithWhereUniqueWithoutProjectInput | Prisma.TestCaseStatusUpdateWithWhereUniqueWithoutProjectInput[]
+  updateMany?: Prisma.TestCaseStatusUpdateManyWithWhereWithoutProjectInput | Prisma.TestCaseStatusUpdateManyWithWhereWithoutProjectInput[]
+  deleteMany?: Prisma.TestCaseStatusScalarWhereInput | Prisma.TestCaseStatusScalarWhereInput[]
+}
+
+export type TestCaseStatusUncheckedUpdateManyWithoutProjectNestedInput = {
+  create?: Prisma.XOR<Prisma.TestCaseStatusCreateWithoutProjectInput, Prisma.TestCaseStatusUncheckedCreateWithoutProjectInput> | Prisma.TestCaseStatusCreateWithoutProjectInput[] | Prisma.TestCaseStatusUncheckedCreateWithoutProjectInput[]
+  connectOrCreate?: Prisma.TestCaseStatusCreateOrConnectWithoutProjectInput | Prisma.TestCaseStatusCreateOrConnectWithoutProjectInput[]
+  upsert?: Prisma.TestCaseStatusUpsertWithWhereUniqueWithoutProjectInput | Prisma.TestCaseStatusUpsertWithWhereUniqueWithoutProjectInput[]
+  createMany?: Prisma.TestCaseStatusCreateManyProjectInputEnvelope
+  set?: Prisma.TestCaseStatusWhereUniqueInput | Prisma.TestCaseStatusWhereUniqueInput[]
+  disconnect?: Prisma.TestCaseStatusWhereUniqueInput | Prisma.TestCaseStatusWhereUniqueInput[]
+  delete?: Prisma.TestCaseStatusWhereUniqueInput | Prisma.TestCaseStatusWhereUniqueInput[]
+  connect?: Prisma.TestCaseStatusWhereUniqueInput | Prisma.TestCaseStatusWhereUniqueInput[]
+  update?: Prisma.TestCaseStatusUpdateWithWhereUniqueWithoutProjectInput | Prisma.TestCaseStatusUpdateWithWhereUniqueWithoutProjectInput[]
+  updateMany?: Prisma.TestCaseStatusUpdateManyWithWhereWithoutProjectInput | Prisma.TestCaseStatusUpdateManyWithWhereWithoutProjectInput[]
+  deleteMany?: Prisma.TestCaseStatusScalarWhereInput | Prisma.TestCaseStatusScalarWhereInput[]
 }
 
 export type TestCaseStatusCreateNestedOneWithoutTest_casesInput = {
@@ -397,6 +485,65 @@ export type TestCaseStatusUpdateOneRequiredWithoutTest_casesNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.TestCaseStatusUpdateToOneWithWhereWithoutTest_casesInput, Prisma.TestCaseStatusUpdateWithoutTest_casesInput>, Prisma.TestCaseStatusUncheckedUpdateWithoutTest_casesInput>
 }
 
+export type TestCaseStatusCreateWithoutProjectInput = {
+  id?: bigint | number
+  value: string
+  description: string
+  archived?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  test_cases?: Prisma.TestCaseCreateNestedManyWithoutStatusInput
+}
+
+export type TestCaseStatusUncheckedCreateWithoutProjectInput = {
+  id?: bigint | number
+  value: string
+  description: string
+  archived?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  test_cases?: Prisma.TestCaseUncheckedCreateNestedManyWithoutStatusInput
+}
+
+export type TestCaseStatusCreateOrConnectWithoutProjectInput = {
+  where: Prisma.TestCaseStatusWhereUniqueInput
+  create: Prisma.XOR<Prisma.TestCaseStatusCreateWithoutProjectInput, Prisma.TestCaseStatusUncheckedCreateWithoutProjectInput>
+}
+
+export type TestCaseStatusCreateManyProjectInputEnvelope = {
+  data: Prisma.TestCaseStatusCreateManyProjectInput | Prisma.TestCaseStatusCreateManyProjectInput[]
+  skipDuplicates?: boolean
+}
+
+export type TestCaseStatusUpsertWithWhereUniqueWithoutProjectInput = {
+  where: Prisma.TestCaseStatusWhereUniqueInput
+  update: Prisma.XOR<Prisma.TestCaseStatusUpdateWithoutProjectInput, Prisma.TestCaseStatusUncheckedUpdateWithoutProjectInput>
+  create: Prisma.XOR<Prisma.TestCaseStatusCreateWithoutProjectInput, Prisma.TestCaseStatusUncheckedCreateWithoutProjectInput>
+}
+
+export type TestCaseStatusUpdateWithWhereUniqueWithoutProjectInput = {
+  where: Prisma.TestCaseStatusWhereUniqueInput
+  data: Prisma.XOR<Prisma.TestCaseStatusUpdateWithoutProjectInput, Prisma.TestCaseStatusUncheckedUpdateWithoutProjectInput>
+}
+
+export type TestCaseStatusUpdateManyWithWhereWithoutProjectInput = {
+  where: Prisma.TestCaseStatusScalarWhereInput
+  data: Prisma.XOR<Prisma.TestCaseStatusUpdateManyMutationInput, Prisma.TestCaseStatusUncheckedUpdateManyWithoutProjectInput>
+}
+
+export type TestCaseStatusScalarWhereInput = {
+  AND?: Prisma.TestCaseStatusScalarWhereInput | Prisma.TestCaseStatusScalarWhereInput[]
+  OR?: Prisma.TestCaseStatusScalarWhereInput[]
+  NOT?: Prisma.TestCaseStatusScalarWhereInput | Prisma.TestCaseStatusScalarWhereInput[]
+  id?: Prisma.BigIntFilter<"TestCaseStatus"> | bigint | number
+  project_id?: Prisma.BigIntFilter<"TestCaseStatus"> | bigint | number
+  value?: Prisma.StringFilter<"TestCaseStatus"> | string
+  description?: Prisma.StringFilter<"TestCaseStatus"> | string
+  archived?: Prisma.BoolFilter<"TestCaseStatus"> | boolean
+  createdAt?: Prisma.DateTimeFilter<"TestCaseStatus"> | Date | string
+  updatedAt?: Prisma.DateTimeFilter<"TestCaseStatus"> | Date | string
+}
+
 export type TestCaseStatusCreateWithoutTest_casesInput = {
   id?: bigint | number
   value: string
@@ -404,10 +551,12 @@ export type TestCaseStatusCreateWithoutTest_casesInput = {
   archived?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
+  project: Prisma.ProjectCreateNestedOneWithoutTestCaseStatusesInput
 }
 
 export type TestCaseStatusUncheckedCreateWithoutTest_casesInput = {
   id?: bigint | number
+  project_id: bigint | number
   value: string
   description: string
   archived?: boolean
@@ -438,9 +587,49 @@ export type TestCaseStatusUpdateWithoutTest_casesInput = {
   archived?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  project?: Prisma.ProjectUpdateOneRequiredWithoutTestCaseStatusesNestedInput
 }
 
 export type TestCaseStatusUncheckedUpdateWithoutTest_casesInput = {
+  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  project_id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  value?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.StringFieldUpdateOperationsInput | string
+  archived?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type TestCaseStatusCreateManyProjectInput = {
+  id?: bigint | number
+  value: string
+  description: string
+  archived?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type TestCaseStatusUpdateWithoutProjectInput = {
+  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  value?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.StringFieldUpdateOperationsInput | string
+  archived?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  test_cases?: Prisma.TestCaseUpdateManyWithoutStatusNestedInput
+}
+
+export type TestCaseStatusUncheckedUpdateWithoutProjectInput = {
+  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  value?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.StringFieldUpdateOperationsInput | string
+  archived?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  test_cases?: Prisma.TestCaseUncheckedUpdateManyWithoutStatusNestedInput
+}
+
+export type TestCaseStatusUncheckedUpdateManyWithoutProjectInput = {
   id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   value?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
@@ -482,35 +671,42 @@ export type TestCaseStatusCountOutputTypeCountTest_casesArgs<ExtArgs extends run
 
 export type TestCaseStatusSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
+  project_id?: boolean
   value?: boolean
   description?: boolean
   archived?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  project?: boolean | Prisma.ProjectDefaultArgs<ExtArgs>
   test_cases?: boolean | Prisma.TestCaseStatus$test_casesArgs<ExtArgs>
   _count?: boolean | Prisma.TestCaseStatusCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["testCaseStatus"]>
 
 export type TestCaseStatusSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
+  project_id?: boolean
   value?: boolean
   description?: boolean
   archived?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  project?: boolean | Prisma.ProjectDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["testCaseStatus"]>
 
 export type TestCaseStatusSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
+  project_id?: boolean
   value?: boolean
   description?: boolean
   archived?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  project?: boolean | Prisma.ProjectDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["testCaseStatus"]>
 
 export type TestCaseStatusSelectScalar = {
   id?: boolean
+  project_id?: boolean
   value?: boolean
   description?: boolean
   archived?: boolean
@@ -518,21 +714,28 @@ export type TestCaseStatusSelectScalar = {
   updatedAt?: boolean
 }
 
-export type TestCaseStatusOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "value" | "description" | "archived" | "createdAt" | "updatedAt", ExtArgs["result"]["testCaseStatus"]>
+export type TestCaseStatusOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "project_id" | "value" | "description" | "archived" | "createdAt" | "updatedAt", ExtArgs["result"]["testCaseStatus"]>
 export type TestCaseStatusInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  project?: boolean | Prisma.ProjectDefaultArgs<ExtArgs>
   test_cases?: boolean | Prisma.TestCaseStatus$test_casesArgs<ExtArgs>
   _count?: boolean | Prisma.TestCaseStatusCountOutputTypeDefaultArgs<ExtArgs>
 }
-export type TestCaseStatusIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
-export type TestCaseStatusIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
+export type TestCaseStatusIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  project?: boolean | Prisma.ProjectDefaultArgs<ExtArgs>
+}
+export type TestCaseStatusIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  project?: boolean | Prisma.ProjectDefaultArgs<ExtArgs>
+}
 
 export type $TestCaseStatusPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "TestCaseStatus"
   objects: {
+    project: Prisma.$ProjectPayload<ExtArgs>
     test_cases: Prisma.$TestCasePayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: bigint
+    project_id: bigint
     value: string
     description: string
     archived: boolean
@@ -932,6 +1135,7 @@ readonly fields: TestCaseStatusFieldRefs;
  */
 export interface Prisma__TestCaseStatusClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
+  project<T extends Prisma.ProjectDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ProjectDefaultArgs<ExtArgs>>): Prisma.Prisma__ProjectClient<runtime.Types.Result.GetResult<Prisma.$ProjectPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   test_cases<T extends Prisma.TestCaseStatus$test_casesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.TestCaseStatus$test_casesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$TestCasePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -963,6 +1167,7 @@ export interface Prisma__TestCaseStatusClient<T, Null = never, ExtArgs extends r
  */
 export interface TestCaseStatusFieldRefs {
   readonly id: Prisma.FieldRef<"TestCaseStatus", 'BigInt'>
+  readonly project_id: Prisma.FieldRef<"TestCaseStatus", 'BigInt'>
   readonly value: Prisma.FieldRef<"TestCaseStatus", 'String'>
   readonly description: Prisma.FieldRef<"TestCaseStatus", 'String'>
   readonly archived: Prisma.FieldRef<"TestCaseStatus", 'Boolean'>
@@ -1217,6 +1422,10 @@ export type TestCaseStatusCreateManyAndReturnArgs<ExtArgs extends runtime.Types.
    */
   data: Prisma.TestCaseStatusCreateManyInput | Prisma.TestCaseStatusCreateManyInput[]
   skipDuplicates?: boolean
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.TestCaseStatusIncludeCreateManyAndReturn<ExtArgs> | null
 }
 
 /**
@@ -1287,6 +1496,10 @@ export type TestCaseStatusUpdateManyAndReturnArgs<ExtArgs extends runtime.Types.
    * Limit how many TestCaseStatuses to update.
    */
   limit?: number
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.TestCaseStatusIncludeUpdateManyAndReturn<ExtArgs> | null
 }
 
 /**

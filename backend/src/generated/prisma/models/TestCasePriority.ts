@@ -28,14 +28,17 @@ export type AggregateTestCasePriority = {
 
 export type TestCasePriorityAvgAggregateOutputType = {
   id: number | null
+  project_id: number | null
 }
 
 export type TestCasePrioritySumAggregateOutputType = {
   id: bigint | null
+  project_id: bigint | null
 }
 
 export type TestCasePriorityMinAggregateOutputType = {
   id: bigint | null
+  project_id: bigint | null
   value: string | null
   description: string | null
   archived: boolean | null
@@ -45,6 +48,7 @@ export type TestCasePriorityMinAggregateOutputType = {
 
 export type TestCasePriorityMaxAggregateOutputType = {
   id: bigint | null
+  project_id: bigint | null
   value: string | null
   description: string | null
   archived: boolean | null
@@ -54,6 +58,7 @@ export type TestCasePriorityMaxAggregateOutputType = {
 
 export type TestCasePriorityCountAggregateOutputType = {
   id: number
+  project_id: number
   value: number
   description: number
   archived: number
@@ -65,14 +70,17 @@ export type TestCasePriorityCountAggregateOutputType = {
 
 export type TestCasePriorityAvgAggregateInputType = {
   id?: true
+  project_id?: true
 }
 
 export type TestCasePrioritySumAggregateInputType = {
   id?: true
+  project_id?: true
 }
 
 export type TestCasePriorityMinAggregateInputType = {
   id?: true
+  project_id?: true
   value?: true
   description?: true
   archived?: true
@@ -82,6 +90,7 @@ export type TestCasePriorityMinAggregateInputType = {
 
 export type TestCasePriorityMaxAggregateInputType = {
   id?: true
+  project_id?: true
   value?: true
   description?: true
   archived?: true
@@ -91,6 +100,7 @@ export type TestCasePriorityMaxAggregateInputType = {
 
 export type TestCasePriorityCountAggregateInputType = {
   id?: true
+  project_id?: true
   value?: true
   description?: true
   archived?: true
@@ -187,6 +197,7 @@ export type TestCasePriorityGroupByArgs<ExtArgs extends runtime.Types.Extensions
 
 export type TestCasePriorityGroupByOutputType = {
   id: bigint
+  project_id: bigint
   value: string
   description: string
   archived: boolean
@@ -219,39 +230,47 @@ export type TestCasePriorityWhereInput = {
   OR?: Prisma.TestCasePriorityWhereInput[]
   NOT?: Prisma.TestCasePriorityWhereInput | Prisma.TestCasePriorityWhereInput[]
   id?: Prisma.BigIntFilter<"TestCasePriority"> | bigint | number
+  project_id?: Prisma.BigIntFilter<"TestCasePriority"> | bigint | number
   value?: Prisma.StringFilter<"TestCasePriority"> | string
   description?: Prisma.StringFilter<"TestCasePriority"> | string
   archived?: Prisma.BoolFilter<"TestCasePriority"> | boolean
   createdAt?: Prisma.DateTimeFilter<"TestCasePriority"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"TestCasePriority"> | Date | string
+  project?: Prisma.XOR<Prisma.ProjectScalarRelationFilter, Prisma.ProjectWhereInput>
   test_cases?: Prisma.TestCaseListRelationFilter
 }
 
 export type TestCasePriorityOrderByWithRelationInput = {
   id?: Prisma.SortOrder
+  project_id?: Prisma.SortOrder
   value?: Prisma.SortOrder
   description?: Prisma.SortOrder
   archived?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  project?: Prisma.ProjectOrderByWithRelationInput
   test_cases?: Prisma.TestCaseOrderByRelationAggregateInput
 }
 
 export type TestCasePriorityWhereUniqueInput = Prisma.AtLeast<{
   id?: bigint | number
-  value?: string
+  project_id_value?: Prisma.TestCasePriorityProject_idValueCompoundUniqueInput
   AND?: Prisma.TestCasePriorityWhereInput | Prisma.TestCasePriorityWhereInput[]
   OR?: Prisma.TestCasePriorityWhereInput[]
   NOT?: Prisma.TestCasePriorityWhereInput | Prisma.TestCasePriorityWhereInput[]
+  project_id?: Prisma.BigIntFilter<"TestCasePriority"> | bigint | number
+  value?: Prisma.StringFilter<"TestCasePriority"> | string
   description?: Prisma.StringFilter<"TestCasePriority"> | string
   archived?: Prisma.BoolFilter<"TestCasePriority"> | boolean
   createdAt?: Prisma.DateTimeFilter<"TestCasePriority"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"TestCasePriority"> | Date | string
+  project?: Prisma.XOR<Prisma.ProjectScalarRelationFilter, Prisma.ProjectWhereInput>
   test_cases?: Prisma.TestCaseListRelationFilter
-}, "id" | "value">
+}, "id" | "project_id_value">
 
 export type TestCasePriorityOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
+  project_id?: Prisma.SortOrder
   value?: Prisma.SortOrder
   description?: Prisma.SortOrder
   archived?: Prisma.SortOrder
@@ -269,6 +288,7 @@ export type TestCasePriorityScalarWhereWithAggregatesInput = {
   OR?: Prisma.TestCasePriorityScalarWhereWithAggregatesInput[]
   NOT?: Prisma.TestCasePriorityScalarWhereWithAggregatesInput | Prisma.TestCasePriorityScalarWhereWithAggregatesInput[]
   id?: Prisma.BigIntWithAggregatesFilter<"TestCasePriority"> | bigint | number
+  project_id?: Prisma.BigIntWithAggregatesFilter<"TestCasePriority"> | bigint | number
   value?: Prisma.StringWithAggregatesFilter<"TestCasePriority"> | string
   description?: Prisma.StringWithAggregatesFilter<"TestCasePriority"> | string
   archived?: Prisma.BoolWithAggregatesFilter<"TestCasePriority"> | boolean
@@ -283,11 +303,13 @@ export type TestCasePriorityCreateInput = {
   archived?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
+  project: Prisma.ProjectCreateNestedOneWithoutTestCasePrioritiesInput
   test_cases?: Prisma.TestCaseCreateNestedManyWithoutPriorityInput
 }
 
 export type TestCasePriorityUncheckedCreateInput = {
   id?: bigint | number
+  project_id: bigint | number
   value: string
   description: string
   archived?: boolean
@@ -303,11 +325,13 @@ export type TestCasePriorityUpdateInput = {
   archived?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  project?: Prisma.ProjectUpdateOneRequiredWithoutTestCasePrioritiesNestedInput
   test_cases?: Prisma.TestCaseUpdateManyWithoutPriorityNestedInput
 }
 
 export type TestCasePriorityUncheckedUpdateInput = {
   id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  project_id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   value?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
   archived?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -318,6 +342,7 @@ export type TestCasePriorityUncheckedUpdateInput = {
 
 export type TestCasePriorityCreateManyInput = {
   id?: bigint | number
+  project_id: bigint | number
   value: string
   description: string
   archived?: boolean
@@ -336,6 +361,7 @@ export type TestCasePriorityUpdateManyMutationInput = {
 
 export type TestCasePriorityUncheckedUpdateManyInput = {
   id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  project_id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   value?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
   archived?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -343,8 +369,24 @@ export type TestCasePriorityUncheckedUpdateManyInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
+export type TestCasePriorityListRelationFilter = {
+  every?: Prisma.TestCasePriorityWhereInput
+  some?: Prisma.TestCasePriorityWhereInput
+  none?: Prisma.TestCasePriorityWhereInput
+}
+
+export type TestCasePriorityOrderByRelationAggregateInput = {
+  _count?: Prisma.SortOrder
+}
+
+export type TestCasePriorityProject_idValueCompoundUniqueInput = {
+  project_id: bigint | number
+  value: string
+}
+
 export type TestCasePriorityCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  project_id?: Prisma.SortOrder
   value?: Prisma.SortOrder
   description?: Prisma.SortOrder
   archived?: Prisma.SortOrder
@@ -354,10 +396,12 @@ export type TestCasePriorityCountOrderByAggregateInput = {
 
 export type TestCasePriorityAvgOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  project_id?: Prisma.SortOrder
 }
 
 export type TestCasePriorityMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  project_id?: Prisma.SortOrder
   value?: Prisma.SortOrder
   description?: Prisma.SortOrder
   archived?: Prisma.SortOrder
@@ -367,6 +411,7 @@ export type TestCasePriorityMaxOrderByAggregateInput = {
 
 export type TestCasePriorityMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  project_id?: Prisma.SortOrder
   value?: Prisma.SortOrder
   description?: Prisma.SortOrder
   archived?: Prisma.SortOrder
@@ -376,11 +421,54 @@ export type TestCasePriorityMinOrderByAggregateInput = {
 
 export type TestCasePrioritySumOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  project_id?: Prisma.SortOrder
 }
 
 export type TestCasePriorityScalarRelationFilter = {
   is?: Prisma.TestCasePriorityWhereInput
   isNot?: Prisma.TestCasePriorityWhereInput
+}
+
+export type TestCasePriorityCreateNestedManyWithoutProjectInput = {
+  create?: Prisma.XOR<Prisma.TestCasePriorityCreateWithoutProjectInput, Prisma.TestCasePriorityUncheckedCreateWithoutProjectInput> | Prisma.TestCasePriorityCreateWithoutProjectInput[] | Prisma.TestCasePriorityUncheckedCreateWithoutProjectInput[]
+  connectOrCreate?: Prisma.TestCasePriorityCreateOrConnectWithoutProjectInput | Prisma.TestCasePriorityCreateOrConnectWithoutProjectInput[]
+  createMany?: Prisma.TestCasePriorityCreateManyProjectInputEnvelope
+  connect?: Prisma.TestCasePriorityWhereUniqueInput | Prisma.TestCasePriorityWhereUniqueInput[]
+}
+
+export type TestCasePriorityUncheckedCreateNestedManyWithoutProjectInput = {
+  create?: Prisma.XOR<Prisma.TestCasePriorityCreateWithoutProjectInput, Prisma.TestCasePriorityUncheckedCreateWithoutProjectInput> | Prisma.TestCasePriorityCreateWithoutProjectInput[] | Prisma.TestCasePriorityUncheckedCreateWithoutProjectInput[]
+  connectOrCreate?: Prisma.TestCasePriorityCreateOrConnectWithoutProjectInput | Prisma.TestCasePriorityCreateOrConnectWithoutProjectInput[]
+  createMany?: Prisma.TestCasePriorityCreateManyProjectInputEnvelope
+  connect?: Prisma.TestCasePriorityWhereUniqueInput | Prisma.TestCasePriorityWhereUniqueInput[]
+}
+
+export type TestCasePriorityUpdateManyWithoutProjectNestedInput = {
+  create?: Prisma.XOR<Prisma.TestCasePriorityCreateWithoutProjectInput, Prisma.TestCasePriorityUncheckedCreateWithoutProjectInput> | Prisma.TestCasePriorityCreateWithoutProjectInput[] | Prisma.TestCasePriorityUncheckedCreateWithoutProjectInput[]
+  connectOrCreate?: Prisma.TestCasePriorityCreateOrConnectWithoutProjectInput | Prisma.TestCasePriorityCreateOrConnectWithoutProjectInput[]
+  upsert?: Prisma.TestCasePriorityUpsertWithWhereUniqueWithoutProjectInput | Prisma.TestCasePriorityUpsertWithWhereUniqueWithoutProjectInput[]
+  createMany?: Prisma.TestCasePriorityCreateManyProjectInputEnvelope
+  set?: Prisma.TestCasePriorityWhereUniqueInput | Prisma.TestCasePriorityWhereUniqueInput[]
+  disconnect?: Prisma.TestCasePriorityWhereUniqueInput | Prisma.TestCasePriorityWhereUniqueInput[]
+  delete?: Prisma.TestCasePriorityWhereUniqueInput | Prisma.TestCasePriorityWhereUniqueInput[]
+  connect?: Prisma.TestCasePriorityWhereUniqueInput | Prisma.TestCasePriorityWhereUniqueInput[]
+  update?: Prisma.TestCasePriorityUpdateWithWhereUniqueWithoutProjectInput | Prisma.TestCasePriorityUpdateWithWhereUniqueWithoutProjectInput[]
+  updateMany?: Prisma.TestCasePriorityUpdateManyWithWhereWithoutProjectInput | Prisma.TestCasePriorityUpdateManyWithWhereWithoutProjectInput[]
+  deleteMany?: Prisma.TestCasePriorityScalarWhereInput | Prisma.TestCasePriorityScalarWhereInput[]
+}
+
+export type TestCasePriorityUncheckedUpdateManyWithoutProjectNestedInput = {
+  create?: Prisma.XOR<Prisma.TestCasePriorityCreateWithoutProjectInput, Prisma.TestCasePriorityUncheckedCreateWithoutProjectInput> | Prisma.TestCasePriorityCreateWithoutProjectInput[] | Prisma.TestCasePriorityUncheckedCreateWithoutProjectInput[]
+  connectOrCreate?: Prisma.TestCasePriorityCreateOrConnectWithoutProjectInput | Prisma.TestCasePriorityCreateOrConnectWithoutProjectInput[]
+  upsert?: Prisma.TestCasePriorityUpsertWithWhereUniqueWithoutProjectInput | Prisma.TestCasePriorityUpsertWithWhereUniqueWithoutProjectInput[]
+  createMany?: Prisma.TestCasePriorityCreateManyProjectInputEnvelope
+  set?: Prisma.TestCasePriorityWhereUniqueInput | Prisma.TestCasePriorityWhereUniqueInput[]
+  disconnect?: Prisma.TestCasePriorityWhereUniqueInput | Prisma.TestCasePriorityWhereUniqueInput[]
+  delete?: Prisma.TestCasePriorityWhereUniqueInput | Prisma.TestCasePriorityWhereUniqueInput[]
+  connect?: Prisma.TestCasePriorityWhereUniqueInput | Prisma.TestCasePriorityWhereUniqueInput[]
+  update?: Prisma.TestCasePriorityUpdateWithWhereUniqueWithoutProjectInput | Prisma.TestCasePriorityUpdateWithWhereUniqueWithoutProjectInput[]
+  updateMany?: Prisma.TestCasePriorityUpdateManyWithWhereWithoutProjectInput | Prisma.TestCasePriorityUpdateManyWithWhereWithoutProjectInput[]
+  deleteMany?: Prisma.TestCasePriorityScalarWhereInput | Prisma.TestCasePriorityScalarWhereInput[]
 }
 
 export type BoolFieldUpdateOperationsInput = {
@@ -401,6 +489,65 @@ export type TestCasePriorityUpdateOneRequiredWithoutTest_casesNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.TestCasePriorityUpdateToOneWithWhereWithoutTest_casesInput, Prisma.TestCasePriorityUpdateWithoutTest_casesInput>, Prisma.TestCasePriorityUncheckedUpdateWithoutTest_casesInput>
 }
 
+export type TestCasePriorityCreateWithoutProjectInput = {
+  id?: bigint | number
+  value: string
+  description: string
+  archived?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  test_cases?: Prisma.TestCaseCreateNestedManyWithoutPriorityInput
+}
+
+export type TestCasePriorityUncheckedCreateWithoutProjectInput = {
+  id?: bigint | number
+  value: string
+  description: string
+  archived?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  test_cases?: Prisma.TestCaseUncheckedCreateNestedManyWithoutPriorityInput
+}
+
+export type TestCasePriorityCreateOrConnectWithoutProjectInput = {
+  where: Prisma.TestCasePriorityWhereUniqueInput
+  create: Prisma.XOR<Prisma.TestCasePriorityCreateWithoutProjectInput, Prisma.TestCasePriorityUncheckedCreateWithoutProjectInput>
+}
+
+export type TestCasePriorityCreateManyProjectInputEnvelope = {
+  data: Prisma.TestCasePriorityCreateManyProjectInput | Prisma.TestCasePriorityCreateManyProjectInput[]
+  skipDuplicates?: boolean
+}
+
+export type TestCasePriorityUpsertWithWhereUniqueWithoutProjectInput = {
+  where: Prisma.TestCasePriorityWhereUniqueInput
+  update: Prisma.XOR<Prisma.TestCasePriorityUpdateWithoutProjectInput, Prisma.TestCasePriorityUncheckedUpdateWithoutProjectInput>
+  create: Prisma.XOR<Prisma.TestCasePriorityCreateWithoutProjectInput, Prisma.TestCasePriorityUncheckedCreateWithoutProjectInput>
+}
+
+export type TestCasePriorityUpdateWithWhereUniqueWithoutProjectInput = {
+  where: Prisma.TestCasePriorityWhereUniqueInput
+  data: Prisma.XOR<Prisma.TestCasePriorityUpdateWithoutProjectInput, Prisma.TestCasePriorityUncheckedUpdateWithoutProjectInput>
+}
+
+export type TestCasePriorityUpdateManyWithWhereWithoutProjectInput = {
+  where: Prisma.TestCasePriorityScalarWhereInput
+  data: Prisma.XOR<Prisma.TestCasePriorityUpdateManyMutationInput, Prisma.TestCasePriorityUncheckedUpdateManyWithoutProjectInput>
+}
+
+export type TestCasePriorityScalarWhereInput = {
+  AND?: Prisma.TestCasePriorityScalarWhereInput | Prisma.TestCasePriorityScalarWhereInput[]
+  OR?: Prisma.TestCasePriorityScalarWhereInput[]
+  NOT?: Prisma.TestCasePriorityScalarWhereInput | Prisma.TestCasePriorityScalarWhereInput[]
+  id?: Prisma.BigIntFilter<"TestCasePriority"> | bigint | number
+  project_id?: Prisma.BigIntFilter<"TestCasePriority"> | bigint | number
+  value?: Prisma.StringFilter<"TestCasePriority"> | string
+  description?: Prisma.StringFilter<"TestCasePriority"> | string
+  archived?: Prisma.BoolFilter<"TestCasePriority"> | boolean
+  createdAt?: Prisma.DateTimeFilter<"TestCasePriority"> | Date | string
+  updatedAt?: Prisma.DateTimeFilter<"TestCasePriority"> | Date | string
+}
+
 export type TestCasePriorityCreateWithoutTest_casesInput = {
   id?: bigint | number
   value: string
@@ -408,10 +555,12 @@ export type TestCasePriorityCreateWithoutTest_casesInput = {
   archived?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
+  project: Prisma.ProjectCreateNestedOneWithoutTestCasePrioritiesInput
 }
 
 export type TestCasePriorityUncheckedCreateWithoutTest_casesInput = {
   id?: bigint | number
+  project_id: bigint | number
   value: string
   description: string
   archived?: boolean
@@ -442,9 +591,49 @@ export type TestCasePriorityUpdateWithoutTest_casesInput = {
   archived?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  project?: Prisma.ProjectUpdateOneRequiredWithoutTestCasePrioritiesNestedInput
 }
 
 export type TestCasePriorityUncheckedUpdateWithoutTest_casesInput = {
+  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  project_id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  value?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.StringFieldUpdateOperationsInput | string
+  archived?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type TestCasePriorityCreateManyProjectInput = {
+  id?: bigint | number
+  value: string
+  description: string
+  archived?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type TestCasePriorityUpdateWithoutProjectInput = {
+  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  value?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.StringFieldUpdateOperationsInput | string
+  archived?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  test_cases?: Prisma.TestCaseUpdateManyWithoutPriorityNestedInput
+}
+
+export type TestCasePriorityUncheckedUpdateWithoutProjectInput = {
+  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  value?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.StringFieldUpdateOperationsInput | string
+  archived?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  test_cases?: Prisma.TestCaseUncheckedUpdateManyWithoutPriorityNestedInput
+}
+
+export type TestCasePriorityUncheckedUpdateManyWithoutProjectInput = {
   id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   value?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
@@ -486,35 +675,42 @@ export type TestCasePriorityCountOutputTypeCountTest_casesArgs<ExtArgs extends r
 
 export type TestCasePrioritySelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
+  project_id?: boolean
   value?: boolean
   description?: boolean
   archived?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  project?: boolean | Prisma.ProjectDefaultArgs<ExtArgs>
   test_cases?: boolean | Prisma.TestCasePriority$test_casesArgs<ExtArgs>
   _count?: boolean | Prisma.TestCasePriorityCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["testCasePriority"]>
 
 export type TestCasePrioritySelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
+  project_id?: boolean
   value?: boolean
   description?: boolean
   archived?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  project?: boolean | Prisma.ProjectDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["testCasePriority"]>
 
 export type TestCasePrioritySelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
+  project_id?: boolean
   value?: boolean
   description?: boolean
   archived?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  project?: boolean | Prisma.ProjectDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["testCasePriority"]>
 
 export type TestCasePrioritySelectScalar = {
   id?: boolean
+  project_id?: boolean
   value?: boolean
   description?: boolean
   archived?: boolean
@@ -522,21 +718,28 @@ export type TestCasePrioritySelectScalar = {
   updatedAt?: boolean
 }
 
-export type TestCasePriorityOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "value" | "description" | "archived" | "createdAt" | "updatedAt", ExtArgs["result"]["testCasePriority"]>
+export type TestCasePriorityOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "project_id" | "value" | "description" | "archived" | "createdAt" | "updatedAt", ExtArgs["result"]["testCasePriority"]>
 export type TestCasePriorityInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  project?: boolean | Prisma.ProjectDefaultArgs<ExtArgs>
   test_cases?: boolean | Prisma.TestCasePriority$test_casesArgs<ExtArgs>
   _count?: boolean | Prisma.TestCasePriorityCountOutputTypeDefaultArgs<ExtArgs>
 }
-export type TestCasePriorityIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
-export type TestCasePriorityIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
+export type TestCasePriorityIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  project?: boolean | Prisma.ProjectDefaultArgs<ExtArgs>
+}
+export type TestCasePriorityIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  project?: boolean | Prisma.ProjectDefaultArgs<ExtArgs>
+}
 
 export type $TestCasePriorityPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "TestCasePriority"
   objects: {
+    project: Prisma.$ProjectPayload<ExtArgs>
     test_cases: Prisma.$TestCasePayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: bigint
+    project_id: bigint
     value: string
     description: string
     archived: boolean
@@ -936,6 +1139,7 @@ readonly fields: TestCasePriorityFieldRefs;
  */
 export interface Prisma__TestCasePriorityClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
+  project<T extends Prisma.ProjectDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ProjectDefaultArgs<ExtArgs>>): Prisma.Prisma__ProjectClient<runtime.Types.Result.GetResult<Prisma.$ProjectPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   test_cases<T extends Prisma.TestCasePriority$test_casesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.TestCasePriority$test_casesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$TestCasePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -967,6 +1171,7 @@ export interface Prisma__TestCasePriorityClient<T, Null = never, ExtArgs extends
  */
 export interface TestCasePriorityFieldRefs {
   readonly id: Prisma.FieldRef<"TestCasePriority", 'BigInt'>
+  readonly project_id: Prisma.FieldRef<"TestCasePriority", 'BigInt'>
   readonly value: Prisma.FieldRef<"TestCasePriority", 'String'>
   readonly description: Prisma.FieldRef<"TestCasePriority", 'String'>
   readonly archived: Prisma.FieldRef<"TestCasePriority", 'Boolean'>
@@ -1221,6 +1426,10 @@ export type TestCasePriorityCreateManyAndReturnArgs<ExtArgs extends runtime.Type
    */
   data: Prisma.TestCasePriorityCreateManyInput | Prisma.TestCasePriorityCreateManyInput[]
   skipDuplicates?: boolean
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.TestCasePriorityIncludeCreateManyAndReturn<ExtArgs> | null
 }
 
 /**
@@ -1291,6 +1500,10 @@ export type TestCasePriorityUpdateManyAndReturnArgs<ExtArgs extends runtime.Type
    * Limit how many TestCasePriorities to update.
    */
   limit?: number
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.TestCasePriorityIncludeUpdateManyAndReturn<ExtArgs> | null
 }
 
 /**

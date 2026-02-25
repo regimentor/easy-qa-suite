@@ -4,8 +4,7 @@ import { projectByKeyQuery } from "@/units/project/projects.queries";
 import { ProjectDetails } from "@/units/project/project-details";
 import { TestSuiteList } from "@/units/test-suite/test-suite-list";
 import { TestCases } from "@/units/test-case/test-cases";
-import { Tabs } from "antd";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import styles from "./project-id.module.css";
 
@@ -16,32 +15,12 @@ export const Route = createFileRoute("/projects/$project-key")({
 function RouteComponent() {
   const { "project-key": projectKey } = Route.useParams();
   const { t } = useTranslation();
-  const [activeTab, setActiveTab] = useState<string>("test-suites");
+  const [selectedSuiteId, setSelectedSuiteId] = useState<string | null>(null);
 
   const { data, loading, error } = useQuery(projectByKeyQuery, {
     variables: { key: projectKey },
     skip: !projectKey,
   });
-
-  useEffect(() => {
-    const handleHashChange = () => {
-      const hash = window.location.hash.slice(1);
-      if (hash === "test-suites" || hash === "test-cases") {
-        setActiveTab(hash);
-      }
-    };
-
-    handleHashChange();
-    window.addEventListener("hashchange", handleHashChange);
-    return () => {
-      window.removeEventListener("hashchange", handleHashChange);
-    };
-  }, []);
-
-  const handleTabChange = (key: string) => {
-    setActiveTab(key);
-    window.location.hash = key;
-  };
 
   if (loading || !data?.projectByKey) {
     return (
@@ -56,33 +35,33 @@ function RouteComponent() {
   const project = data.projectByKey;
   const projectId = project.id;
 
-  const tabItems = [
-    {
-      key: "test-suites",
-      label: t("breadcrumb.testSuites"),
-      children: (
-        <TestSuiteList projectId={projectId} projectKey={project.key} />
-      ),
-    },
-    {
-      key: "test-cases",
-      label: t("breadcrumb.testCases"),
-      children: (
-        <TestCases projectId={projectId} projectKey={project.key} />
-      ),
-    },
-  ];
+  const handleSuiteSelect = (suiteId: string | null) => {
+    setSelectedSuiteId(suiteId);
+  };
 
   return (
     <div className={styles.wrap}>
-      <ProjectDetails id={projectId} />
+      <ProjectDetails id={projectId} projectKey={project.key} />
 
-      <Tabs
-        className={styles.tabsWrap}
-        activeKey={activeTab}
-        onChange={handleTabChange}
-        items={tabItems}
-      />
+      <div className={styles.columnsPanel}>
+        <div className={styles.twoColumns}>
+          <div className={styles.leftColumn}>
+            <TestSuiteList
+              projectId={projectId}
+              projectKey={project.key}
+              selectedSuiteId={selectedSuiteId}
+              onSuiteSelect={handleSuiteSelect}
+            />
+          </div>
+          <div className={styles.rightColumn}>
+            <TestCases
+              projectId={projectId}
+              projectKey={project.key}
+              testSuiteId={selectedSuiteId}
+            />
+          </div>
+        </div>
+      </div>
     </div>
   );
 }

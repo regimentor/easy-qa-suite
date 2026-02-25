@@ -6,14 +6,20 @@ function findBy(where: Prisma.TestCasePriorityWhereInput) {
 }
 
 function findById(id: bigint) {
-  return prismaClient.testCasePriority.findUnique({ 
-    where: { id } 
+  return prismaClient.testCasePriority.findUnique({
+    where: { id },
   });
 }
 
-function findByValue(value: string) {
-  return prismaClient.testCasePriority.findUnique({ 
-    where: { value } 
+function findByProjectId(projectId: bigint, includeArchived: boolean = false) {
+  const where: Prisma.TestCasePriorityWhereInput = { project_id: projectId };
+  if (!includeArchived) where.archived = false;
+  return prismaClient.testCasePriority.findMany({ where });
+}
+
+function findByProjectIdAndValue(projectId: bigint, value: string) {
+  return prismaClient.testCasePriority.findUnique({
+    where: { project_id_value: { project_id: projectId, value } },
   });
 }
 
@@ -24,14 +30,15 @@ function create(data: Prisma.TestCasePriorityCreateInput) {
 function update(id: bigint, data: Prisma.TestCasePriorityUpdateInput) {
   return prismaClient.testCasePriority.update({
     where: { id },
-    data
+    data,
   });
 }
 
 export const testCasePrioritiesRepository = {
   findBy,
   findById,
-  findByValue,
+  findByProjectId,
+  findByProjectIdAndValue,
   create,
-  update
+  update,
 };

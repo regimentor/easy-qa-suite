@@ -33,8 +33,14 @@ export function CreateTestCase({ projectId, projectKey }: CreateTestCaseProps) {
   const { t } = useTranslation();
   const [form] = Form.useForm<TTestCaseFormValues>();
 
-  const { data: prioritiesData } = useQuery(testCasePrioritiesQuery);
-  const { data: statusesData } = useQuery(testCaseStatusesQuery);
+  const { data: prioritiesData } = useQuery(testCasePrioritiesQuery, {
+    variables: { projectId, includeArchived: false },
+    skip: !projectId,
+  });
+  const { data: statusesData } = useQuery(testCaseStatusesQuery, {
+    variables: { projectId, includeArchived: false },
+    skip: !projectId,
+  });
 
   const priorityOptions =
     prioritiesData?.testCasePriorities.map((p: TestCasePriorityFields) => ({

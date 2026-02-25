@@ -8,7 +8,7 @@ export type TestCasePriorityFields = Pick<
 >;
 
 type TestCasePrioritiesQueryData = { testCasePriorities: TestCasePriorityFields[] };
-type TestCasePrioritiesQueryVariables = { includeArchived?: boolean };
+type TestCasePrioritiesQueryVariables = { projectId: string; includeArchived?: boolean };
 
 type TestCasePriorityQueryData = { testCasePriority: TestCasePriorityFields };
 type TestCasePriorityQueryVariables = { id: string };
@@ -17,8 +17,8 @@ export const testCasePrioritiesQuery: TypedDocumentNode<
   TestCasePrioritiesQueryData,
   TestCasePrioritiesQueryVariables
 > = gql`
-  query TestCasePriorities($includeArchived: Boolean) {
-    testCasePriorities(includeArchived: $includeArchived) {
+  query TestCasePriorities($projectId: String!, $includeArchived: Boolean) {
+    testCasePriorities(projectId: $projectId, includeArchived: $includeArchived) {
       id
       value
       description
@@ -35,6 +35,32 @@ export const testCasePriorityQuery: TypedDocumentNode<
 > = gql`
   query TestCasePriority($id: String!) {
     testCasePriority(id: $id) {
+      id
+      value
+      description
+      archived
+      createdAt
+      updatedAt
+    }
+  }
+`;
+
+export const createTestCasePriorityMutation = gql`
+  mutation CreateTestCasePriority($input: CreateTestCasePriorityInput!) {
+    createTestCasePriority(input: $input) {
+      id
+      value
+      description
+      archived
+      createdAt
+      updatedAt
+    }
+  }
+`;
+
+export const updateTestCasePriorityMutation = gql`
+  mutation UpdateTestCasePriority($id: String!, $input: UpdateTestCasePriorityInput!) {
+    updateTestCasePriority(id: $id, input: $input) {
       id
       value
       description

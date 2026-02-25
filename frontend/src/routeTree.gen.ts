@@ -16,6 +16,7 @@ import { Route as IndexImport } from './routes/index'
 import { Route as ProjectsIndexImport } from './routes/projects/index'
 import { Route as ProjectsCreateImport } from './routes/projects/create'
 import { Route as ProjectsProjectKeyImport } from './routes/projects/$project-key'
+import { Route as ProjectsProjectKeySettingsImport } from './routes/projects_/$project-key/settings'
 import { Route as ProjectsProjectKeyTestSuitesEditImport } from './routes/projects_/$project-key/test-suites/edit'
 import { Route as ProjectsProjectKeyTestSuitesCreateImport } from './routes/projects_/$project-key/test-suites/create'
 import { Route as ProjectsProjectKeyTestSuitesSuiteIdImport } from './routes/projects_/$project-key/test-suites/$suite-id'
@@ -53,6 +54,14 @@ const ProjectsProjectKeyRoute = ProjectsProjectKeyImport.update({
   path: '/projects/$project-key',
   getParentRoute: () => rootRoute,
 } as any)
+
+const ProjectsProjectKeySettingsRoute = ProjectsProjectKeySettingsImport.update(
+  {
+    id: '/projects_/$project-key/settings',
+    path: '/projects/$project-key/settings',
+    getParentRoute: () => rootRoute,
+  } as any,
+)
 
 const ProjectsProjectKeyTestSuitesEditRoute =
   ProjectsProjectKeyTestSuitesEditImport.update({
@@ -128,6 +137,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProjectsIndexImport
       parentRoute: typeof rootRoute
     }
+    '/projects_/$project-key/settings': {
+      id: '/projects_/$project-key/settings'
+      path: '/projects/$project-key/settings'
+      fullPath: '/projects/$project-key/settings'
+      preLoaderRoute: typeof ProjectsProjectKeySettingsImport
+      parentRoute: typeof rootRoute
+    }
     '/projects_/$project-key/test-cases/$case-id': {
       id: '/projects_/$project-key/test-cases/$case-id'
       path: '/projects/$project-key/test-cases/$case-id'
@@ -174,6 +190,7 @@ export interface FileRoutesByFullPath {
   '/projects/$project-key': typeof ProjectsProjectKeyRoute
   '/projects/create': typeof ProjectsCreateRoute
   '/projects': typeof ProjectsIndexRoute
+  '/projects/$project-key/settings': typeof ProjectsProjectKeySettingsRoute
   '/projects/$project-key/test-cases/$case-id': typeof ProjectsProjectKeyTestCasesCaseIdRoute
   '/projects/$project-key/test-cases/create': typeof ProjectsProjectKeyTestCasesCreateRoute
   '/projects/$project-key/test-suites/$suite-id': typeof ProjectsProjectKeyTestSuitesSuiteIdRoute
@@ -187,6 +204,7 @@ export interface FileRoutesByTo {
   '/projects/$project-key': typeof ProjectsProjectKeyRoute
   '/projects/create': typeof ProjectsCreateRoute
   '/projects': typeof ProjectsIndexRoute
+  '/projects/$project-key/settings': typeof ProjectsProjectKeySettingsRoute
   '/projects/$project-key/test-cases/$case-id': typeof ProjectsProjectKeyTestCasesCaseIdRoute
   '/projects/$project-key/test-cases/create': typeof ProjectsProjectKeyTestCasesCreateRoute
   '/projects/$project-key/test-suites/$suite-id': typeof ProjectsProjectKeyTestSuitesSuiteIdRoute
@@ -201,6 +219,7 @@ export interface FileRoutesById {
   '/projects/$project-key': typeof ProjectsProjectKeyRoute
   '/projects/create': typeof ProjectsCreateRoute
   '/projects/': typeof ProjectsIndexRoute
+  '/projects_/$project-key/settings': typeof ProjectsProjectKeySettingsRoute
   '/projects_/$project-key/test-cases/$case-id': typeof ProjectsProjectKeyTestCasesCaseIdRoute
   '/projects_/$project-key/test-cases/create': typeof ProjectsProjectKeyTestCasesCreateRoute
   '/projects_/$project-key/test-suites/$suite-id': typeof ProjectsProjectKeyTestSuitesSuiteIdRoute
@@ -216,6 +235,7 @@ export interface FileRouteTypes {
     | '/projects/$project-key'
     | '/projects/create'
     | '/projects'
+    | '/projects/$project-key/settings'
     | '/projects/$project-key/test-cases/$case-id'
     | '/projects/$project-key/test-cases/create'
     | '/projects/$project-key/test-suites/$suite-id'
@@ -228,6 +248,7 @@ export interface FileRouteTypes {
     | '/projects/$project-key'
     | '/projects/create'
     | '/projects'
+    | '/projects/$project-key/settings'
     | '/projects/$project-key/test-cases/$case-id'
     | '/projects/$project-key/test-cases/create'
     | '/projects/$project-key/test-suites/$suite-id'
@@ -240,6 +261,7 @@ export interface FileRouteTypes {
     | '/projects/$project-key'
     | '/projects/create'
     | '/projects/'
+    | '/projects_/$project-key/settings'
     | '/projects_/$project-key/test-cases/$case-id'
     | '/projects_/$project-key/test-cases/create'
     | '/projects_/$project-key/test-suites/$suite-id'
@@ -254,6 +276,7 @@ export interface RootRouteChildren {
   ProjectsProjectKeyRoute: typeof ProjectsProjectKeyRoute
   ProjectsCreateRoute: typeof ProjectsCreateRoute
   ProjectsIndexRoute: typeof ProjectsIndexRoute
+  ProjectsProjectKeySettingsRoute: typeof ProjectsProjectKeySettingsRoute
   ProjectsProjectKeyTestCasesCaseIdRoute: typeof ProjectsProjectKeyTestCasesCaseIdRoute
   ProjectsProjectKeyTestCasesCreateRoute: typeof ProjectsProjectKeyTestCasesCreateRoute
   ProjectsProjectKeyTestSuitesSuiteIdRoute: typeof ProjectsProjectKeyTestSuitesSuiteIdRoute
@@ -267,6 +290,7 @@ const rootRouteChildren: RootRouteChildren = {
   ProjectsProjectKeyRoute: ProjectsProjectKeyRoute,
   ProjectsCreateRoute: ProjectsCreateRoute,
   ProjectsIndexRoute: ProjectsIndexRoute,
+  ProjectsProjectKeySettingsRoute: ProjectsProjectKeySettingsRoute,
   ProjectsProjectKeyTestCasesCaseIdRoute:
     ProjectsProjectKeyTestCasesCaseIdRoute,
   ProjectsProjectKeyTestCasesCreateRoute:
@@ -293,6 +317,7 @@ export const routeTree = rootRoute
         "/projects/$project-key",
         "/projects/create",
         "/projects/",
+        "/projects_/$project-key/settings",
         "/projects_/$project-key/test-cases/$case-id",
         "/projects_/$project-key/test-cases/create",
         "/projects_/$project-key/test-suites/$suite-id",
@@ -314,6 +339,9 @@ export const routeTree = rootRoute
     },
     "/projects/": {
       "filePath": "projects/index.tsx"
+    },
+    "/projects_/$project-key/settings": {
+      "filePath": "projects_/$project-key/settings.tsx"
     },
     "/projects_/$project-key/test-cases/$case-id": {
       "filePath": "projects_/$project-key/test-cases/$case-id.tsx"

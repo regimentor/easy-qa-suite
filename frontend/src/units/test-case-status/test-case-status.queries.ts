@@ -8,7 +8,7 @@ export type TestCaseStatusFields = Pick<
 >;
 
 type TestCaseStatusesQueryData = { testCaseStatuses: TestCaseStatusFields[] };
-type TestCaseStatusesQueryVariables = { includeArchived?: boolean };
+type TestCaseStatusesQueryVariables = { projectId: string; includeArchived?: boolean };
 
 type TestCaseStatusQueryData = { testCaseStatus: TestCaseStatusFields };
 type TestCaseStatusQueryVariables = { id: string };
@@ -17,8 +17,8 @@ export const testCaseStatusesQuery: TypedDocumentNode<
   TestCaseStatusesQueryData,
   TestCaseStatusesQueryVariables
 > = gql`
-  query TestCaseStatuses($includeArchived: Boolean) {
-    testCaseStatuses(includeArchived: $includeArchived) {
+  query TestCaseStatuses($projectId: String!, $includeArchived: Boolean) {
+    testCaseStatuses(projectId: $projectId, includeArchived: $includeArchived) {
       id
       value
       description
@@ -35,6 +35,32 @@ export const testCaseStatusQuery: TypedDocumentNode<
 > = gql`
   query TestCaseStatus($id: String!) {
     testCaseStatus(id: $id) {
+      id
+      value
+      description
+      archived
+      createdAt
+      updatedAt
+    }
+  }
+`;
+
+export const createTestCaseStatusMutation = gql`
+  mutation CreateTestCaseStatus($input: CreateTestCaseStatusInput!) {
+    createTestCaseStatus(input: $input) {
+      id
+      value
+      description
+      archived
+      createdAt
+      updatedAt
+    }
+  }
+`;
+
+export const updateTestCaseStatusMutation = gql`
+  mutation UpdateTestCaseStatus($id: String!, $input: UpdateTestCaseStatusInput!) {
+    updateTestCaseStatus(id: $id, input: $input) {
       id
       value
       description

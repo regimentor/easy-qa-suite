@@ -132,20 +132,24 @@ const TEST_CASE_TEMPLATES: Array<{
 const BULK_COUNT_PER_PROJECT = 100;
 
 export async function testCasesBulkSeed(client: PrismaClient) {
-  const projects = await client.project.findMany({ select: { id: true, key: true } });
-  const priorities = await client.testCasePriority.findMany({ select: { id: true } });
-  const statuses = await client.testCaseStatus.findMany({ select: { id: true } });
-
-  if (priorities.length === 0) throw new Error("No priorities found");
-  if (statuses.length === 0) throw new Error("No statuses found");
+  const projects = await client.project.findMany({
+    include: {
+      testCasePriorities: { select: { id: true } },
+      testCaseStatuses: { select: { id: true } },
+    },
+  });
 
   let totalCreated = 0;
 
   for (const project of projects) {
+    const projectPriorities = project.testCasePriorities;
+    const projectStatuses = project.testCaseStatuses;
+    if (projectPriorities.length === 0 || projectStatuses.length === 0) continue;
+
     for (let i = 0; i < BULK_COUNT_PER_PROJECT; i++) {
       const template = TEST_CASE_TEMPLATES[i % TEST_CASE_TEMPLATES.length]!;
-      const priority = priorities[i % priorities.length]!;
-      const status = statuses[i % statuses.length]!;
+      const priority = projectPriorities[i % projectPriorities.length]!;
+      const status = projectStatuses[i % projectStatuses.length]!;
 
       await client.testCase.create({
         data: {

@@ -1,9 +1,7 @@
 .card {
-  border-radius: 0.5rem;
+  border-radius: 0.375rem;
   transition: background-color 0.2s;
-  box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1);
   width: 100%;
-  margin-bottom: 1rem;
   cursor: pointer;
 }
 
@@ -11,60 +9,51 @@
   background: var(--accent, #f5f5f5);
 }
 
-.inner {
-  padding: 1rem 1.25rem;
+.cardSelected {
+  background: var(--accent, #e5e7eb);
+  outline: 2px solid var(--color-primary, #1677ff);
+  outline-offset: -2px;
 }
 
-.row {
-  display: flex;
-  align-items: center;
+.inner {
+  padding: 0.5rem 0.75rem;
 }
 
 .body {
-  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
 }
 
-.headerRow {
+.nameRow {
   display: flex;
   align-items: center;
+  gap: 0.375rem;
 }
 
-.name {
-  font-size: 1.125rem;
+.nameLink {
+  font-size: 0.9375rem;
   font-weight: 600;
+  color: inherit;
+  text-decoration: none;
 }
 
-.badge {
-  margin-left: 0.75rem;
-  padding: 0.125rem 0.625rem;
-  border-radius: 9999px;
-  font-size: 0.75rem;
-  font-weight: 500;
+.nameLink:hover {
+  text-decoration: underline;
 }
 
-.desc {
-  margin-top: 0.25rem;
-  font-size: 0.875rem;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-}
-
-.meta {
-  display: flex;
-  margin-top: 1rem;
-  font-size: 0.75rem;
-}
-
-.metaItem {
-  display: flex;
+.descTrigger {
+  display: inline-flex;
   align-items: center;
-  margin-right: 1rem;
+  color: var(--color-text-secondary, #8c8c8c);
+  cursor: help;
+  font-size: 0.875rem;
 }
 
-.metaItem svg {
-  width: 1rem;
-  height: 1rem;
-  margin-right: 0.25rem;
+.descTrigger:hover {
+  color: var(--color-primary, #1677ff);
+}
+
+.tagWrap {
+  align-self: flex-start;
 }

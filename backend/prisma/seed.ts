@@ -11,11 +11,11 @@ import { testSuiteTypesSeed } from "./seeds/test_suite_types.seed";
 import { prismaClient } from "../src/prisma.client";
 
 async function main() {
-  await testCasePrioritiesSeed(prismaClient);
-  await testCaseStatusesSeed(prismaClient);
   await testSuiteTypesSeed(prismaClient);
   await usersSeed(prismaClient);
   await projectsSeed(prismaClient);
+  await testCasePrioritiesSeed(prismaClient);
+  await testCaseStatusesSeed(prismaClient);
   await testCasesSeed(prismaClient);
   await testResultsSeed(prismaClient);
   await testSuitesSeed(prismaClient);

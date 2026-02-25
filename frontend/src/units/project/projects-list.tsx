@@ -3,15 +3,12 @@ import { projectsQuery } from "./projects.queries";
 import type { ProjectFields } from "./projects.queries";
 import type React from "react";
 import { Button, Input } from "antd";
-import { CalendarIcon } from "@/components/icons/CalendarIcon";
-import { ClockIcon } from "@/components/icons/ClockIcon";
 import { SearchIcon } from "@/components/icons/SearchIcon";
 import { PlusIcon } from "@/components/icons/PlusIcon";
 import { ErrorIcon } from "@/components/icons/ErrorIcon";
 import { EmptyStateIcon } from "@/components/icons/EmptyStateIcon";
 import { useNavigate } from "@tanstack/react-router";
 import { useTranslation } from "react-i18next";
-import { formatDate } from "@/lib/format-date";
 import styles from "./projects-list.module.css";
 
 type TProjectSmallCardProps = {
@@ -20,7 +17,6 @@ type TProjectSmallCardProps = {
 
 const ProjectSmallCard: React.FC<TProjectSmallCardProps> = ({ project }) => {
   const navigate = useNavigate();
-  const { t } = useTranslation();
 
   const handleCardClick = () => {
     navigate({
@@ -41,16 +37,6 @@ const ProjectSmallCard: React.FC<TProjectSmallCardProps> = ({ project }) => {
             {project.description && (
               <p className={styles.cardDesc}>{project.description}</p>
             )}
-          </div>
-        </div>
-        <div className={styles.cardMeta}>
-          <div className={styles.cardMetaItem}>
-            <CalendarIcon />
-            <span>{t("project.created")}: {formatDate(project.createdAt)}</span>
-          </div>
-          <div className={styles.cardMetaItem}>
-            <ClockIcon />
-            <span>{t("project.updated")}: {formatDate(project.updatedAt)}</span>
           </div>
         </div>
       </div>

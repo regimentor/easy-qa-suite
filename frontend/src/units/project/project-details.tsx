@@ -1,25 +1,22 @@
 import { useQuery } from "@apollo/client";
+import { Link } from "@tanstack/react-router";
 import { projectQuery } from "./projects.queries";
 import type React from "react";
 import { useTranslation } from "react-i18next";
-import { CalendarIcon } from "@/components/icons/CalendarIcon";
-import { ClockIcon } from "@/components/icons/ClockIcon";
-import { DateTime } from "luxon";
+import { SettingOutlined } from "@ant-design/icons";
+import { Space, Typography } from "antd";
 import styles from "./project-details.module.css";
 
 type TProjectDetails = {
   id: string;
+  projectKey?: string;
 };
 
-export const ProjectDetails: React.FC<TProjectDetails> = ({ id }) => {
+export const ProjectDetails: React.FC<TProjectDetails> = ({ id, projectKey }) => {
   const { t } = useTranslation();
   const { data, loading, error } = useQuery(projectQuery, {
     variables: { id },
   });
-
-  const formatDate = (dateString: string) => {
-    return DateTime.fromISO(dateString).toFormat("d MMM yyyy");
-  };
 
   if (loading)
     return <div className={styles.loading}>Loading project details...</div>;
@@ -37,28 +34,33 @@ export const ProjectDetails: React.FC<TProjectDetails> = ({ id }) => {
   return (
     <div className={styles.wrap}>
       <div className={styles.inner}>
-        <div className={styles.row}>
-          <div className={styles.keyWrap}>
-            <span className={styles.key}>{project.key}</span>
-          </div>
-          <div className={styles.body}>
-            <h1 className={styles.title}>{project.name}</h1>
-            {project.description && (
-              <p className={styles.desc}>{project.description}</p>
+        <Space orientation="vertical" size="small" style={{ width: "100%" }}>
+          <div className={styles.header}>
+            <Space size="small" className={styles.mainLine} wrap={false}>
+              <Typography.Text strong>{project.key}</Typography.Text>
+              <Typography.Text type="secondary">·</Typography.Text>
+              <Typography.Text strong>{project.name}</Typography.Text>
+              {project.description && (
+                <>
+                  <Typography.Text type="secondary">·</Typography.Text>
+                  <Typography.Text ellipsis className={styles.desc}>
+                    {project.description}
+                  </Typography.Text>
+                </>
+              )}
+            </Space>
+            {projectKey && (
+              <Link
+                to="/projects/$project-key/settings"
+                params={{ "project-key": projectKey }}
+                className={styles.settingsLink}
+                title={t("project.settings")}
+              >
+                <SettingOutlined />
+              </Link>
             )}
           </div>
-        </div>
-
-        <div className={styles.meta}>
-          <div className={styles.metaItem}>
-            <CalendarIcon />
-            <span>{t("project.created")}: {formatDate(project.createdAt)}</span>
-          </div>
-          <div className={styles.metaItem}>
-            <ClockIcon />
-            <span>{t("project.updated")}: {formatDate(project.updatedAt)}</span>
-          </div>
-        </div>
+        </Space>
       </div>
     </div>
   );

@@ -14,3 +14,20 @@ export const TEST_CASE_STATUSES = [
   "Draft",
   "Deprecated"
 ];
+
+// Infinite scroll / load more
+export const INITIAL_VISIBLE = 40;
+export const LOAD_MORE_SIZE = 40;
+export const SCROLL_THRESHOLD = 120;
+
+export const getPriorityOptions = (t: (key: string) => string) =>
+  TEST_CASE_PRIORITIES.map((p) => ({
+    label: p === "All" ? t("common.all") : p,
+    value: p,
+  }));
+
+export const getStatusOptions = (t: (key: string) => string) =>
+  TEST_CASE_STATUSES.map((s) => ({
+    label: s === "All" ? t("common.all") : s,
+    value: s,
+  }));

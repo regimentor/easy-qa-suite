@@ -228,8 +228,7 @@ const Index = () => {
           <div
             style={{
               width: "100%",
-              minWidth: 0,
-              minHeight: "min-content",
+              height: "100%",
               borderRadius: borderRadiusLG,
             }}
           >
